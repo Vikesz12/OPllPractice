@@ -1,0 +1,13 @@
+D:\Viktor\Projects\OllPractice\OllPractice.Model\bin\Debug\netcoreapp3.1\OllPractice.Model.exe
+D:\Viktor\Projects\OllPractice\OllPractice.Model\bin\Debug\netcoreapp3.1\OllPractice.Model.deps.json
+D:\Viktor\Projects\OllPractice\OllPractice.Model\bin\Debug\netcoreapp3.1\OllPractice.Model.runtimeconfig.json
+D:\Viktor\Projects\OllPractice\OllPractice.Model\bin\Debug\netcoreapp3.1\OllPractice.Model.runtimeconfig.dev.json
+D:\Viktor\Projects\OllPractice\OllPractice.Model\bin\Debug\netcoreapp3.1\OllPractice.Model.dll
+D:\Viktor\Projects\OllPractice\OllPractice.Model\bin\Debug\netcoreapp3.1\OllPractice.Model.pdb
+D:\Viktor\Projects\OllPractice\OllPractice.Model\obj\Debug\netcoreapp3.1\OllPractice.Model.csprojAssemblyReference.cache
+D:\Viktor\Projects\OllPractice\OllPractice.Model\obj\Debug\netcoreapp3.1\OllPractice.Model.AssemblyInfoInputs.cache
+D:\Viktor\Projects\OllPractice\OllPractice.Model\obj\Debug\netcoreapp3.1\OllPractice.Model.AssemblyInfo.cs
+D:\Viktor\Projects\OllPractice\OllPractice.Model\obj\Debug\netcoreapp3.1\OllPractice.Model.csproj.CoreCompileInputs.cache
+D:\Viktor\Projects\OllPractice\OllPractice.Model\obj\Debug\netcoreapp3.1\OllPractice.Model.dll
+D:\Viktor\Projects\OllPractice\OllPractice.Model\obj\Debug\netcoreapp3.1\OllPractice.Model.pdb
+D:\Viktor\Projects\OllPractice\OllPractice.Model\obj\Debug\netcoreapp3.1\OllPractice.Model.genruntimeconfig.cache
