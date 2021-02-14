@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Config;
 using TMPro;
@@ -14,18 +15,20 @@ namespace Scanner
         private bool _isSubscribed;
         [SerializeField] private TextMeshProUGUI subscribeText;
         [SerializeField] private TMP_Dropdown _dropdown;
+        private List<string> _dropdownIds;
         private Dictionary<string, Dictionary<string, string>> _devices = new Dictionary<string, Dictionary<string, string>>();
         private string _selectedDeviceId;
 
         private void Start()
         {
             _dropdown.ClearOptions();
+            _dropdownIds = new List<string>();
             _dropdown.onValueChanged.AddListener(OnDropDownSelected);
         }
 
         private void OnDropDownSelected(int arg0)
         {
-            _selectedDeviceId = _dropdown.options[arg0].text;
+            _selectedDeviceId = _dropdownIds[arg0];
         }
 
         public void StartScan()
@@ -57,11 +60,14 @@ namespace Scanner
                         if (res.isConnectableUpdated)
                             _devices[res.id]["isConnectable"] = res.isConnectable.ToString();
                         // consider only devices which have a name and which are connectable
-                        if (_devices[res.id]["name"] != "" && _devices[res.id]["isConnectable"] == "True")
+                        if (_devices[res.id]["name"] != string.Empty && _devices[res.id]["isConnectable"] == "True")
                         {
                             // add new device to list
+                            if (_dropdownIds.Any(id => id == res.id)) continue;
                             var newDeviceOption = new TMP_Dropdown.OptionData(_devices[res.id]["name"]);
+                            _dropdownIds.Add(res.id);
                             _dropdown.options.Add(newDeviceOption);
+
                         }
                     }
                     else if (status == BleApi.ScanStatus.FINISHED)
@@ -86,9 +92,9 @@ namespace Scanner
             _isSubscribed = true;
         }
 
-        public void Write()
+        public void Write(string writeData)
         {
-            var payload = Encoding.ASCII.GetBytes("3");
+            var payload = Encoding.ASCII.GetBytes(writeData);
             var data = new BleApi.BLEData
             {
                 buf = new byte[512],
