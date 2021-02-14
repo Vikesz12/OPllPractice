@@ -19,9 +19,11 @@ namespace Scanner
         private List<string> _dropdownIds;
         private Dictionary<string, Dictionary<string, string>> _devices = new Dictionary<string, Dictionary<string, string>>();
         private string _selectedDeviceId;
+        private NotificationParser _notificationParser;
 
         private void Start()
         {
+            _notificationParser = new NotificationParser();
             _dropdown.ClearOptions();
             _dropdownIds = new List<string>();
             _dropdown.onValueChanged.AddListener(OnDropDownSelected);
@@ -80,11 +82,9 @@ namespace Scanner
             }
             if (_isSubscribed)
             {
-                var notificationParser = new NotificationParser();
                 while (BleApi.PollData(out var res, false))
                 {
-                    subscribeText.text = notificationParser.ParseNotification(res.buf);
-                    // subscribeText.text = Encoding.ASCII.GetString(res.buf, 0, res.size);
+                    subscribeText.text = _notificationParser.ParseNotification(res.buf);
                 }
             }
         }
