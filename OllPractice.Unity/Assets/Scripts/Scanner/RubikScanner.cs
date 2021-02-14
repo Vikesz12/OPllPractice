@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Config;
+using Parser;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -67,7 +68,8 @@ namespace Scanner
                             var newDeviceOption = new TMP_Dropdown.OptionData(_devices[res.id]["name"]);
                             _dropdownIds.Add(res.id);
                             _dropdown.options.Add(newDeviceOption);
-
+                            _dropdown.RefreshShownValue();
+                            if (_dropdownIds.Count == 1) _selectedDeviceId = _dropdownIds[0];
                         }
                     }
                     else if (status == BleApi.ScanStatus.FINISHED)
@@ -78,9 +80,10 @@ namespace Scanner
             }
             if (_isSubscribed)
             {
+                var notificationParser = new NotificationParser();
                 while (BleApi.PollData(out var res, false))
                 {
-                    subscribeText.text = BitConverter.ToString(res.buf, 0, res.size);
+                    subscribeText.text = notificationParser.ParseNotification(res.buf);
                     // subscribeText.text = Encoding.ASCII.GetString(res.buf, 0, res.size);
                 }
             }
@@ -90,6 +93,7 @@ namespace Scanner
             // no error code available in non-blocking mode
             BleApi.SubscribeCharacteristic(_selectedDeviceId, RubikBleConfig.serviceUuid, RubikBleConfig.readCharacteristicUuid, false);
             _isSubscribed = true;
+            Debug.Log($"connected to {_selectedDeviceId}");
         }
 
         public void Write(string writeData)
