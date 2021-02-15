@@ -8,72 +8,66 @@ namespace Parser
 {
     public class NotificationParser
     {
-        private readonly Cube _cube;
-
-        public NotificationParser()
-        {
-            _cube = new Cube();
-        }
-        public string ParseNotification(byte[] notification)
+        public void ParseNotification(byte[] notification, Cube cube)
         {
             var messageType = notification[2];
 
             switch (messageType)
             {
                 case 1:
-                    return ParseFaceRotation(notification);
+                    ParseFaceRotation(notification, cube);
+                    break;
                 case 2:
-                    return ParseState(notification);
+                    ParseState(notification, cube);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(notification), "notification type unknown");
             }
         }
 
-        private string ParseFaceRotation(byte[] notification)
+        private void ParseFaceRotation(byte[] notification, Cube cube)
         {
             switch (notification[3])
             {
                 case 0:
-                    _cube.B();
+                    cube.B();
                     break;
                 case 1:
-                    _cube.BPrime();
+                    cube.BPrime();
                     break;
                 case 2:
-                    _cube.F();
+                    cube.F();
                     break;
                 case 3:
-                    _cube.FPrime();
+                    cube.FPrime();
                     break;
                 case 4:
-                    _cube.U();
+                    cube.U();
                     break;
                 case 5:
-                    _cube.UPrime();
+                    cube.UPrime();
                     break;
                 case 6:
-                    _cube.D();
+                    cube.D();
                     break;
                 case 7:
-                    _cube.DPrime();
+                    cube.DPrime();
                     break;
                 case 8:
-                    _cube.R();
+                    cube.R();
                     break;
                 case 9:
-                    _cube.RPrime();
+                    cube.RPrime();
                     break;
                 case 10:
-                    _cube.L();
+                    cube.L();
                     break;
                 case 11:
-                    _cube.LPrime();
+                    cube.LPrime();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(notification), "rotation unknown");
             }
-
-            return _cube.PrintCubeState();
         }
         private static RubikColor ParseNotificationColor(byte col)
         {
@@ -96,7 +90,7 @@ namespace Parser
             }
         }
 
-        private string ParseState(byte[] notification)
+        private void ParseState(byte[] notification, Cube cube)
         {
             var startIndex = 3;
             var faces = new Face[6];
@@ -128,8 +122,8 @@ namespace Parser
             faces[3].Rotate(Rotation.TWO);
             faces[4].Rotate(Rotation.TWO);
             faces[5].Rotate(Rotation.ONE);
-            _cube.LoadState(faces);
-            return _cube.PrintCubeState();
+
+            cube.LoadState(faces);
         }
 
 

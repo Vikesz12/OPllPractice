@@ -10,20 +10,20 @@ using UnityEngine.UI;
 
 namespace Scanner
 {
+    [RequireComponent(typeof(RubikVisualizer))]    
     public class RubikScanner : MonoBehaviour
     {
         private bool _isScanningDevices;
         private bool _isSubscribed;
-        [SerializeField] private TextMeshProUGUI subscribeText;
         [SerializeField] private TMP_Dropdown _dropdown;
         private List<string> _dropdownIds;
         private Dictionary<string, Dictionary<string, string>> _devices = new Dictionary<string, Dictionary<string, string>>();
         private string _selectedDeviceId;
-        private NotificationParser _notificationParser;
+        private RubikVisualizer _rubikVisualizer;
 
         private void Start()
         {
-            _notificationParser = new NotificationParser();
+            _rubikVisualizer = GetComponent<RubikVisualizer>();
             _dropdown.ClearOptions();
             _dropdownIds = new List<string>();
             _dropdown.onValueChanged.AddListener(OnDropDownSelected);
@@ -84,7 +84,7 @@ namespace Scanner
             {
                 while (BleApi.PollData(out var res, false))
                 {
-                    subscribeText.text = _notificationParser.ParseNotification(res.buf);
+                   _rubikVisualizer.ProcessMessage(res.buf);
                 }
             }
         }
