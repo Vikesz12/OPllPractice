@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Model;
 
-namespace OllPractice.Model.Model
+namespace Model
 {
     public class Face
     {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using OllPractice.Model.Model;
 
 namespace Model
 {

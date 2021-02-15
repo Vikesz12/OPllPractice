@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using Model;
-using OllPractice.Model.Model;
 using UnityEngine;
 
 namespace Parser
 {
     public class NotificationParser
     {
-        public void ParseNotification(byte[] notification, Cube cube)
+        public void ParseNotification(byte[] notification, Cube cube, RubikVisualizer rubikVisualizer)
         {
             var messageType = notification[2];
 
             switch (messageType)
             {
                 case 1:
-                    ParseFaceRotation(notification, cube);
+                    ParseFaceRotation(notification, cube, rubikVisualizer);
                     break;
                 case 2:
                     ParseState(notification, cube);
@@ -25,7 +24,7 @@ namespace Parser
             }
         }
 
-        private void ParseFaceRotation(byte[] notification, Cube cube)
+        private void ParseFaceRotation(byte[] notification, Cube cube, RubikVisualizer rubikVisualizer)
         {
             switch (notification[3])
             {
@@ -43,6 +42,7 @@ namespace Parser
                     break;
                 case 4:
                     cube.U();
+                    rubikVisualizer.U();
                     break;
                 case 5:
                     cube.UPrime();

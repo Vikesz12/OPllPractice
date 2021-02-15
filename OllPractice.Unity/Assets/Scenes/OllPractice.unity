@@ -241,7 +241,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1153909081}
         m_TargetAssemblyTypeName: Scanner.RubikScanner, OllPractice
         m_MethodName: StartScan
         m_Mode: 1
@@ -1240,7 +1240,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1153909081}
         m_TargetAssemblyTypeName: Scanner.RubikScanner, OllPractice
         m_MethodName: Subscribe
         m_Mode: 1
@@ -1341,7 +1341,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 45.7
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1366,13 +1366,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.05643127, y: -0.15549044, z: 0.00889745, w: 0.9861841}
+  m_LocalPosition: {x: 1.03, y: 0.457, z: -3.076}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 6.55, y: -17.92, z: 0}
 --- !u!1 &1027633965
 GameObject:
   m_ObjectHideFlags: 0
@@ -1455,7 +1455,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1153909081}
         m_TargetAssemblyTypeName: Scanner.RubikScanner, OllPractice
         m_MethodName: Write
         m_Mode: 5
@@ -1751,6 +1751,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1086379408}
   m_CullTransparentMesh: 0
+--- !u!114 &1153909081 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5263422550725260298, guid: cc7c37e854c2832499e9a0ff6afc69cd, type: 3}
+  m_PrefabInstance: {fileID: 868229523}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82acdcec4281435b8b10bf9c9662524c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1198705656
 GameObject:
   m_ObjectHideFlags: 0
