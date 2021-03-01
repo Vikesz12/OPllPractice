@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Model;
 using RubikVisualizers;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace Parser
 {
     public class NotificationParser
     {
-        public void ParseNotification(byte[] notification, Cube cube, RubikVisualizer rubikVisualizer)
+        public void ParseNotification(byte[] notification, short dataSize, Cube cube, RubikVisualizer rubikVisualizer)
         {
             var messageType = notification[2];
 
@@ -18,7 +19,7 @@ namespace Parser
                     ParseFaceRotation(notification, cube, rubikVisualizer);
                     break;
                 case 2:
-                    ParseState(notification, cube, rubikVisualizer);
+                    ParseState(notification, dataSize, cube, rubikVisualizer);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(notification), "notification type unknown");
@@ -102,7 +103,7 @@ namespace Parser
             }
         }
 
-        private void ParseState(byte[] notification, Cube cube, RubikVisualizer rubikVisualizer)
+        private void ParseState(byte[] notification, short dataSize, Cube cube, RubikVisualizer rubikVisualizer)
         {
             var startIndex = 3;
             var faces = new Face[6];
@@ -127,6 +128,13 @@ namespace Parser
                 var enumInt = (int)faceModelColor;
                 faces[enumInt] = new Face(faceColors);
             }
+
+            faces[0].Rotate(Rotation.ONE);
+            faces[1].Rotate(Rotation.TWO);
+            faces[2].Rotate(Rotation.TWO);
+            faces[3].Rotate(Rotation.TWO);
+            faces[4].Rotate(Rotation.TWO);
+            faces[5].Rotate(Rotation.ONE);
 
             cube.LoadState(faces);
             rubikVisualizer.LoadState(faces);

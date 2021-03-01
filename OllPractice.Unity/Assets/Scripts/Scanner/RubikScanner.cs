@@ -82,7 +82,7 @@ namespace Scanner
             {
                 while (BleApi.PollData(out var res, false))
                 {
-                    _rubikVisualizer.ProcessMessage(res.buf);
+                    _rubikVisualizer.ProcessMessage(res.buf, res.size);
                 }
             }
         }
