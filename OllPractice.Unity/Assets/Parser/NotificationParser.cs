@@ -18,7 +18,7 @@ namespace Parser
                     ParseFaceRotation(notification, cube, rubikVisualizer);
                     break;
                 case 2:
-                    ParseState(notification, cube);
+                    ParseState(notification, cube, rubikVisualizer);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(notification), "notification type unknown");
@@ -102,7 +102,7 @@ namespace Parser
             }
         }
 
-        private void ParseState(byte[] notification, Cube cube)
+        private void ParseState(byte[] notification, Cube cube, RubikVisualizer rubikVisualizer)
         {
             var startIndex = 3;
             var faces = new Face[6];
@@ -128,14 +128,8 @@ namespace Parser
                 faces[enumInt] = new Face(faceColors);
             }
 
-            faces[0].Rotate(Rotation.ONE);
-            faces[1].Rotate(Rotation.TWO);
-            faces[2].Rotate(Rotation.TWO);
-            faces[3].Rotate(Rotation.TWO);
-            faces[4].Rotate(Rotation.TWO);
-            faces[5].Rotate(Rotation.ONE);
-
             cube.LoadState(faces);
+            rubikVisualizer.LoadState(faces);
         }
 
 

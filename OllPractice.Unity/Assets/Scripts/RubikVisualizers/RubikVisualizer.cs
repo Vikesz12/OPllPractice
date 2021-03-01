@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using Model;
 using Parser;
+using Services;
 using UnityEngine;
 using View;
 
- namespace RubikVisualizers
+namespace RubikVisualizers
 {
     public class RubikVisualizer : MonoBehaviour
     {
@@ -19,14 +20,14 @@ using View;
             _faces = new List<FaceView>();
             for (var i = 0; i < 6; i++)
             {
-                var newFace = new FaceView(transform.GetChild(i).gameObject);
+                var center = transform.GetChild(i).gameObject;
+                center.GetComponent<RubikCenter>().SetFaceColor(RubikColorMaterialService.GetRubikColorMaterial((RubikColor)i));
+                var newFace = new FaceView(center);
                 _faces.Add(newFace);
             }
-
-            SetFaceReferences();
         }
 
-        private void SetFaceReferences()
+        public void LoadState(Face[] faces)
         {
             for (var i = 0; i < 4; i++)
             {
@@ -111,11 +112,11 @@ using View;
 
         public void B() => RotateSide(4, 0, 2, 5, 3, Rotation.ONE);
 
-        public void BPrime() => RotateSide(4,0,3,5,2, Rotation.PRIME);
+        public void BPrime() => RotateSide(4, 0, 3, 5, 2, Rotation.PRIME);
 
-        public void D() => RotateSide(5,1,3,4,2, Rotation.ONE);
+        public void D() => RotateSide(5, 1, 3, 4, 2, Rotation.ONE);
 
-        public void DPrime() => RotateSide(5,1,2,4,3, Rotation.PRIME);
+        public void DPrime() => RotateSide(5, 1, 2, 4, 3, Rotation.PRIME);
 
         private void RotateSide(int sideToRotate, int side1, int side2, int side3, int side4, Rotation rotation)
         {

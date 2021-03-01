@@ -1,18 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class RubikCenter : MonoBehaviour
+namespace RubikVisualizers
 {
-    // Start is called before the first frame update
-    void Start()
+    public class RubikCenter : MonoBehaviour
     {
+        [SerializeField] private MeshRenderer faceMeshRenderer;
+        private void Start()
+        {
         
-    }
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public void SetFaceColor(Material materialToSet)
+        {
+            faceMeshRenderer.material = materialToSet;
+        }
     }
 }
