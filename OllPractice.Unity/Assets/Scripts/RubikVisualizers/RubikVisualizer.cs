@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Model;
 using Parser;
+using Scanner;
 using Services;
 using UnityEngine;
 using View;
@@ -12,10 +14,12 @@ namespace RubikVisualizers
         private NotificationParser _notificationParse;
         private Cube _cube;
         private List<FaceView> _faces;
+        private RubikScanner _rubikScanner;
 
         public void Start()
         {
             _notificationParse = new NotificationParser();
+            _rubikScanner = GetComponent<RubikScanner>();
             _cube = new Cube();
             _faces = new List<FaceView>();
             for (var i = 0; i < 6; i++)
@@ -25,68 +29,158 @@ namespace RubikVisualizers
                 var newFace = new FaceView(center);
                 _faces.Add(newFace);
             }
+
+            var faces = new Face[6];
+            for (var i = 0; i < 6; i++)
+            {
+                var rubikColors = Enumerable.Repeat((RubikColor)i, 8);
+                faces[i] = new Face(rubikColors);
+            }
+            LoadState(faces);
+
         }
 
         public void LoadState(Face[] faces)
         {
+            //top edges
             for (var i = 0; i < 4; i++)
             {
                 const int startIndex = 6;
                 var whiteEdge = transform.GetChild(startIndex + i).gameObject;
+                var rubikEdge = whiteEdge.GetComponent<RubikEdge>();
+                rubikEdge.SetTopFaceColor(RubikColorMaterialService.GetRubikColorMaterial(faces[0].GetColorAt(1 + i * 2)));
+                rubikEdge.SetFrontFaceColor(RubikColorMaterialService.GetRubikColorMaterial(faces[i + 1].GetColorAt(2)));
                 _faces[0].AddCube(whiteEdge);
                 _faces[i + 1].AddCube(whiteEdge);
             }
 
+            //middle edges
             for (var i = 0; i < 4; i++)
             {
                 const int startIndex = 10;
-                var middleEdges = transform.GetChild(startIndex + i).gameObject;
-                _faces[i + 1].AddCube(middleEdges);
+                var middleEdge = transform.GetChild(startIndex + i).gameObject;
+                var rubikEdge = middleEdge.GetComponent<RubikEdge>();
+                _faces[i + 1].AddCube(middleEdge);
                 switch (i)
                 {
                     case 0:
-                        _faces[3].AddCube(middleEdges);
+                        _faces[3].AddCube(middleEdge);
+                        rubikEdge.SetTopFaceColor(RubikColorMaterialService.GetRubikColorMaterial(faces[1].GetColorAt(4)));
+                        rubikEdge.SetFrontFaceColor(RubikColorMaterialService.GetRubikColorMaterial(faces[3].GetColorAt(7)));
                         break;
 
                     case 1:
-                        _faces[1].AddCube(middleEdges);
+                        _faces[1].AddCube(middleEdge);
+                        rubikEdge.SetTopFaceColor(RubikColorMaterialService.GetRubikColorMaterial(faces[1].GetColorAt(7)));
+                        rubikEdge.SetFrontFaceColor(RubikColorMaterialService.GetRubikColorMaterial(faces[2].GetColorAt(3)));
                         break;
 
                     case 2:
-                        _faces[4].AddCube(middleEdges);
+                        _faces[4].AddCube(middleEdge);
+                        rubikEdge.SetTopFaceColor(RubikColorMaterialService.GetRubikColorMaterial(faces[4].GetColorAt(7)));
+                        rubikEdge.SetFrontFaceColor(RubikColorMaterialService.GetRubikColorMaterial(faces[3].GetColorAt(3)));
                         break;
 
                     case 3:
-                        _faces[2].AddCube(middleEdges);
+                        _faces[2].AddCube(middleEdge);
+                        rubikEdge.SetTopFaceColor(RubikColorMaterialService.GetRubikColorMaterial(faces[4].GetColorAt(3)));
+                        rubikEdge.SetFrontFaceColor(RubikColorMaterialService.GetRubikColorMaterial(faces[2].GetColorAt(7)));
                         break;
                 }
             }
 
+            //bottom edges
             for (var i = 0; i < 4; i++)
             {
                 const int startIndex = 14;
                 var yellowEdge = transform.GetChild(startIndex + i).gameObject;
+                var rubikEdge = yellowEdge.GetComponent<RubikEdge>();
+                rubikEdge.SetTopFaceColor(RubikColorMaterialService.GetRubikColorMaterial(faces[5].GetColorAt(1 + i * 2)));
+                rubikEdge.SetFrontFaceColor(RubikColorMaterialService.GetRubikColorMaterial(faces[1 + i].GetColorAt(6)));
                 _faces[5].AddCube(yellowEdge);
                 _faces[i + 1].AddCube(yellowEdge);
 
             }
 
+            //top corners
             for (var i = 0; i < 4; i++)
             {
                 const int startIndex = 18;
                 var topCorners = transform.GetChild(startIndex + i).gameObject;
+                var rubikEdge = topCorners.GetComponent<RubikCorner>();
+                rubikEdge.SetLeftFaceColor(RubikColorMaterialService.GetRubikColorMaterial(faces[i+1].GetColorAt(1)));
+                switch (i)
+                {
+                    case 0:
+                        rubikEdge.SetTopFaceColor(
+                            RubikColorMaterialService.GetRubikColorMaterial(faces[0].GetColorAt(6)));
+                        rubikEdge.SetFrontFaceColor(
+                            RubikColorMaterialService.GetRubikColorMaterial(faces[2].GetColorAt(3)));
+                        break;
+                    case 1:
+                        rubikEdge.SetTopFaceColor(
+                            RubikColorMaterialService.GetRubikColorMaterial(faces[0].GetColorAt(0)));
+                        rubikEdge.SetFrontFaceColor(
+                            RubikColorMaterialService.GetRubikColorMaterial(faces[4].GetColorAt(3)));
+                        break;
+                    case 2:
+                        rubikEdge.SetTopFaceColor(
+                            RubikColorMaterialService.GetRubikColorMaterial(faces[0].GetColorAt(4)));
+                        rubikEdge.SetFrontFaceColor(
+                            RubikColorMaterialService.GetRubikColorMaterial(faces[1].GetColorAt(3)));
+                        break;
+                    case 3:
+                        rubikEdge.SetTopFaceColor(
+                            RubikColorMaterialService.GetRubikColorMaterial(faces[0].GetColorAt(2)));
+                        rubikEdge.SetFrontFaceColor(
+                            RubikColorMaterialService.GetRubikColorMaterial(faces[3].GetColorAt(3)));
+                        break;
+                }
+
                 _faces[0].AddCube(topCorners);
                 _faces[i > 1 ? 4 : 1].AddCube(topCorners);
                 _faces[i % 2 == 0 ? 2 : 3].AddCube(topCorners);
             }
 
+            //bottom corners
             for (var i = 0; i < 4; i++)
             {
                 const int startIndex = 22;
-                var bottomCorners = transform.GetChild(startIndex + i).gameObject;
-                _faces[5].AddCube(bottomCorners);
-                _faces[i > 1 ? 4 : 1].AddCube(bottomCorners);
-                _faces[i % 2 == 0 ? 2 : 3].AddCube(bottomCorners);
+                var bottomCorner = transform.GetChild(startIndex + i).gameObject;
+
+                var rubikEdge = bottomCorner.GetComponent<RubikCorner>();
+                rubikEdge.SetLeftFaceColor(RubikColorMaterialService.GetRubikColorMaterial(faces[i + 1].GetColorAt(1)));
+                switch (i)
+                {
+                    case 0:
+                        rubikEdge.SetTopFaceColor(
+                            RubikColorMaterialService.GetRubikColorMaterial(faces[5].GetColorAt(6)));
+                        rubikEdge.SetFrontFaceColor(
+                            RubikColorMaterialService.GetRubikColorMaterial(faces[3].GetColorAt(3)));
+                        break;
+                    case 1:
+                        rubikEdge.SetTopFaceColor(
+                            RubikColorMaterialService.GetRubikColorMaterial(faces[5].GetColorAt(0)));
+                        rubikEdge.SetFrontFaceColor(
+                            RubikColorMaterialService.GetRubikColorMaterial(faces[1].GetColorAt(3)));
+                        break;
+                    case 2:
+                        rubikEdge.SetTopFaceColor(
+                            RubikColorMaterialService.GetRubikColorMaterial(faces[5].GetColorAt(4)));
+                        rubikEdge.SetFrontFaceColor(
+                            RubikColorMaterialService.GetRubikColorMaterial(faces[4].GetColorAt(3)));
+                        break;
+                    case 3:
+                        rubikEdge.SetTopFaceColor(
+                            RubikColorMaterialService.GetRubikColorMaterial(faces[5].GetColorAt(2)));
+                        rubikEdge.SetFrontFaceColor(
+                            RubikColorMaterialService.GetRubikColorMaterial(faces[2].GetColorAt(3)));
+                        break;
+                }
+
+                _faces[5].AddCube(bottomCorner);
+                _faces[i > 1 ? 4 : 1].AddCube(bottomCorner);
+                _faces[i % 2 == 0 ? 2 : 3].AddCube(bottomCorner);
             }
         }
 

@@ -130,6 +130,7 @@ namespace Parser
 
             cube.LoadState(faces);
             rubikVisualizer.LoadState(faces);
+            Debug.Log("State parsed");
         }
 
 

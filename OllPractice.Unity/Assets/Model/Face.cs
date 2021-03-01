@@ -69,6 +69,12 @@ namespace Model
             return oldSquares;
         }
 
+        public RubikColor GetColorAt(int index)
+        {
+            var bytes = BitConverter.GetBytes(squares);
+            return (RubikColor) bytes[index];
+        }
+
         public string PrintSide()
         {
             var bytes = BitConverter.GetBytes(squares);

@@ -44,6 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 982b7f8f64fe27c43a94b27c702a2b54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  topFaceMeshRenderer: {fileID: 2086118526400363884}
+  leftFaceMeshRenderer: {fileID: 3439105842729365002}
+  frontFaceMeshRenderer: {fileID: 491735011482215069}
 --- !u!1001 &791359809130935809
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -97,10 +100,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5df9a911ff92aee4b9809edbf1f7e07c, type: 3}
       propertyPath: m_Name
-      value: cornerFace2
+      value: TopFace
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5df9a911ff92aee4b9809edbf1f7e07c, type: 3}
+--- !u!23 &2086118526400363884 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7635826562936255635, guid: 5df9a911ff92aee4b9809edbf1f7e07c, type: 3}
+  m_PrefabInstance: {fileID: 791359809130935809}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1214536288296004080
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -154,10 +162,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5df9a911ff92aee4b9809edbf1f7e07c, type: 3}
       propertyPath: m_Name
-      value: cornerFace1 (1)
+      value: FrontFace
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5df9a911ff92aee4b9809edbf1f7e07c, type: 3}
+--- !u!23 &491735011482215069 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7635826562936255635, guid: 5df9a911ff92aee4b9809edbf1f7e07c, type: 3}
+  m_PrefabInstance: {fileID: 1214536288296004080}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4157438974751401319
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -211,10 +224,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5df9a911ff92aee4b9809edbf1f7e07c, type: 3}
       propertyPath: m_Name
-      value: cornerFace1
+      value: LeftFace
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5df9a911ff92aee4b9809edbf1f7e07c, type: 3}
+--- !u!23 &3439105842729365002 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7635826562936255635, guid: 5df9a911ff92aee4b9809edbf1f7e07c, type: 3}
+  m_PrefabInstance: {fileID: 4157438974751401319}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5739426225623681553
 PrefabInstance:
   m_ObjectHideFlags: 0
