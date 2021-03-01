@@ -1,18 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class RubikCorner : MonoBehaviour
+namespace RubikVisualizers
 {
-    // Start is called before the first frame update
-    void Start()
+    public class RubikCorner : MonoBehaviour
     {
-        
-    }
+        [SerializeField] private MeshRenderer topFaceMeshRenderer;
+        [SerializeField] private MeshRenderer leftFaceMeshRenderer;
+        [SerializeField] private MeshRenderer frontFaceMeshRenderer;
+        public void SetTopFaceColor(Material materialToSet)
+        {
+            topFaceMeshRenderer.material = materialToSet;
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public void SetLeftFaceColor(Material materialToSet)
+        {
+            leftFaceMeshRenderer.material = materialToSet;
+        }
+
+        public void SetFrontFaceColor(Material materialToSet)
+        {
+            frontFaceMeshRenderer.material = materialToSet;
+        }
     }
 }
