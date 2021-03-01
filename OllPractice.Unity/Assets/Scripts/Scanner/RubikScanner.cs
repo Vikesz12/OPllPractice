@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Config;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Config;
-using Parser;
+using RubikVisualizers;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Scanner
 {
-    [RequireComponent(typeof(RubikVisualizer))]    
+    [RequireComponent(typeof(RubikVisualizer))]
     public class RubikScanner : MonoBehaviour
     {
         private bool _isScanningDevices;
@@ -84,7 +82,7 @@ namespace Scanner
             {
                 while (BleApi.PollData(out var res, false))
                 {
-                   _rubikVisualizer.ProcessMessage(res.buf);
+                    _rubikVisualizer.ProcessMessage(res.buf);
                 }
             }
         }
@@ -102,7 +100,7 @@ namespace Scanner
             var data = new BleApi.BLEData
             {
                 buf = new byte[512],
-                size = (short) payload.Length,
+                size = (short)payload.Length,
                 deviceId = _selectedDeviceId,
                 serviceUuid = RubikBleConfig.serviceUuid,
                 characteristicUuid = RubikBleConfig.writeCharacteristicUuid
