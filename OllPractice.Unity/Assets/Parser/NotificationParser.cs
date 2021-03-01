@@ -30,15 +30,19 @@ namespace Parser
             {
                 case 0:
                     cube.B();
+                    rubikVisualizer.B();
                     break;
                 case 1:
                     cube.BPrime();
+                    rubikVisualizer.BPrime();
                     break;
                 case 2:
                     cube.F();
+                    rubikVisualizer.F();
                     break;
                 case 3:
                     cube.FPrime();
+                    rubikVisualizer.FPrime();
                     break;
                 case 4:
                     cube.U();
@@ -46,24 +50,31 @@ namespace Parser
                     break;
                 case 5:
                     cube.UPrime();
+                    rubikVisualizer.UPrime();
                     break;
                 case 6:
                     cube.D();
+                    rubikVisualizer.D();
                     break;
                 case 7:
                     cube.DPrime();
+                    rubikVisualizer.DPrime();
                     break;
                 case 8:
                     cube.R();
+                    rubikVisualizer.R();
                     break;
                 case 9:
                     cube.RPrime();
+                    rubikVisualizer.RPrime();
                     break;
                 case 10:
                     cube.L();
+                    rubikVisualizer.L();
                     break;
                 case 11:
                     cube.LPrime();
+                    rubikVisualizer.LPrime();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(notification), "rotation unknown");
