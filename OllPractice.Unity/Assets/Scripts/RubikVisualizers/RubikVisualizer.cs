@@ -267,17 +267,22 @@ namespace RubikVisualizers
             _animations.Enqueue(
                 new KeyValuePair<FaceView, IEnumerator>(
                     _faces[sideToRotate],
-                    _faces[sideToRotate].RotateFace(rotation, this, () => _isAnimating = false)));
+                    _faces[sideToRotate].RotateCoroutine(rotation, this, () =>
+                    {
 
-            var firstSideCubes = _faces[side1].RemoveCubes(_faces[sideToRotate].Cubes);
-            var secondSideCubes = _faces[side2].RemoveCubes(_faces[sideToRotate].Cubes);
-            var thirdSideCubes = _faces[side3].RemoveCubes(_faces[sideToRotate].Cubes);
-            var redSideCubes = _faces[side4].RemoveCubes(_faces[sideToRotate].Cubes);
+                        var firstSideCubes = _faces[side1].RemoveCubes(_faces[sideToRotate].Cubes);
+                        var secondSideCubes = _faces[side2].RemoveCubes(_faces[sideToRotate].Cubes);
+                        var thirdSideCubes = _faces[side3].RemoveCubes(_faces[sideToRotate].Cubes);
+                        var redSideCubes = _faces[side4].RemoveCubes(_faces[sideToRotate].Cubes);
 
-            _faces[side2].AddCubes(firstSideCubes);
-            _faces[side3].AddCubes(secondSideCubes);
-            _faces[side4].AddCubes(thirdSideCubes);
-            _faces[side1].AddCubes(redSideCubes);
+                        _faces[side2].AddCubes(firstSideCubes);
+                        _faces[side3].AddCubes(secondSideCubes);
+                        _faces[side4].AddCubes(thirdSideCubes);
+                        _faces[side1].AddCubes(redSideCubes);
+
+                        _isAnimating = false;
+                    })));
+
         }
 
         public void Update()
@@ -295,7 +300,7 @@ namespace RubikVisualizers
                 {
                     _currentAnimation = _animations.Dequeue();
                 }
-                _currentAnimation.Key.FinishCoroutine(this);
+                _currentAnimation.Key.SkipCoroutine(this);
             }
             else if (!_isAnimating)
             {

@@ -1,6 +1,6 @@
-﻿using System;
-using Model;
+﻿using Model;
 using RubikVisualizers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,12 +26,7 @@ namespace View
             Cubes.Add(cube);
         }
 
-        public IEnumerator RotateFace(Rotation rot, RubikVisualizer visualizer, Action coroutineCallback)
-        {
-            return RotateCoroutine(rot, visualizer, coroutineCallback);
-        }
-
-        IEnumerator RotateCoroutine(Rotation rot, RubikVisualizer rubikVisualizer, Action callback)
+        public IEnumerator RotateCoroutine(Rotation rot, RubikVisualizer rubikVisualizer, Action callback)
         {
             foreach (var cube in Cubes)
             {
@@ -39,22 +34,23 @@ namespace View
             }
 
             _currentTime = 0.0f;
-             _angleToRotate = rot == Rotation.ONE ? 90f : -90f;
+            _angleToRotate = rot == Rotation.ONE ? 90f : -90f;
             _timeToRotate = 0.25f;
-            while (_currentTime < _timeToRotate)
+            while (_currentTime <= _timeToRotate)
             {
                 _currentTime += Time.deltaTime;
-                _center.transform.RotateAround(_center.transform.position, _center.transform.up, _angleToRotate * Time.deltaTime/_timeToRotate);
+                _center.transform.RotateAround(_center.transform.position, _center.transform.up, _angleToRotate * (Time.deltaTime / _timeToRotate));
                 yield return null;
             }
+            Debug.Log($"{_center.transform.eulerAngles} angles after rotation");
             callback.Invoke();
         }
 
-        
-        public void FinishCoroutine(RubikVisualizer visualizer)
+        public void SkipCoroutine(RubikVisualizer visualizer)
         {
-            _center.transform.RotateAround(_center.transform.position, _center.transform.up, _angleToRotate * (_timeToRotate-_currentTime) / _timeToRotate);
+            _center.transform.RotateAround(_center.transform.position, _center.transform.up, _angleToRotate * (_timeToRotate - _currentTime) / _timeToRotate);
         }
+
         public IEnumerable<GameObject> RemoveCubes(IEnumerable<GameObject> cubes)
         {
             var cubesToRemove = cubes.Where(c => Cubes.Contains(c)).ToList();
