@@ -2,6 +2,7 @@
 using Parser;
 using Scanner;
 using Services;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,16 +17,16 @@ namespace RubikVisualizers
         private Cube _cube;
         private RubikScanner _rubikScanner;
         private List<FaceView> _faces;
-        private Queue<KeyValuePair<FaceView, IEnumerator>> _animations;
+        private Queue<KeyValuePair<Action<bool>, IEnumerator>> _animations;
         private bool _isAnimating;
-        private KeyValuePair<FaceView, IEnumerator> _currentAnimation;
+        private KeyValuePair<Action<bool>, IEnumerator> _currentAnimation;
 
         public void Start()
         {
             _notificationParse = new NotificationParser();
             _rubikScanner = GetComponent<RubikScanner>();
             _cube = new Cube();
-            _animations = new Queue<KeyValuePair<FaceView, IEnumerator>>();
+            _animations = new Queue<KeyValuePair<Action<bool>, IEnumerator>>();
             _faces = GetComponentsInChildren<FaceView>().ToList();
             for (var i = 0; i < 6; i++)
             {
@@ -265,11 +266,29 @@ namespace RubikVisualizers
         private void RotateSide(int sideToRotate, int side1, int side2, int side3, int side4, Rotation rotation)
         {
             _animations.Enqueue(
-                new KeyValuePair<FaceView, IEnumerator>(
-                    _faces[sideToRotate],
-                    _faces[sideToRotate].RotateCoroutine(rotation, this, () =>
+                new KeyValuePair<Action<bool>, IEnumerator>(
+                    (skip) =>
+                    {
+                        if (skip)
+                            _faces[sideToRotate].SkipCoroutine();
+
+                        var firstSideCubes = _faces[side1].RemoveCubes(_faces[sideToRotate].Cubes);
+                        var secondSideCubes = _faces[side2].RemoveCubes(_faces[sideToRotate].Cubes);
+                        var thirdSideCubes = _faces[side3].RemoveCubes(_faces[sideToRotate].Cubes);
+                        var redSideCubes = _faces[side4].RemoveCubes(_faces[sideToRotate].Cubes);
+
+                        _faces[side2].AddCubes(firstSideCubes);
+                        _faces[side3].AddCubes(secondSideCubes);
+                        _faces[side4].AddCubes(thirdSideCubes);
+                        _faces[side1].AddCubes(redSideCubes);
+
+                        if (!skip)
+                            _faces[sideToRotate].RotateWithoutAnimation(rotation);
+                    },
+                    _faces[sideToRotate].RotateCoroutine(rotation, () =>
                     {
 
+                        _faces[sideToRotate].SkipCoroutine();
                         var firstSideCubes = _faces[side1].RemoveCubes(_faces[sideToRotate].Cubes);
                         var secondSideCubes = _faces[side2].RemoveCubes(_faces[sideToRotate].Cubes);
                         var thirdSideCubes = _faces[side3].RemoveCubes(_faces[sideToRotate].Cubes);
@@ -295,12 +314,13 @@ namespace RubikVisualizers
                 {
                     StopCoroutine(_currentAnimation.Value);
                     _isAnimating = false;
+                    _currentAnimation.Key.Invoke(true);
                 }
                 else
                 {
                     _currentAnimation = _animations.Dequeue();
+                    _currentAnimation.Key.Invoke(false);
                 }
-                _currentAnimation.Key.SkipCoroutine(this);
             }
             else if (!_isAnimating)
             {

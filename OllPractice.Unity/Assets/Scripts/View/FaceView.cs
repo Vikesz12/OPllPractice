@@ -1,5 +1,4 @@
 ﻿using Model;
-using RubikVisualizers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,12 +25,9 @@ namespace View
             Cubes.Add(cube);
         }
 
-        public IEnumerator RotateCoroutine(Rotation rot, RubikVisualizer rubikVisualizer, Action callback)
+        public IEnumerator RotateCoroutine(Rotation rot, Action callback)
         {
-            foreach (var cube in Cubes)
-            {
-                cube.transform.parent = _center.transform;
-            }
+            SetCubeParents(); 
 
             _currentTime = 0.0f;
             _angleToRotate = rot == Rotation.ONE ? 90f : -90f;
@@ -46,7 +42,21 @@ namespace View
             callback.Invoke();
         }
 
-        public void SkipCoroutine(RubikVisualizer visualizer)
+        private void SetCubeParents()
+        {
+            foreach (var cube in Cubes)
+            {
+                cube.transform.parent = _center.transform;
+            }
+        }
+
+        public void RotateWithoutAnimation(Rotation rot)
+        {
+            SetCubeParents();
+            _center.transform.RotateAround(_center.transform.position, _center.transform.up, rot == Rotation.ONE ? 90 : -90);
+        }
+
+        public void SkipCoroutine()
         {
             _center.transform.RotateAround(_center.transform.position, _center.transform.up, _angleToRotate * (_timeToRotate - _currentTime) / _timeToRotate);
         }
