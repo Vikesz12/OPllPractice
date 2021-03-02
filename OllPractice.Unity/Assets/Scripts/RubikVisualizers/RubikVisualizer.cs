@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Model;
+﻿using Model;
 using Parser;
 using Scanner;
 using Services;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using View;
 
@@ -13,21 +14,24 @@ namespace RubikVisualizers
     {
         private NotificationParser _notificationParse;
         private Cube _cube;
-        private List<FaceView> _faces;
         private RubikScanner _rubikScanner;
+        private List<FaceView> _faces;
+        private Queue<KeyValuePair<FaceView, IEnumerator>> _animations;
+        private bool _isAnimating;
+        private KeyValuePair<FaceView, IEnumerator> _currentAnimation;
 
         public void Start()
         {
             _notificationParse = new NotificationParser();
             _rubikScanner = GetComponent<RubikScanner>();
             _cube = new Cube();
-            _faces = new List<FaceView>();
+            _animations = new Queue<KeyValuePair<FaceView, IEnumerator>>();
+            _faces = GetComponentsInChildren<FaceView>().ToList();
             for (var i = 0; i < 6; i++)
             {
                 var center = transform.GetChild(i).gameObject;
-                center.GetComponent<RubikCenter>().SetFaceColor(RubikColorMaterialService.GetRubikColorMaterial((RubikColor)i));
-                var newFace = new FaceView(center);
-                _faces.Add(newFace);
+                center.GetComponent<RubikCenter>()
+                    .SetFaceColor(RubikColorMaterialService.GetRubikColorMaterial((RubikColor)i));
             }
 
             var faces = new Face[6];
@@ -214,7 +218,7 @@ namespace RubikVisualizers
                         rubikEdge.SetFrontFaceColor(
                             RubikColorMaterialService.GetRubikColorMaterial(faces[4].GetColorAt(6)));
                         _faces[4].AddCube(bottomCorner);
-                        _faces[3].AddCube(bottomCorner); 
+                        _faces[3].AddCube(bottomCorner);
                         break;
                     case 3:
                         rubikEdge.SetTopFaceColor(
@@ -226,7 +230,8 @@ namespace RubikVisualizers
                         break;
                 }
 
-                _faces[5].AddCube(bottomCorner);            }
+                _faces[5].AddCube(bottomCorner);
+            }
         }
 
 
@@ -259,16 +264,45 @@ namespace RubikVisualizers
 
         private void RotateSide(int sideToRotate, int side1, int side2, int side3, int side4, Rotation rotation)
         {
-            _faces[sideToRotate].RotateFace(rotation);
+            _animations.Enqueue(
+                new KeyValuePair<FaceView, IEnumerator>(
+                    _faces[sideToRotate],
+                    _faces[sideToRotate].RotateFace(rotation, this, () => _isAnimating = false)));
+
             var firstSideCubes = _faces[side1].RemoveCubes(_faces[sideToRotate].Cubes);
             var secondSideCubes = _faces[side2].RemoveCubes(_faces[sideToRotate].Cubes);
             var thirdSideCubes = _faces[side3].RemoveCubes(_faces[sideToRotate].Cubes);
             var redSideCubes = _faces[side4].RemoveCubes(_faces[sideToRotate].Cubes);
+
             _faces[side2].AddCubes(firstSideCubes);
             _faces[side3].AddCubes(secondSideCubes);
             _faces[side4].AddCubes(thirdSideCubes);
             _faces[side1].AddCubes(redSideCubes);
-            _faces[sideToRotate].ResetFaceParents(this);
+        }
+
+        public void Update()
+        {
+            if (_animations.Count == 0) return;
+
+            if (_animations.Count > 3)
+            {
+                if (_isAnimating)
+                {
+                    StopCoroutine(_currentAnimation.Value);
+                    _isAnimating = false;
+                }
+                else
+                {
+                    _currentAnimation = _animations.Dequeue();
+                }
+                _currentAnimation.Key.FinishCoroutine(this);
+            }
+            else if (!_isAnimating)
+            {
+                _currentAnimation = _animations.Dequeue();
+                StartCoroutine(_currentAnimation.Value);
+                _isAnimating = true;
+            }
         }
     }
 }
