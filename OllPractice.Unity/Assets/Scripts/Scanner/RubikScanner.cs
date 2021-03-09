@@ -11,9 +11,10 @@ namespace Scanner
     [RequireComponent(typeof(RubikVisualizer))]
     public class RubikScanner : MonoBehaviour
     {
+        [SerializeField] private TMP_Dropdown _dropdown;
+
         private bool _isScanningDevices;
         private bool _isSubscribed;
-        [SerializeField] private TMP_Dropdown _dropdown;
         private List<string> _dropdownIds;
         private Dictionary<string, Dictionary<string, string>> _devices = new Dictionary<string, Dictionary<string, string>>();
         private string _selectedDeviceId;

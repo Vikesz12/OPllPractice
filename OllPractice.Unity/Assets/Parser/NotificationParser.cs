@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using Model;
+﻿using Model;
 using RubikVisualizers;
+using System;
 using UnityEngine;
 
 namespace Parser
@@ -28,58 +26,103 @@ namespace Parser
 
         private void ParseFaceRotation(byte[] notification, Cube cube, RubikVisualizer rubikVisualizer)
         {
-            switch (notification[3])
+            if (notification[1] == 8)
             {
-                case 0:
-                    cube.B();
-                    rubikVisualizer.B();
-                    break;
-                case 1:
-                    cube.BPrime();
-                    rubikVisualizer.BPrime();
-                    break;
-                case 2:
-                    cube.F();
-                    rubikVisualizer.F();
-                    break;
-                case 3:
-                    cube.FPrime();
-                    rubikVisualizer.FPrime();
-                    break;
-                case 4:
-                    cube.U();
-                    rubikVisualizer.U();
-                    break;
-                case 5:
-                    cube.UPrime();
-                    rubikVisualizer.UPrime();
-                    break;
-                case 6:
-                    cube.D();
-                    rubikVisualizer.D();
-                    break;
-                case 7:
-                    cube.DPrime();
-                    rubikVisualizer.DPrime();
-                    break;
-                case 8:
-                    cube.R();
-                    rubikVisualizer.R();
-                    break;
-                case 9:
-                    cube.RPrime();
-                    rubikVisualizer.RPrime();
-                    break;
-                case 10:
-                    cube.L();
-                    rubikVisualizer.L();
-                    break;
-                case 11:
-                    cube.LPrime();
-                    rubikVisualizer.LPrime();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(notification), "rotation unknown");
+                switch (notification[3])
+                {
+                    case 0:
+                        cube.FPrime();
+                        cube.B();
+                        rubikVisualizer.FPrime();
+                        rubikVisualizer.B();
+                        break;
+                    case 1:
+                        cube.F();
+                        cube.BPrime();
+                        rubikVisualizer.F();
+                        rubikVisualizer.BPrime();
+                        break;
+                    case 4:
+                        cube.DPrime();
+                        cube.U();
+                        rubikVisualizer.DPrime();
+                        rubikVisualizer.U();
+                        break;
+                    case 5:
+                        cube.D();
+                        cube.UPrime();
+                        rubikVisualizer.D();
+                        rubikVisualizer.UPrime();
+                        break;
+                    case 8:
+                        cube.R();
+                        cube.LPrime();
+                        rubikVisualizer.R();
+                        rubikVisualizer.LPrime();
+                        break;
+                    case 9:
+                        cube.RPrime();
+                        cube.L();
+                        rubikVisualizer.RPrime();
+                        rubikVisualizer.L();
+                        break;
+                }
+            }
+            else
+            {
+                switch (notification[3])
+                {
+                    case 0:
+                        cube.B();
+                        rubikVisualizer.B();
+                        break;
+                    case 1:
+                        cube.BPrime();
+                        rubikVisualizer.BPrime();
+                        break;
+                    case 2:
+                        cube.F();
+                        rubikVisualizer.F();
+                        break;
+                    case 3:
+                        cube.FPrime();
+                        rubikVisualizer.FPrime();
+                        break;
+                    case 4:
+                        cube.U();
+                        rubikVisualizer.U();
+                        break;
+                    case 5:
+                        cube.UPrime();
+                        rubikVisualizer.UPrime();
+                        break;
+                    case 6:
+                        cube.D();
+                        rubikVisualizer.D();
+                        break;
+                    case 7:
+                        cube.DPrime();
+                        rubikVisualizer.DPrime();
+                        break;
+                    case 8:
+                        cube.R();
+                        rubikVisualizer.R();
+                        break;
+                    case 9:
+                        cube.RPrime();
+                        rubikVisualizer.RPrime();
+                        break;
+                    case 10:
+                        cube.L();
+                        rubikVisualizer.L();
+                        break;
+                    case 11:
+                        cube.LPrime();
+                        rubikVisualizer.LPrime();
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(notification), "rotation unknown");
+                }
             }
         }
         private static RubikColor ParseNotificationColor(byte col)
