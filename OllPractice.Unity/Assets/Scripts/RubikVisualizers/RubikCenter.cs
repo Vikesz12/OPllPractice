@@ -2,10 +2,11 @@
 
 namespace RubikVisualizers
 {
-    public class RubikCenter : MonoBehaviour
+    public class RubikCenter : MonoBehaviour, ISetFaceColor
     {
         [SerializeField] private MeshRenderer faceMeshRenderer;
-        public void SetFaceColor(Material materialToSet)
+
+        public void SetFaceColorForFacing(Vector3 facing, Material materialToSet)
         {
             faceMeshRenderer.material = materialToSet;
         }

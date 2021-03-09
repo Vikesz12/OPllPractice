@@ -1,19 +1,27 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace RubikVisualizers
 {
-    public class RubikEdge : MonoBehaviour
+    public class RubikEdge : MonoBehaviour, ISetFaceColor
     {
         [SerializeField] private MeshRenderer topFaceMeshRenderer;
         [SerializeField] private MeshRenderer frontFaceMeshRenderer;
-        public void SetTopFaceColor(Material materialToSet)
+        public void SetFaceColorForFacing(Vector3 facing, Material materialToSet)
         {
-            topFaceMeshRenderer.material = materialToSet;
-        }
+            if (topFaceMeshRenderer.transform.up == facing)
+            {
+                topFaceMeshRenderer.material = materialToSet;
+                return;
+            }
 
-        public void SetFrontFaceColor(Material materialToSet)
-        {
-            frontFaceMeshRenderer.material = materialToSet;
+            if (frontFaceMeshRenderer.transform.up == facing)
+            {
+                frontFaceMeshRenderer.material = materialToSet;
+                return;
+            }
+
+            throw new ArgumentOutOfRangeException($"{facing} no matching face found");
         }
     }
 }

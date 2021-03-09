@@ -20,6 +20,8 @@ namespace View
             Cubes = new List<GameObject>(8);
         }
 
+        public Vector3 Facing => _center.transform.up;
+
         public void AddCube(GameObject cube)
         {
             Cubes.Add(cube);
@@ -27,7 +29,7 @@ namespace View
 
         public IEnumerator RotateCoroutine(Rotation rot, Action callback)
         {
-            SetCubeParents(); 
+            SetCubeParents();
 
             _currentTime = 0.0f;
             _angleToRotate = rot == Rotation.ONE ? 90f : -90f;
@@ -74,6 +76,32 @@ namespace View
             {
                 Cubes.Add(cube);
             }
+        }
+
+        public int GetCubeIndex(Vector3 cubePosition)
+        {
+            var relativePos = _center.transform.InverseTransformPoint(cubePosition);
+            if (relativePos.x < 0)
+            {
+                if (Math.Abs(relativePos.z) < 0.005f)
+                    return 7;
+                return relativePos.z > 0 ? 0 : 6;
+            }
+
+            if (relativePos.x > 0)
+            {
+                if (Math.Abs(relativePos.z) < 0.005f)
+                    return 3;
+                return relativePos.z > 0 ? 2 : 4;
+            }
+
+            return relativePos.z > 0 ? 1 : 5;
+        }
+
+        private bool PositionEquals(float a, float b)
+        {
+            const float epsilon = 0.005f;
+            return Math.Abs(a - b) < epsilon;
         }
     }
 }
