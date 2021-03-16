@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Model
+namespace OllPractice.Model.Model
 {
     public class Cube
     {

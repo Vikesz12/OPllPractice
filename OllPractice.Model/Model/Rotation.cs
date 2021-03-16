@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace OllPractice.Model.Model
 {
     public enum Rotation
     {

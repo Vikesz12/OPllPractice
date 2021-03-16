@@ -1,5 +1,5 @@
+using OllPractice.Model.Model;
 using System;
-using Model;
 using Xunit;
 
 namespace OllPracticeTests
