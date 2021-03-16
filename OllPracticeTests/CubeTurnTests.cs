@@ -1,4 +1,5 @@
-using OllPractice.Model.Model;
+using System;
+using Model;
 using Xunit;
 
 namespace OllPracticeTests
@@ -14,12 +15,12 @@ namespace OllPracticeTests
             //Act
 
             //Assert
-            Assert.Equal($"WWW\r\nW W\r\nWWW", cube.Faces[0].PrintSide());
-            Assert.Equal($"GGG\r\nG G\r\nGGG", cube.Faces[1].PrintSide());
-            Assert.Equal($"OOO\r\nO O\r\nOOO", cube.Faces[2].PrintSide());
-            Assert.Equal($"RRR\r\nR R\r\nRRR", cube.Faces[3].PrintSide());
-            Assert.Equal($"BBB\r\nB B\r\nBBB", cube.Faces[4].PrintSide());
-            Assert.Equal($"YYY\r\nY Y\r\nYYY", cube.Faces[5].PrintSide());
+            Assert.Equal($"WWW{Environment.NewLine}W W{Environment.NewLine}WWW{Environment.NewLine}" +
+                         $"GGG{Environment.NewLine}G G{Environment.NewLine}GGG{Environment.NewLine}" +
+                         $"OOO{Environment.NewLine}O O{Environment.NewLine}OOO{Environment.NewLine}" +
+                         $"RRR{Environment.NewLine}R R{Environment.NewLine}RRR{Environment.NewLine}" +
+                         $"BBB{Environment.NewLine}B B{Environment.NewLine}BBB{Environment.NewLine}" +
+                         $"YYY{Environment.NewLine}Y Y{Environment.NewLine}YYY{Environment.NewLine}", cube.PrintCubeState());
         }
 
         [Fact]
@@ -32,12 +33,12 @@ namespace OllPracticeTests
             cube.U();
 
             //Assert
-            Assert.Equal($"WWW\r\nW W\r\nWWW", cube.Faces[0].PrintSide());
-            Assert.Equal($"RRR\r\nG G\r\nGGG", cube.Faces[1].PrintSide());
-            Assert.Equal($"GGG\r\nO O\r\nOOO", cube.Faces[2].PrintSide());
-            Assert.Equal($"BBB\r\nR R\r\nRRR", cube.Faces[3].PrintSide());
-            Assert.Equal($"OOO\r\nB B\r\nBBB", cube.Faces[4].PrintSide());
-            Assert.Equal($"YYY\r\nY Y\r\nYYY", cube.Faces[5].PrintSide());
+            Assert.Equal($"WWW{Environment.NewLine}W W{Environment.NewLine}WWW{Environment.NewLine}" +
+                         $"RRR{Environment.NewLine}G G{Environment.NewLine}GGG{Environment.NewLine}" +
+                         $"GGG{Environment.NewLine}O O{Environment.NewLine}OOO{Environment.NewLine}" +
+                         $"BBB{Environment.NewLine}R R{Environment.NewLine}RRR{Environment.NewLine}" +
+                         $"OOO{Environment.NewLine}B B{Environment.NewLine}BBB{Environment.NewLine}" +
+                         $"YYY{Environment.NewLine}Y Y{Environment.NewLine}YYY{Environment.NewLine}", cube.PrintCubeState());
         }
 
         [Fact]
@@ -50,12 +51,12 @@ namespace OllPracticeTests
             cube.UPrime();
 
             //Assert
-            Assert.Equal($"WWW\r\nW W\r\nWWW", cube.Faces[0].PrintSide());
-            Assert.Equal($"OOO\r\nG G\r\nGGG", cube.Faces[1].PrintSide());
-            Assert.Equal($"BBB\r\nO O\r\nOOO", cube.Faces[2].PrintSide());
-            Assert.Equal($"GGG\r\nR R\r\nRRR", cube.Faces[3].PrintSide());
-            Assert.Equal($"RRR\r\nB B\r\nBBB", cube.Faces[4].PrintSide());
-            Assert.Equal($"YYY\r\nY Y\r\nYYY", cube.Faces[5].PrintSide());
+            Assert.Equal($"WWW{Environment.NewLine}W W{Environment.NewLine}WWW{Environment.NewLine}" +
+                         $"OOO{Environment.NewLine}G G{Environment.NewLine}GGG{Environment.NewLine}" +
+                         $"BBB{Environment.NewLine}O O{Environment.NewLine}OOO{Environment.NewLine}" +
+                         $"GGG{Environment.NewLine}R R{Environment.NewLine}RRR{Environment.NewLine}" +
+                         $"RRR{Environment.NewLine}B B{Environment.NewLine}BBB{Environment.NewLine}" +
+                         $"YYY{Environment.NewLine}Y Y{Environment.NewLine}YYY{Environment.NewLine}", cube.PrintCubeState());
         }
         [Fact]
         public void TestCubeTurnR()
@@ -67,12 +68,12 @@ namespace OllPracticeTests
             cube.R();
 
             //Assert
-            Assert.Equal($"WWG\r\nW G\r\nWWG", cube.Faces[0].PrintSide());
-            Assert.Equal($"GGY\r\nG Y\r\nGGY", cube.Faces[1].PrintSide());
-            Assert.Equal($"OOO\r\nO O\r\nOOO", cube.Faces[2].PrintSide());
-            Assert.Equal($"RRR\r\nR R\r\nRRR", cube.Faces[3].PrintSide());
-            Assert.Equal($"WBB\r\nW B\r\nWBB", cube.Faces[4].PrintSide());
-            Assert.Equal($"BYY\r\nB Y\r\nBYY", cube.Faces[5].PrintSide());
+            Assert.Equal($"WWG{Environment.NewLine}W G{Environment.NewLine}WWG{Environment.NewLine}" +
+                         $"GGY{Environment.NewLine}G Y{Environment.NewLine}GGY{Environment.NewLine}" +
+                         $"OOO{Environment.NewLine}O O{Environment.NewLine}OOO{Environment.NewLine}" +
+                         $"RRR{Environment.NewLine}R R{Environment.NewLine}RRR{Environment.NewLine}" +
+                         $"WBB{Environment.NewLine}W B{Environment.NewLine}WBB{Environment.NewLine}" +
+                         $"BYY{Environment.NewLine}B Y{Environment.NewLine}BYY{Environment.NewLine}", cube.PrintCubeState());
         }
         [Fact]
         public void TestCubeTurnRPrime()
@@ -84,18 +85,18 @@ namespace OllPracticeTests
             cube.RPrime();
 
             //Assert
-            Assert.Equal($"WWB\r\nW B\r\nWWB", cube.Faces[0].PrintSide());
-            Assert.Equal($"GGW\r\nG W\r\nGGW", cube.Faces[1].PrintSide());
-            Assert.Equal($"OOO\r\nO O\r\nOOO", cube.Faces[2].PrintSide());
-            Assert.Equal($"RRR\r\nR R\r\nRRR", cube.Faces[3].PrintSide());
-            Assert.Equal($"YBB\r\nY B\r\nYBB", cube.Faces[4].PrintSide());
-            Assert.Equal($"GYY\r\nG Y\r\nGYY", cube.Faces[5].PrintSide());
+            Assert.Equal($"WWB{Environment.NewLine}W B{Environment.NewLine}WWB{Environment.NewLine}" +
+                         $"GGW{Environment.NewLine}G W{Environment.NewLine}GGW{Environment.NewLine}" +
+                         $"OOO{Environment.NewLine}O O{Environment.NewLine}OOO{Environment.NewLine}" +
+                         $"RRR{Environment.NewLine}R R{Environment.NewLine}RRR{Environment.NewLine}" +
+                         $"YBB{Environment.NewLine}Y B{Environment.NewLine}YBB{Environment.NewLine}" +
+                         $"GYY{Environment.NewLine}G Y{Environment.NewLine}GYY{Environment.NewLine}", cube.PrintCubeState());
         }
 
         [Fact]
 
         public void TestCubeTurnRURU()
-        { 
+        {
             //Arrange
             var cube = new Cube();
 
@@ -106,13 +107,12 @@ namespace OllPracticeTests
             cube.UPrime();
 
             //Assert
-            Assert.Equal($"WWO\r\nW G\r\nWWG", cube.Faces[0].PrintSide());
-            Assert.Equal($"GGY\r\nG W\r\nGGG", cube.Faces[1].PrintSide());
-            Assert.Equal($"BOO\r\nO O\r\nOOO", cube.Faces[2].PrintSide());
-            Assert.Equal($"RRW\r\nB R\r\nWRR", cube.Faces[3].PrintSide());
-            Assert.Equal($"BRR\r\nB B\r\nBBB", cube.Faces[4].PrintSide());
-            Assert.Equal($"YYY\r\nY Y\r\nRYY", cube.Faces[5].PrintSide());
-
+            Assert.Equal($"WWO{Environment.NewLine}W G{Environment.NewLine}WWG{Environment.NewLine}" +
+                         $"GGY{Environment.NewLine}G W{Environment.NewLine}GGG{Environment.NewLine}" +
+                         $"BOO{Environment.NewLine}O O{Environment.NewLine}OOO{Environment.NewLine}" +
+                         $"RRW{Environment.NewLine}B R{Environment.NewLine}WRR{Environment.NewLine}" +
+                         $"BRR{Environment.NewLine}B B{Environment.NewLine}BBB{Environment.NewLine}" +
+                         $"YYY{Environment.NewLine}Y Y{Environment.NewLine}RYY{Environment.NewLine}", cube.PrintCubeState());
         }
         [Fact]
         public void TestCubeTurnL()
@@ -124,12 +124,12 @@ namespace OllPracticeTests
             cube.L();
 
             //Assert
-            Assert.Equal($"BWW\r\nB W\r\nBWW", cube.Faces[0].PrintSide());
-            Assert.Equal($"WGG\r\nW G\r\nWGG", cube.Faces[1].PrintSide());
-            Assert.Equal($"OOO\r\nO O\r\nOOO", cube.Faces[2].PrintSide());
-            Assert.Equal($"RRR\r\nR R\r\nRRR", cube.Faces[3].PrintSide());
-            Assert.Equal($"BBY\r\nB Y\r\nBBY", cube.Faces[4].PrintSide());
-            Assert.Equal($"YYG\r\nY G\r\nYYG", cube.Faces[5].PrintSide());
+            Assert.Equal($"BWW{Environment.NewLine}B W{Environment.NewLine}BWW{Environment.NewLine}" +
+                         $"WGG{Environment.NewLine}W G{Environment.NewLine}WGG{Environment.NewLine}" +
+                         $"OOO{Environment.NewLine}O O{Environment.NewLine}OOO{Environment.NewLine}" +
+                         $"RRR{Environment.NewLine}R R{Environment.NewLine}RRR{Environment.NewLine}" +
+                         $"BBY{Environment.NewLine}B Y{Environment.NewLine}BBY{Environment.NewLine}" +
+                         $"YYG{Environment.NewLine}Y G{Environment.NewLine}YYG{Environment.NewLine}", cube.PrintCubeState());
         }
 
         [Fact]
@@ -142,12 +142,12 @@ namespace OllPracticeTests
             cube.LPrime();
 
             //Assert
-            Assert.Equal($"GWW\r\nG W\r\nGWW", cube.Faces[0].PrintSide());
-            Assert.Equal($"YGG\r\nY G\r\nYGG", cube.Faces[1].PrintSide());
-            Assert.Equal($"OOO\r\nO O\r\nOOO", cube.Faces[2].PrintSide());
-            Assert.Equal($"RRR\r\nR R\r\nRRR", cube.Faces[3].PrintSide());
-            Assert.Equal($"BBW\r\nB W\r\nBBW", cube.Faces[4].PrintSide());
-            Assert.Equal($"YYB\r\nY B\r\nYYB", cube.Faces[5].PrintSide());
+            Assert.Equal($"GWW{Environment.NewLine}G W{Environment.NewLine}GWW{Environment.NewLine}" +
+                         $"YGG{Environment.NewLine}Y G{Environment.NewLine}YGG{Environment.NewLine}" +
+                         $"OOO{Environment.NewLine}O O{Environment.NewLine}OOO{Environment.NewLine}" +
+                         $"RRR{Environment.NewLine}R R{Environment.NewLine}RRR{Environment.NewLine}" +
+                         $"BBW{Environment.NewLine}B W{Environment.NewLine}BBW{Environment.NewLine}" +
+                         $"YYB{Environment.NewLine}Y B{Environment.NewLine}YYB{Environment.NewLine}", cube.PrintCubeState());
         }
 
         [Fact]
@@ -160,12 +160,12 @@ namespace OllPracticeTests
             cube.F();
 
             //Assert
-            Assert.Equal($"WWW\r\nW W\r\nOOO", cube.Faces[0].PrintSide());
-            Assert.Equal($"GGG\r\nG G\r\nGGG", cube.Faces[1].PrintSide());
-            Assert.Equal($"OOY\r\nO Y\r\nOOY", cube.Faces[2].PrintSide());
-            Assert.Equal($"WRR\r\nW R\r\nWRR", cube.Faces[3].PrintSide());
-            Assert.Equal($"BBB\r\nB B\r\nBBB", cube.Faces[4].PrintSide());
-            Assert.Equal($"YYY\r\nY Y\r\nRRR", cube.Faces[5].PrintSide());
+            Assert.Equal($"WWW{Environment.NewLine}W W{Environment.NewLine}OOO{Environment.NewLine}" +
+                         $"GGG{Environment.NewLine}G G{Environment.NewLine}GGG{Environment.NewLine}" +
+                         $"OOY{Environment.NewLine}O Y{Environment.NewLine}OOY{Environment.NewLine}" +
+                         $"WRR{Environment.NewLine}W R{Environment.NewLine}WRR{Environment.NewLine}" +
+                         $"BBB{Environment.NewLine}B B{Environment.NewLine}BBB{Environment.NewLine}" +
+                         $"YYY{Environment.NewLine}Y Y{Environment.NewLine}RRR{Environment.NewLine}", cube.PrintCubeState());
         }
 
         [Fact]
@@ -178,12 +178,12 @@ namespace OllPracticeTests
             cube.FPrime();
 
             //Assert
-            Assert.Equal($"WWW\r\nW W\r\nRRR", cube.Faces[0].PrintSide());
-            Assert.Equal($"GGG\r\nG G\r\nGGG", cube.Faces[1].PrintSide());
-            Assert.Equal($"OOW\r\nO W\r\nOOW", cube.Faces[2].PrintSide());
-            Assert.Equal($"YRR\r\nY R\r\nYRR", cube.Faces[3].PrintSide());
-            Assert.Equal($"BBB\r\nB B\r\nBBB", cube.Faces[4].PrintSide());
-            Assert.Equal($"YYY\r\nY Y\r\nOOO", cube.Faces[5].PrintSide());
+            Assert.Equal($"WWW{Environment.NewLine}W W{Environment.NewLine}RRR{Environment.NewLine}" +
+                         $"GGG{Environment.NewLine}G G{Environment.NewLine}GGG{Environment.NewLine}" +
+                         $"OOW{Environment.NewLine}O W{Environment.NewLine}OOW{Environment.NewLine}" +
+                         $"YRR{Environment.NewLine}Y R{Environment.NewLine}YRR{Environment.NewLine}" +
+                         $"BBB{Environment.NewLine}B B{Environment.NewLine}BBB{Environment.NewLine}" +
+                         $"YYY{Environment.NewLine}Y Y{Environment.NewLine}OOO{Environment.NewLine}", cube.PrintCubeState());
         }
 
         [Fact]
@@ -196,12 +196,12 @@ namespace OllPracticeTests
             cube.D();
 
             //Assert
-            Assert.Equal($"WWW\r\nW W\r\nWWW", cube.Faces[0].PrintSide());
-            Assert.Equal($"GGG\r\nG G\r\nOOO", cube.Faces[1].PrintSide());
-            Assert.Equal($"OOO\r\nO O\r\nBBB", cube.Faces[2].PrintSide());
-            Assert.Equal($"RRR\r\nR R\r\nGGG", cube.Faces[3].PrintSide());
-            Assert.Equal($"BBB\r\nB B\r\nRRR", cube.Faces[4].PrintSide());
-            Assert.Equal($"YYY\r\nY Y\r\nYYY", cube.Faces[5].PrintSide());
+            Assert.Equal($"WWW{Environment.NewLine}W W{Environment.NewLine}WWW{Environment.NewLine}" +
+                         $"GGG{Environment.NewLine}G G{Environment.NewLine}OOO{Environment.NewLine}" +
+                         $"OOO{Environment.NewLine}O O{Environment.NewLine}BBB{Environment.NewLine}" +
+                         $"RRR{Environment.NewLine}R R{Environment.NewLine}GGG{Environment.NewLine}" +
+                         $"BBB{Environment.NewLine}B B{Environment.NewLine}RRR{Environment.NewLine}" +
+                         $"YYY{Environment.NewLine}Y Y{Environment.NewLine}YYY{Environment.NewLine}", cube.PrintCubeState());
         }
 
         [Fact]
@@ -214,12 +214,12 @@ namespace OllPracticeTests
             cube.DPrime();
 
             //Assert
-            Assert.Equal($"WWW\r\nW W\r\nWWW", cube.Faces[0].PrintSide());
-            Assert.Equal($"GGG\r\nG G\r\nRRR", cube.Faces[1].PrintSide());
-            Assert.Equal($"OOO\r\nO O\r\nGGG", cube.Faces[2].PrintSide());
-            Assert.Equal($"RRR\r\nR R\r\nBBB", cube.Faces[3].PrintSide());
-            Assert.Equal($"BBB\r\nB B\r\nOOO", cube.Faces[4].PrintSide());
-            Assert.Equal($"YYY\r\nY Y\r\nYYY", cube.Faces[5].PrintSide());
+            Assert.Equal($"WWW{Environment.NewLine}W W{Environment.NewLine}WWW{Environment.NewLine}" +
+                         $"GGG{Environment.NewLine}G G{Environment.NewLine}RRR{Environment.NewLine}" +
+                         $"OOO{Environment.NewLine}O O{Environment.NewLine}GGG{Environment.NewLine}" +
+                         $"RRR{Environment.NewLine}R R{Environment.NewLine}BBB{Environment.NewLine}" +
+                         $"BBB{Environment.NewLine}B B{Environment.NewLine}OOO{Environment.NewLine}" +
+                         $"YYY{Environment.NewLine}Y Y{Environment.NewLine}YYY{Environment.NewLine}", cube.PrintCubeState());
         }
 
         [Fact]
@@ -232,12 +232,12 @@ namespace OllPracticeTests
             cube.B();
 
             //Assert
-            Assert.Equal($"RRR\r\nW W\r\nWWW", cube.Faces[0].PrintSide());
-            Assert.Equal($"GGG\r\nG G\r\nGGG", cube.Faces[1].PrintSide());
-            Assert.Equal($"WOO\r\nW O\r\nWOO", cube.Faces[2].PrintSide());
-            Assert.Equal($"RRY\r\nR Y\r\nRRY", cube.Faces[3].PrintSide());
-            Assert.Equal($"BBB\r\nB B\r\nBBB", cube.Faces[4].PrintSide());
-            Assert.Equal($"OOO\r\nY Y\r\nYYY", cube.Faces[5].PrintSide());
+            Assert.Equal($"RRR{Environment.NewLine}W W{Environment.NewLine}WWW{Environment.NewLine}" +
+                         $"GGG{Environment.NewLine}G G{Environment.NewLine}GGG{Environment.NewLine}" +
+                         $"WOO{Environment.NewLine}W O{Environment.NewLine}WOO{Environment.NewLine}" +
+                         $"RRY{Environment.NewLine}R Y{Environment.NewLine}RRY{Environment.NewLine}" +
+                         $"BBB{Environment.NewLine}B B{Environment.NewLine}BBB{Environment.NewLine}" +
+                         $"OOO{Environment.NewLine}Y Y{Environment.NewLine}YYY{Environment.NewLine}", cube.PrintCubeState());
         }
 
         [Fact]
@@ -250,12 +250,12 @@ namespace OllPracticeTests
             cube.BPrime();
 
             //Assert
-            Assert.Equal($"OOO\r\nW W\r\nWWW", cube.Faces[0].PrintSide());
-            Assert.Equal($"GGG\r\nG G\r\nGGG", cube.Faces[1].PrintSide());
-            Assert.Equal($"YOO\r\nY O\r\nYOO", cube.Faces[2].PrintSide());
-            Assert.Equal($"RRW\r\nR W\r\nRRW", cube.Faces[3].PrintSide());
-            Assert.Equal($"BBB\r\nB B\r\nBBB", cube.Faces[4].PrintSide());
-            Assert.Equal($"RRR\r\nY Y\r\nYYY", cube.Faces[5].PrintSide());
+            Assert.Equal($"OOO{Environment.NewLine}W W{Environment.NewLine}WWW{Environment.NewLine}" +
+                         $"GGG{Environment.NewLine}G G{Environment.NewLine}GGG{Environment.NewLine}" +
+                         $"YOO{Environment.NewLine}Y O{Environment.NewLine}YOO{Environment.NewLine}" +
+                         $"RRW{Environment.NewLine}R W{Environment.NewLine}RRW{Environment.NewLine}" +
+                         $"BBB{Environment.NewLine}B B{Environment.NewLine}BBB{Environment.NewLine}" +
+                         $"RRR{Environment.NewLine}Y Y{Environment.NewLine}YYY{Environment.NewLine}", cube.PrintCubeState());
         }
     }
 }

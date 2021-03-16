@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Model;
 
-namespace OllPractice.Model.Model
+namespace Model
 {
     public class Face
     {
@@ -14,6 +14,15 @@ namespace OllPractice.Model.Model
             for (var index = 0; index < 8; index++)
             {
                 squares = squares << 8 | (byte)color;
+            }
+        }
+
+        public Face(IEnumerable<RubikColor> colors)
+        {
+            squares = 0;
+            foreach (var rubikColor in colors)
+            {
+                squares = squares << 8 | (byte) rubikColor;
             }
         }
 
@@ -60,6 +69,12 @@ namespace OllPractice.Model.Model
             return oldSquares;
         }
 
+        public RubikColor GetColorAt(int index)
+        {
+            var bytes = BitConverter.GetBytes(squares);
+            return (RubikColor) bytes[index];
+        }
+
         public string PrintSide()
         {
             var bytes = BitConverter.GetBytes(squares);
@@ -75,6 +90,7 @@ namespace OllPractice.Model.Model
             result += (RubikColor)bytes[6];
             result += (RubikColor)bytes[5];
             result += (RubikColor)bytes[4];
+            result += Environment.NewLine;
             return result;
         }
     }

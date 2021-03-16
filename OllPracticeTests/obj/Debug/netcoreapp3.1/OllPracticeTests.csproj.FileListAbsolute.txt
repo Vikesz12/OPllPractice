@@ -101,3 +101,6 @@ D:\Viktor\Projects\OllPractice\OllPracticeTests\obj\Debug\netcoreapp3.1\OllPract
 D:\Viktor\Projects\OllPractice\OllPracticeTests\obj\Debug\netcoreapp3.1\OllPracticeTests.dll
 D:\Viktor\Projects\OllPractice\OllPracticeTests\obj\Debug\netcoreapp3.1\OllPracticeTests.pdb
 D:\Viktor\Projects\OllPractice\OllPracticeTests\obj\Debug\netcoreapp3.1\OllPracticeTests.genruntimeconfig.cache
+D:\Viktor\Projects\OllPractice\OllPracticeTests\bin\Debug\netcoreapp3.1\OllPractice.Model.deps.json
+D:\Viktor\Projects\OllPractice\OllPracticeTests\bin\Debug\netcoreapp3.1\OllPractice.Model.runtimeconfig.json
+D:\Viktor\Projects\OllPractice\OllPracticeTests\bin\Debug\netcoreapp3.1\OllPractice.Model.runtimeconfig.dev.json

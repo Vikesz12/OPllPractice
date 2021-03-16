@@ -3489,7 +3489,8 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Viktor\\.nuget\\packages\\": {}
+    "C:\\Users\\bacsk\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
@@ -3497,11 +3498,15 @@
       "projectUniqueName": "D:\\Viktor\\Projects\\OllPractice\\OllPracticeTests\\OllPracticeTests.csproj",
       "projectName": "OllPracticeTests",
       "projectPath": "D:\\Viktor\\Projects\\OllPractice\\OllPracticeTests\\OllPracticeTests.csproj",
-      "packagesPath": "C:\\Users\\Viktor\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\bacsk\\.nuget\\packages\\",
       "outputPath": "D:\\Viktor\\Projects\\OllPractice\\OllPracticeTests\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Viktor\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\bacsk\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3509,7 +3514,8 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://www.nuget.org/api/v2": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
@@ -3563,7 +3569,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }
