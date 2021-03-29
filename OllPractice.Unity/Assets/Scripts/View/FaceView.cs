@@ -81,16 +81,17 @@ namespace View
         public int GetCubeIndex(Vector3 cubePosition)
         {
             var relativePos = _center.transform.InverseTransformPoint(cubePosition);
-            if (relativePos.x < 0)
+            const float epsilon = 0.005f;
+            if (relativePos.x < -epsilon)
             {
-                if (Math.Abs(relativePos.z) < 0.005f)
+                if (Math.Abs(relativePos.z) < epsilon)
                     return 7;
                 return relativePos.z > 0 ? 0 : 6;
             }
 
-            if (relativePos.x > 0)
+            if (relativePos.x > epsilon)
             {
-                if (Math.Abs(relativePos.z) < 0.005f)
+                if (Math.Abs(relativePos.z) < epsilon)
                     return 3;
                 return relativePos.z > 0 ? 2 : 4;
             }
