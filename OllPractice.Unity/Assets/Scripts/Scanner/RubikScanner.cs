@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Parser;
+using RotationVisualizer;
 using RubikVisualizers;
 using TMPro;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace Scanner
     public class RubikScanner : MonoBehaviour
     {
         [SerializeField] private TMP_Dropdown _dropdown;
+        [SerializeField] private RotationMessenger _rotationMessenger;
 
         private bool _isScanningDevices;
         private bool _isSubscribed;
@@ -27,6 +29,7 @@ namespace Scanner
             _notificationParser = new NotificationParser();
             _rubikVisualizer = GetComponent<RubikVisualizer>();
             _rubikVisualizer.RegisterToNotificationEvents(_notificationParser);
+            _rotationMessenger.RegisterNotificationParser(_notificationParser);
             _dropdown.ClearOptions();
             _dropdownIds = new List<string>();
             _dropdown.onValueChanged.AddListener(OnDropDownSelected);
