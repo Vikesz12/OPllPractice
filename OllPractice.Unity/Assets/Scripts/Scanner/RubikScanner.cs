@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Parser;
 using RubikVisualizers;
 using TMPro;
 using UnityEngine;
@@ -19,10 +20,13 @@ namespace Scanner
         private Dictionary<string, Dictionary<string, string>> _devices = new Dictionary<string, Dictionary<string, string>>();
         private string _selectedDeviceId;
         private RubikVisualizer _rubikVisualizer;
+        private NotificationParser _notificationParser;
 
         private void Start()
         {
+            _notificationParser = new NotificationParser();
             _rubikVisualizer = GetComponent<RubikVisualizer>();
+            _rubikVisualizer.RegisterToNotificationEvents(_notificationParser);
             _dropdown.ClearOptions();
             _dropdownIds = new List<string>();
             _dropdown.onValueChanged.AddListener(OnDropDownSelected);
@@ -83,7 +87,7 @@ namespace Scanner
             {
                 while (BleApi.PollData(out var res, false))
                 {
-                    _rubikVisualizer.ProcessMessage(res.buf, res.size);
+                    _notificationParser.ParseNotification(res.buf, res.size);
                 }
             }
         }

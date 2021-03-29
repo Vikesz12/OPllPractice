@@ -13,7 +13,6 @@ namespace RubikVisualizers
 {
     public class RubikVisualizer : MonoBehaviour
     {
-        private NotificationParser _notificationParse;
         private Cube _cube;
         private RubikScanner _rubikScanner;
         private List<FaceView> _faces;
@@ -22,9 +21,7 @@ namespace RubikVisualizers
         private KeyValuePair<Action<bool>, IEnumerator> _currentAnimation;
 
         public void Start()
-        {
-            _notificationParse = new NotificationParser();
-            _rubikScanner = GetComponent<RubikScanner>();
+        {            _rubikScanner = GetComponent<RubikScanner>();
             _cube = new Cube();
             _animations = new Queue<KeyValuePair<Action<bool>, IEnumerator>>();
             _faces = GetComponentsInChildren<FaceView>().ToList();
@@ -44,6 +41,12 @@ namespace RubikVisualizers
             SetupFaces();
             LoadState(faces);
 
+        }
+
+        public void RegisterToNotificationEvents(NotificationParser notificationParser)
+        {
+            notificationParser.FaceRotated += NotificationParserOnFaceRotated;
+            notificationParser.StateParsed += LoadState;
         }
 
         private void SetupFaces()
@@ -152,8 +155,101 @@ namespace RubikVisualizers
             }
 
         }
-        public void LoadState(Face[] faces)
+
+
+        private void NotificationParserOnFaceRotated(FaceRotation rotation)
         {
+
+            switch (rotation)
+            {
+                case FaceRotation.R:
+                    _cube.R();
+                    R();
+                    break;
+                case FaceRotation.RPrime:
+                    _cube.RPrime();
+                    RPrime();
+                    break;
+                case FaceRotation.U:
+                    _cube.U();
+                    U();
+                    break;
+                case FaceRotation.UPrime:
+                    _cube.UPrime();
+                    UPrime();
+                    break;
+                case FaceRotation.L:
+                    _cube.L();
+                    L();
+                    break;
+                case FaceRotation.LPrime:
+                    _cube.LPrime();
+                    LPrime();
+                    break;
+                case FaceRotation.F:
+                    _cube.F();
+                    F();
+                    break;
+                case FaceRotation.FPrime:
+                    _cube.FPrime();
+                    FPrime();
+                    break;
+                case FaceRotation.B:
+                    _cube.B();
+                    B();
+                    break;
+                case FaceRotation.BPrime:
+                    _cube.BPrime();
+                    BPrime();
+                    break;
+                case FaceRotation.D:
+                    break;
+                case FaceRotation.DPrime:
+                    break;
+                case FaceRotation.M:
+                    _cube.R();
+                    _cube.LPrime();
+                    R();
+                    LPrime();
+                    break;
+                case FaceRotation.MPrime:
+                    _cube.RPrime();
+                    _cube.L();
+                    RPrime();
+                    L();
+                    break;
+                case FaceRotation.M2:
+                    _cube.FPrime();
+                    _cube.B();
+                    FPrime();
+                    B();
+                    break;
+                case FaceRotation.M2Prime:
+                    _cube.F();
+                    _cube.BPrime();
+                    F();
+                    BPrime();
+                    break;
+                case FaceRotation.M3:
+                    _cube.DPrime();
+                    _cube.U();
+                    DPrime();
+                    U();
+                    break;
+                case FaceRotation.M3Prime:
+                    _cube.D();
+                    _cube.UPrime();
+                    D();
+                    UPrime();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(rotation), rotation, null);
+            }
+        }
+
+        private void LoadState(Face[] faces)
+        {
+            _cube.LoadState(faces);
             for (var i = 0; i < _faces.Count; i++)
             {
                 var face = _faces[i];
@@ -167,32 +263,31 @@ namespace RubikVisualizers
         }
 
 
-        public void ProcessMessage(byte[] notification, short dataSize) => _notificationParse.ParseNotification(notification, dataSize, _cube, this);
+        
+        private void U() => RotateSide(0, 1, 2, 4, 3, Rotation.ONE);
 
-        public void U() => RotateSide(0, 1, 2, 4, 3, Rotation.ONE);
+        private void UPrime() => RotateSide(0, 1, 3, 4, 2, Rotation.PRIME);
 
-        public void UPrime() => RotateSide(0, 1, 3, 4, 2, Rotation.PRIME);
+        private void R() => RotateSide(3, 0, 4, 5, 1, Rotation.ONE);
 
-        public void R() => RotateSide(3, 0, 4, 5, 1, Rotation.ONE);
-
-        public void RPrime() => RotateSide(3, 0, 1, 5, 4, Rotation.PRIME);
+        private void RPrime() => RotateSide(3, 0, 1, 5, 4, Rotation.PRIME);
 
 
-        public void L() => RotateSide(2, 0, 1, 5, 4, Rotation.ONE);
+        private void L() => RotateSide(2, 0, 1, 5, 4, Rotation.ONE);
 
-        public void LPrime() => RotateSide(2, 0, 4, 5, 1, Rotation.PRIME);
+        private void LPrime() => RotateSide(2, 0, 4, 5, 1, Rotation.PRIME);
 
-        public void F() => RotateSide(1, 0, 3, 5, 2, Rotation.ONE);
+        private void F() => RotateSide(1, 0, 3, 5, 2, Rotation.ONE);
 
-        public void FPrime() => RotateSide(1, 0, 2, 5, 3, Rotation.PRIME);
+        private void FPrime() => RotateSide(1, 0, 2, 5, 3, Rotation.PRIME);
 
-        public void B() => RotateSide(4, 0, 2, 5, 3, Rotation.ONE);
+        private void B() => RotateSide(4, 0, 2, 5, 3, Rotation.ONE);
 
-        public void BPrime() => RotateSide(4, 0, 3, 5, 2, Rotation.PRIME);
+        private void BPrime() => RotateSide(4, 0, 3, 5, 2, Rotation.PRIME);
 
-        public void D() => RotateSide(5, 1, 3, 4, 2, Rotation.ONE);
+        private void D() => RotateSide(5, 1, 3, 4, 2, Rotation.ONE);
 
-        public void DPrime() => RotateSide(5, 1, 2, 4, 3, Rotation.PRIME);
+        private void DPrime() => RotateSide(5, 1, 2, 4, 3, Rotation.PRIME);
 
         private void RotateSide(int sideToRotate, int side1, int side2, int side3, int side4, Rotation rotation)
         {
