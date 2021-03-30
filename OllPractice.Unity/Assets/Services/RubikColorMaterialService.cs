@@ -29,6 +29,9 @@ namespace Services
                 case RubikColor.Y:
                     materialName += "Yellow";
                     break;
+                case RubikColor.L:
+                    materialName += "Black";
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(color), color, null);
             }
