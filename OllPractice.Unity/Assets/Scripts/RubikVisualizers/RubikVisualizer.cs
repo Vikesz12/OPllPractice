@@ -203,8 +203,12 @@ namespace RubikVisualizers
                     BPrime();
                     break;
                 case FaceRotation.D:
+                    _cube.D();
+                    D();
                     break;
                 case FaceRotation.DPrime:
+                    _cube.DPrime();
+                    DPrime();
                     break;
                 case FaceRotation.M:
                     _cube.R();
