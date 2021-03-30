@@ -2,6 +2,7 @@
 using RubikVisualizers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -23,12 +24,16 @@ namespace RotationVisualizer
         public void Start()
         {
             _rotationMessagePrefab = Resources.Load<GameObject>("Prefabs/RotationMessage");
+            _rotations = new List<FaceRotation>();
+            _correctionTurns = new Stack<FaceRotation>(); 
         }
 
         public void RegisterNotificationParser(NotificationParser notificationParser)
         {
             notificationParser.FaceRotated += NotificationParserOnFaceRotated;
         }
+
+        public Action PracticeFinished;
 
         private void NotificationParserOnFaceRotated(FaceRotation rotation)
         {
@@ -66,9 +71,23 @@ namespace RotationVisualizer
                 }
 
                 if (_currentPosition > _rotations.Count - 1)
-                    Clear();
+                {
+                    if (!_f2lMode)
+                    {
+                        Clear();
+                    }
+                    else
+                    {
+                        _currentPosition = 0;
+                        ShowNextBatch();
+                        PracticeFinished?.Invoke();
+                    }
+
+                }
                 else if (_currentPosition % MAXMessageCount == 0)
+                {
                     ShowNextBatch();
+                }
             }
         }
 
@@ -120,9 +139,8 @@ namespace RotationVisualizer
         public void LoadRotations(IEnumerable<FaceRotation> rotations, bool f2LMode)
         {
             _currentPosition = 0;
-            _rotations = new List<FaceRotation>(rotations);
-            _correctionTurns = new Stack<FaceRotation>();
             _f2lMode = f2LMode;
+            _rotations = rotations.ToList();
             ShowNextBatch();
         }
 

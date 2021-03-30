@@ -10,25 +10,23 @@ using UnityEngine;
 
 namespace Scanner
 {
-    [RequireComponent(typeof(RubikVisualizer))]
     public class RubikScanner : MonoBehaviour
     {
         [SerializeField] private TMP_Dropdown _dropdown;
         [SerializeField] private RotationMessenger _rotationMessenger;
+        [SerializeField] private RubikHolder _rubikHolder;
 
         private bool _isScanningDevices;
         private bool _isSubscribed;
         private List<string> _dropdownIds;
         private Dictionary<string, Dictionary<string, string>> _devices = new Dictionary<string, Dictionary<string, string>>();
         private string _selectedDeviceId;
-        private RubikVisualizer _rubikVisualizer;
         private NotificationParser _notificationParser;
 
         private void Start()
         {
             _notificationParser = new NotificationParser();
-            _rubikVisualizer = GetComponent<RubikVisualizer>();
-            _rubikVisualizer.RegisterToNotificationEvents(_notificationParser);
+            _rubikHolder.AddNotificationParser(_notificationParser);
             _rotationMessenger.RegisterNotificationParser(_notificationParser);
             _dropdown.ClearOptions();
             _dropdownIds = new List<string>();

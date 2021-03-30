@@ -8,7 +8,7 @@ namespace Loaders
 {
     public class F2LLoader : MonoBehaviour
     {
-        [SerializeField] private RubikVisualizer _rubikVisualizer;
+        [SerializeField] private RubikHolder _rubikHolder;
         [SerializeField] private RotationMessenger _rotationMessenger;
         private F2LCaseParser _f2lParser;
         private List<F2LCaseParser.F2LCase> _cases;
@@ -21,10 +21,17 @@ namespace Loaders
         public void LoadF2LCase()
         {
             _cases = F2LCaseParser.LoadJson();
-            _rubikVisualizer.LoadState(_cases[0].GetStateFromFaces());
-            _rubikVisualizer.Flip();
+            _rubikHolder.LoadState(_cases[0].GetStateFromFaces());
+            _rubikHolder.Flip();
             _rotationMessenger.LoadRotations(_cases[0].GetSolution(),true);
+            _rotationMessenger.PracticeFinished += PracticeFinished;
         }
 
+        private void PracticeFinished()
+        {
+            _rubikHolder.ResetVisualizer();
+            _rubikHolder.LoadState(_cases[0].GetStateFromFaces());
+            _rubikHolder.Flip();
+        }
     }
 }

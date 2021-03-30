@@ -14,7 +14,7 @@ namespace View
         private float _currentTime;
         public List<GameObject> Cubes { get; private set; }
 
-        private void Start()
+        private void Awake()
         {
             _center = gameObject;
             Cubes = new List<GameObject>(8);

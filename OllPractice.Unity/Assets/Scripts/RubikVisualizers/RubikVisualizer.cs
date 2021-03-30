@@ -14,14 +14,13 @@ namespace RubikVisualizers
     public class RubikVisualizer : MonoBehaviour
     {
         private Cube _cube;
-        private RubikScanner _rubikScanner;
         private List<FaceView> _faces;
         private Queue<KeyValuePair<Action<bool>, IEnumerator>> _animations;
         private bool _isAnimating;
         private KeyValuePair<Action<bool>, IEnumerator> _currentAnimation;
 
-        public void Start()
-        {            _rubikScanner = GetComponent<RubikScanner>();
+        public void Awake()
+        {
             _cube = new Cube();
             _animations = new Queue<KeyValuePair<Action<bool>, IEnumerator>>();
             _faces = GetComponentsInChildren<FaceView>().ToList();
@@ -32,21 +31,13 @@ namespace RubikVisualizers
                     .SetFaceColorForFacing(center.transform.up, RubikColorMaterialService.GetRubikColorMaterial((RubikColor)i));
             }
 
-            var faces = new Face[6];
-            for (var i = 0; i < 6; i++)
-            {
-                var rubikColors = Enumerable.Repeat((RubikColor)i, 8);
-                faces[i] = new Face(rubikColors);
-            }
-            SetupFaces();
-            LoadState(faces);
+
 
         }
 
-        public void RegisterToNotificationEvents(NotificationParser notificationParser)
+        public void Start()
         {
-            notificationParser.FaceRotated += NotificationParserOnFaceRotated;
-            notificationParser.StateParsed += LoadState;
+            SetupFaces();
         }
 
         private void SetupFaces()
@@ -157,7 +148,7 @@ namespace RubikVisualizers
         }
 
 
-        private void NotificationParserOnFaceRotated(FaceRotation rotation)
+        public void NotificationParserOnFaceRotated(FaceRotation rotation)
         {
 
             switch (rotation)
@@ -267,7 +258,7 @@ namespace RubikVisualizers
         }
 
 
-        
+
         private void U() => RotateSide(0, 1, 2, 4, 3, Rotation.ONE);
 
         private void UPrime() => RotateSide(0, 1, 3, 4, 2, Rotation.PRIME);
