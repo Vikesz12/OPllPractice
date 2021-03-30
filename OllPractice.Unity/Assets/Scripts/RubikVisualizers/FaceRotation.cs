@@ -1,4 +1,5 @@
 ﻿using System;
+using Model;
 
 namespace RubikVisualizers
 {
@@ -66,6 +67,51 @@ namespace RubikVisualizers
                     return "M3";
                 case FaceRotation.M3Prime:
                     return "M3'";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(rotation), rotation, null);
+            }
+        }
+
+        public static FaceRotation ToF2LRotation(this FaceRotation rotation)
+        {
+            switch (rotation)
+            {
+                case FaceRotation.R:
+                    return FaceRotation.F;
+                case FaceRotation.RPrime:
+                    return FaceRotation.FPrime;
+                case FaceRotation.U:
+                    return FaceRotation.D;
+                case FaceRotation.UPrime:
+                    return FaceRotation.DPrime;
+                case FaceRotation.L:
+                    return FaceRotation.B;
+                case FaceRotation.LPrime:
+                    return FaceRotation.BPrime;
+                case FaceRotation.F:
+                    return FaceRotation.R;
+                case FaceRotation.FPrime:
+                    return FaceRotation.RPrime;
+                case FaceRotation.B:
+                    return FaceRotation.L;
+                case FaceRotation.BPrime:
+                    return FaceRotation.LPrime;
+                case FaceRotation.D:
+                    return FaceRotation.U;
+                case FaceRotation.DPrime:
+                    return FaceRotation.UPrime;
+                case FaceRotation.M:
+                    return FaceRotation.M2;
+                case FaceRotation.MPrime:
+                    return FaceRotation.M2Prime;
+                case FaceRotation.M2:
+                    return FaceRotation.M;
+                case FaceRotation.M2Prime:
+                    return FaceRotation.MPrime;
+                case FaceRotation.M3:
+                    return FaceRotation.M3;
+                case FaceRotation.M3Prime:
+                    return FaceRotation.M3Prime;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(rotation), rotation, null);
             }

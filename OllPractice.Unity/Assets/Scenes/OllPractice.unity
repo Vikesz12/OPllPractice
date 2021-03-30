@@ -1365,6 +1365,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc7c37e854c2832499e9a0ff6afc69cd, type: 3}
+--- !u!114 &868229524 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1821839667436865483, guid: cc7c37e854c2832499e9a0ff6afc69cd, type: 3}
+  m_PrefabInstance: {fileID: 868229523}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c59bde225a1c874da65c2ca14c98b82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &874099611
 GameObject:
   m_ObjectHideFlags: 0
@@ -2558,6 +2569,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d519368cdb451af4bb1210ec0e30b568, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rubikVisualizer: {fileID: 868229524}
+  _rotationMessenger: {fileID: 2039483870}
 --- !u!1 &1691965290
 GameObject:
   m_ObjectHideFlags: 0

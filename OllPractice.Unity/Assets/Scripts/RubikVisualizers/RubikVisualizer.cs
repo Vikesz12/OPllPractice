@@ -251,7 +251,7 @@ namespace RubikVisualizers
             }
         }
 
-        private void LoadState(Face[] faces)
+        public void LoadState(Face[] faces)
         {
             _cube.LoadState(faces);
             for (var i = 0; i < _faces.Count; i++)
@@ -357,6 +357,21 @@ namespace RubikVisualizers
                 _currentAnimation = _animations.Dequeue();
                 StartCoroutine(_currentAnimation.Value);
                 _isAnimating = true;
+            }
+        }
+
+        public void Flip()
+        {
+            var transform1 = transform;
+            if (transform.localPosition.y == 0f)
+            {
+                transform1.localPosition = new Vector3(0, -0.75f, 0);
+                transform1.localEulerAngles = new Vector3(0, -75f, 180f);
+            }
+            else
+            {
+                transform1.localPosition = Vector3.zero;
+                transform1.localEulerAngles = Vector3.zero;
             }
         }
     }

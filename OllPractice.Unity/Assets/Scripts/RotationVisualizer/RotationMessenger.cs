@@ -18,11 +18,11 @@ namespace RotationVisualizer
         private int _currentPosition;
         private const int MAXMessageCount = 10;
         private Stack<FaceRotation> _correctionTurns;
+        private bool _f2lMode;
 
         public void Start()
         {
             _rotationMessagePrefab = Resources.Load<GameObject>("Prefabs/RotationMessage");
-            LoadRotations(new[] { FaceRotation.R, FaceRotation.U, FaceRotation.RPrime, FaceRotation.UPrime });
         }
 
         public void RegisterNotificationParser(NotificationParser notificationParser)
@@ -35,7 +35,7 @@ namespace RotationVisualizer
             if (_rotations.Count == 0 && _correctionTurns.Count == 0) return;
             if (_correctionTurns.Count != 0)
             {
-                if (rotation == _correctionTurns.Peek())
+                if (CheckCorrectTurn(rotation,_correctionTurns.Peek()))
                 {
                     _correctionTurns.Pop();
                     Destroy(_wrongMessageParent.GetChild(0).gameObject);
@@ -54,7 +54,7 @@ namespace RotationVisualizer
                 var messageObject = _messagesParent.GetChild(_currentPosition % MAXMessageCount);
                 var textComponent = messageObject.GetComponent<TextMeshProUGUI>();
 
-                if (rotation == _rotations[_currentPosition])
+                if (CheckCorrectTurn(rotation, _rotations[_currentPosition]))
                 {
                     textComponent.color = Color.green;
                     _currentPosition += 1;
@@ -72,9 +72,16 @@ namespace RotationVisualizer
             }
         }
 
+        private bool CheckCorrectTurn(FaceRotation rotationToCheck, FaceRotation correctFaceRotation)
+        {
+            if (!_f2lMode)
+                return rotationToCheck == correctFaceRotation;
+            return rotationToCheck == correctFaceRotation.ToF2LRotation();
+        }
         private void AddCorrectionTurnFor(FaceRotation rotation)
         {
-            var correctionTurn = GetInvertedTurn(rotation);
+            var correctionTurn = GetInvertedTurn(_f2lMode ? rotation.ToF2LRotation() : rotation);
+
             _correctionTurns.Push(correctionTurn);
             var createdMessage = Instantiate(_rotationMessagePrefab, _wrongMessageParent);
             createdMessage.GetComponent<TextMeshProUGUI>().text = correctionTurn.ToRubikNotation();
@@ -110,11 +117,12 @@ namespace RotationVisualizer
             }
         }
 
-        public void LoadRotations(IEnumerable<FaceRotation> rotations)
+        public void LoadRotations(IEnumerable<FaceRotation> rotations, bool f2LMode)
         {
             _currentPosition = 0;
             _rotations = new List<FaceRotation>(rotations);
             _correctionTurns = new Stack<FaceRotation>();
+            _f2lMode = f2LMode;
             ShowNextBatch();
         }
 

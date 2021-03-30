@@ -1,14 +1,14 @@
 {
-    "F2LCases": [
+    "f2LCases": [
         {
             "name": "1AWhiteUp1",
             "faces": [
-                "LWWLLLWW",
+                "LLWWLWWL",
                 "GGLLRLLG",
-                "LLOOLWLL",
+                "LLOOLLLL",
                 "LRRRLLGL",
-                "BLLLLLLB",
-                "LLWLLRLL"
+                "BLLLLGLB",
+                "LRLLLLWL"
             ],
             "solution": "U,U,R,U,R',U,R,U',R'"
         }
