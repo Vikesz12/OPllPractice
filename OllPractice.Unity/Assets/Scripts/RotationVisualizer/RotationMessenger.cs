@@ -3,6 +3,7 @@ using RubikVisualizers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Timer;
 using TMPro;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace RotationVisualizer
 
         [SerializeField] private Transform _messagesParent;
         [SerializeField] private Transform _wrongMessageParent;
+        [SerializeField] private RubikTimer _rubikTimer;
 
         private List<FaceRotation> _rotations;
         private GameObject _rotationMessagePrefab;
@@ -25,7 +27,7 @@ namespace RotationVisualizer
         {
             _rotationMessagePrefab = Resources.Load<GameObject>("Prefabs/RotationMessage");
             _rotations = new List<FaceRotation>();
-            _correctionTurns = new Stack<FaceRotation>(); 
+            _correctionTurns = new Stack<FaceRotation>();
         }
 
         public void RegisterNotificationParser(NotificationParser notificationParser)
@@ -40,7 +42,7 @@ namespace RotationVisualizer
             if (_rotations.Count == 0 && _correctionTurns.Count == 0) return;
             if (_correctionTurns.Count != 0)
             {
-                if (CheckCorrectTurn(rotation,_correctionTurns.Peek()))
+                if (CheckCorrectTurn(rotation, _correctionTurns.Peek()))
                 {
                     _correctionTurns.Pop();
                     Destroy(_wrongMessageParent.GetChild(0).gameObject);
@@ -61,8 +63,13 @@ namespace RotationVisualizer
 
                 if (CheckCorrectTurn(rotation, _rotations[_currentPosition]))
                 {
+                    if (_currentPosition == 0)
+                        _rubikTimer.StartTimer();
                     textComponent.color = Color.green;
                     _currentPosition += 1;
+
+                    if (_currentPosition == _rotations.Count)
+                        _rubikTimer.StopTimer();
                 }
                 else
                 {

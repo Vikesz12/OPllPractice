@@ -18,6 +18,7 @@ namespace RubikVisualizers
         private Queue<KeyValuePair<Action<bool>, IEnumerator>> _animations;
         private bool _isAnimating;
         private KeyValuePair<Action<bool>, IEnumerator> _currentAnimation;
+        private bool _setupComplete;
 
         public void Awake()
         {
@@ -30,9 +31,6 @@ namespace RubikVisualizers
                 center.GetComponent<RubikCenter>()
                     .SetFaceColorForFacing(center.transform.up, RubikColorMaterialService.GetRubikColorMaterial((RubikColor)i));
             }
-
-
-
         }
 
         public void Start()
@@ -42,6 +40,7 @@ namespace RubikVisualizers
 
         private void SetupFaces()
         {
+            if (_setupComplete) return;
             //top edges
             for (var i = 0; i < 4; i++)
             {
@@ -56,7 +55,6 @@ namespace RubikVisualizers
             {
                 const int startIndex = 10;
                 var middleEdge = transform.GetChild(startIndex + i).gameObject;
-                var rubikEdge = middleEdge.GetComponent<RubikEdge>();
                 _faces[i + 1].AddCube(middleEdge);
                 switch (i)
                 {
@@ -85,7 +83,6 @@ namespace RubikVisualizers
                 var yellowEdge = transform.GetChild(startIndex + i).gameObject;
                 _faces[5].AddCube(yellowEdge);
                 _faces[i + 1].AddCube(yellowEdge);
-
             }
 
             //top corners
@@ -145,6 +142,7 @@ namespace RubikVisualizers
                 _faces[5].AddCube(bottomCorner);
             }
 
+            _setupComplete = true;
         }
 
 
@@ -244,6 +242,7 @@ namespace RubikVisualizers
 
         public void LoadState(Face[] faces)
         {
+            SetupFaces();
             _cube.LoadState(faces);
             for (var i = 0; i < _faces.Count; i++)
             {
