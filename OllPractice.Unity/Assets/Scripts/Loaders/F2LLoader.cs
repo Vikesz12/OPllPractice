@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Model;
 using Parser;
 using RotationVisualizer;
 using RubikVisualizers;
@@ -10,20 +11,30 @@ namespace Loaders
     {
         [SerializeField] private RubikHolder _rubikHolder;
         [SerializeField] private RotationMessenger _rotationMessenger;
-        private F2LCaseParser _f2lParser;
+        [SerializeField] private Transform _listParent;
         private List<F2LCaseParser.F2LCase> _cases;
 
         public void Start()
         {
-            _f2lParser = new F2LCaseParser();
+            _cases = F2LCaseParser.LoadJson();
+            InstantiateListElements();
+            gameObject.SetActive(false);
         }
 
-        public void LoadF2LCase()
+        private void InstantiateListElements()
         {
-            _cases = F2LCaseParser.LoadJson();
-            _rubikHolder.LoadState(_cases[0].GetStateFromFaces());
+            var listPrefab = Resources.Load<GameObject>("Prefabs/F2LListElement");
+            foreach (var f2LCase in _cases)
+            {
+                Instantiate(listPrefab,_listParent).GetComponent<F2LListElementLoader>().LoadCase(f2LCase, this);
+            }
+        }
+
+        public void LoadF2LCase(Face[] state, List<FaceRotation> solution)
+        {
+            _rubikHolder.LoadState(state);
             _rubikHolder.Flip();
-            _rotationMessenger.LoadRotations(_cases[0].GetSolution(),true);
+            _rotationMessenger.LoadRotations(solution,true);
             _rotationMessenger.PracticeFinished += PracticeFinished;
         }
 

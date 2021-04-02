@@ -23,6 +23,7 @@ namespace RubikVisualizers
         M2Prime,
         M3,
         M3Prime,
+        Y
     }
 
     public static class FaceRotationExtensions
@@ -67,12 +68,14 @@ namespace RubikVisualizers
                     return "M3";
                 case FaceRotation.M3Prime:
                     return "M3'";
+                case FaceRotation.Y:
+                    return "y";
                 default:
                     throw new ArgumentOutOfRangeException(nameof(rotation), rotation, null);
             }
         }
 
-        public static FaceRotation ToF2LRotation(this FaceRotation rotation)
+        public static FaceRotation ToF2LRotation(this FaceRotation rotation, int yTurns)
         {
             switch (rotation)
             {
@@ -112,6 +115,8 @@ namespace RubikVisualizers
                     return FaceRotation.M3;
                 case FaceRotation.M3Prime:
                     return FaceRotation.M3Prime;
+                case FaceRotation.Y:
+                    return FaceRotation.Y;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(rotation), rotation, null);
             }

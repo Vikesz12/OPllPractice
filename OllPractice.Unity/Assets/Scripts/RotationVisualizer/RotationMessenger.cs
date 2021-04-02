@@ -22,6 +22,8 @@ namespace RotationVisualizer
         private const int MAXMessageCount = 10;
         private Stack<FaceRotation> _correctionTurns;
         private bool _f2lMode;
+        private int _yTurns;
+        public Action PracticeFinished;
 
         public void Start()
         {
@@ -35,7 +37,6 @@ namespace RotationVisualizer
             notificationParser.FaceRotated += NotificationParserOnFaceRotated;
         }
 
-        public Action PracticeFinished;
 
         private void NotificationParserOnFaceRotated(FaceRotation rotation)
         {
@@ -61,12 +62,22 @@ namespace RotationVisualizer
                 var messageObject = _messagesParent.GetChild(_currentPosition % MAXMessageCount);
                 var textComponent = messageObject.GetComponent<TextMeshProUGUI>();
 
+                
                 if (CheckCorrectTurn(rotation, _rotations[_currentPosition]))
                 {
                     if (_currentPosition == 0)
                         _rubikTimer.StartTimer();
                     textComponent.color = Color.green;
-                    _currentPosition += 1;
+                    _currentPosition++;
+
+                    if (_rotations[_currentPosition] == FaceRotation.Y)
+                    {
+                        _currentPosition++; 
+                        var orientObject = _messagesParent.GetChild(_currentPosition % MAXMessageCount);
+                        var orientText = messageObject.GetComponent<TextMeshProUGUI>();
+                        orientText.color = Color.blue;
+                        _yTurns++;
+                    }
 
                     if (_currentPosition == _rotations.Count)
                         _rubikTimer.StopTimer();
@@ -102,11 +113,11 @@ namespace RotationVisualizer
         {
             if (!_f2lMode)
                 return rotationToCheck == correctFaceRotation;
-            return rotationToCheck == correctFaceRotation.ToF2LRotation();
+            return rotationToCheck == correctFaceRotation.ToF2LRotation(_yTurns);
         }
         private void AddCorrectionTurnFor(FaceRotation rotation)
         {
-            var correctionTurn = GetInvertedTurn(_f2lMode ? rotation.ToF2LRotation() : rotation);
+            var correctionTurn = GetInvertedTurn(_f2lMode ? rotation.ToF2LRotation(_yTurns) : rotation);
 
             _correctionTurns.Push(correctionTurn);
             var createdMessage = Instantiate(_rotationMessagePrefab, _wrongMessageParent);

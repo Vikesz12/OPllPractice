@@ -8,6 +8,7 @@ namespace RubikVisualizers
     {
         private RubikVisualizer _currentVisualizer;
         private NotificationParser _notificationParser;
+        private bool _flipped;
 
         public void Awake() => CreateVisualizer();
 
@@ -35,11 +36,14 @@ namespace RubikVisualizers
 
         public void LoadState(Face[] getStateFromFaces)
         {
+            ResetVisualizer();
             _currentVisualizer.LoadState(getStateFromFaces);
         }
 
         public void Flip()
         {
+            if(_flipped) return;
+            _flipped = true;
             _currentVisualizer.Flip();
         }
 
