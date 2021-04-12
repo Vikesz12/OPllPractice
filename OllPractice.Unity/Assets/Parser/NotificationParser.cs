@@ -1,70 +1,58 @@
 ﻿using Model;
 using RubikVisualizers;
 using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using MainThreadDispatcher;
+using MainThreadDispatcher.Unity;
 using UnityEngine;
 
 namespace Parser
 {
     public class NotificationParser
     {
-        public void ParseNotification(byte[] notification, short dataSize, Cube cube, RubikVisualizer rubikVisualizer)
+        public void ParseNotification(byte[] notification, short dataSize)
         {
             var messageType = notification[2];
 
             switch (messageType)
             {
                 case 1:
-                    ParseFaceRotation(notification, cube, rubikVisualizer);
+                    ParseFaceRotation(notification);
                     break;
                 case 2:
-                    ParseState(notification, dataSize, cube, rubikVisualizer);
+                    ParseState(notification, dataSize);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(notification), "notification type unknown");
             }
         }
 
-        private void ParseFaceRotation(byte[] notification, Cube cube, RubikVisualizer rubikVisualizer)
+        public event Action<FaceRotation> FaceRotated;
+        private void ParseFaceRotation(byte[] notification)
         {
             if (notification[1] == 8)
             {
                 switch (notification[3])
                 {
                     case 0:
-                        cube.FPrime();
-                        cube.B();
-                        rubikVisualizer.FPrime();
-                        rubikVisualizer.B();
+                        FaceRotated?.Invoke(FaceRotation.M2);
                         break;
                     case 1:
-                        cube.F();
-                        cube.BPrime();
-                        rubikVisualizer.F();
-                        rubikVisualizer.BPrime();
+                        FaceRotated?.Invoke(FaceRotation.M2Prime);
                         break;
                     case 4:
-                        cube.DPrime();
-                        cube.U();
-                        rubikVisualizer.DPrime();
-                        rubikVisualizer.U();
+                        FaceRotated?.Invoke(FaceRotation.M3);
                         break;
                     case 5:
-                        cube.D();
-                        cube.UPrime();
-                        rubikVisualizer.D();
-                        rubikVisualizer.UPrime();
+                        FaceRotated?.Invoke(FaceRotation.M3Prime);
                         break;
                     case 8:
-                        cube.R();
-                        cube.LPrime();
-                        rubikVisualizer.R();
-                        rubikVisualizer.LPrime();
+                        FaceRotated?.Invoke(FaceRotation.M);
                         break;
                     case 9:
-                        cube.RPrime();
-                        cube.L();
-                        rubikVisualizer.RPrime();
-                        rubikVisualizer.L();
+                        FaceRotated?.Invoke(FaceRotation.MPrime);
                         break;
                 }
             }
@@ -73,52 +61,40 @@ namespace Parser
                 switch (notification[3])
                 {
                     case 0:
-                        cube.B();
-                        rubikVisualizer.B();
+                        FaceRotated?.Invoke(FaceRotation.B);
                         break;
                     case 1:
-                        cube.BPrime();
-                        rubikVisualizer.BPrime();
+                        FaceRotated?.Invoke(FaceRotation.BPrime);
                         break;
                     case 2:
-                        cube.F();
-                        rubikVisualizer.F();
+                        FaceRotated?.Invoke(FaceRotation.F);
                         break;
                     case 3:
-                        cube.FPrime();
-                        rubikVisualizer.FPrime();
+                        FaceRotated?.Invoke(FaceRotation.FPrime);
                         break;
                     case 4:
-                        cube.U();
-                        rubikVisualizer.U();
+                        FaceRotated?.Invoke(FaceRotation.U);
                         break;
                     case 5:
-                        cube.UPrime();
-                        rubikVisualizer.UPrime();
+                        FaceRotated?.Invoke(FaceRotation.UPrime);
                         break;
                     case 6:
-                        cube.D();
-                        rubikVisualizer.D();
+                        FaceRotated?.Invoke(FaceRotation.D);
                         break;
                     case 7:
-                        cube.DPrime();
-                        rubikVisualizer.DPrime();
+                        FaceRotated?.Invoke(FaceRotation.DPrime);
                         break;
                     case 8:
-                        cube.R();
-                        rubikVisualizer.R();
+                        FaceRotated?.Invoke(FaceRotation.R);
                         break;
                     case 9:
-                        cube.RPrime();
-                        rubikVisualizer.RPrime();
+                        FaceRotated?.Invoke(FaceRotation.RPrime);
                         break;
                     case 10:
-                        cube.L();
-                        rubikVisualizer.L();
+                        FaceRotated?.Invoke(FaceRotation.L);
                         break;
                     case 11:
-                        cube.LPrime();
-                        rubikVisualizer.LPrime();
+                        FaceRotated?.Invoke(FaceRotation.LPrime);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(notification), "rotation unknown");
@@ -146,7 +122,9 @@ namespace Parser
             }
         }
 
-        private void ParseState(byte[] notification, short dataSize, Cube cube, RubikVisualizer rubikVisualizer)
+        public event Action<Face[]> StateParsed;
+
+        private void ParseState(byte[] notification, short dataSize)
         {
             var startIndex = 3;
             var faces = new Face[6];
@@ -179,11 +157,22 @@ namespace Parser
             faces[4].Rotate(Rotation.TWO);
             faces[5].Rotate(Rotation.ONE);
 
-            cube.LoadState(faces);
-            rubikVisualizer.LoadState(faces);
+            StateParsed?.Invoke(faces);
             Debug.Log("State parsed");
         }
 
+        public async Task AnimateRotations(IEnumerable<FaceRotation> rotations)
+        {
+            IMainThreadDispatcher dispatcher = UnityMainThreadDispatcherExtensions.Instance;
 
+            await Task.Run(async () =>
+            {
+                foreach (var faceRotation in rotations)
+                {
+                    await dispatcher.InvokeAsync(() => FaceRotated?.Invoke(faceRotation));
+                    await Task.Delay(750);
+                }
+            });
+        }
     }
 }
