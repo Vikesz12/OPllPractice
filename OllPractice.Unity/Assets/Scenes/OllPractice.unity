@@ -4083,6 +4083,7 @@ MonoBehaviour:
   _messagesParent: {fileID: 307478145}
   _wrongMessageParent: {fileID: 1474682322}
   _rubikTimer: {fileID: 1868324778}
+  _rubikHolder: {fileID: 381789488}
 --- !u!1 &2081587988
 GameObject:
   m_ObjectHideFlags: 0

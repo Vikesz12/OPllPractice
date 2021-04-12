@@ -55,5 +55,7 @@ namespace RubikVisualizers
             CreateVisualizer();
             RegisterToParserEvents();
         }
+
+        public RubikVisualizer GetCurrentVisualizer() => _currentVisualizer;
     }
 }

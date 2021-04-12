@@ -15,6 +15,7 @@ namespace RotationVisualizer
         [SerializeField] private Transform _messagesParent;
         [SerializeField] private Transform _wrongMessageParent;
         [SerializeField] private RubikTimer _rubikTimer;
+        [SerializeField] private RubikHolder _rubikHolder;
 
         private List<FaceRotation> _rotations;
         private GameObject _rotationMessagePrefab;
@@ -41,7 +42,10 @@ namespace RotationVisualizer
 
         public async void AnimateCurrentMoves()
         {
-            var remainingRotations = _rotations.GetRange(_currentPosition, _rotations.Count).Select(r => r.ToF2LRotation(_yTurns));
+            var remainingRotations = _rotations
+                .GetRange(_currentPosition, _rotations.Count)
+                .Select(r => r.ToF2LRotation(_yTurns))
+                .Where(r => r != FaceRotation.Y && r != FaceRotation.YPrime);
             await _notificationParser.AnimateRotations(remainingRotations).ConfigureAwait(false);
         }
 
@@ -69,28 +73,34 @@ namespace RotationVisualizer
                 var messageObject = _messagesParent.GetChild(_currentPosition % MAXMessageCount);
                 var textComponent = messageObject.GetComponent<TextMeshProUGUI>();
 
-                
+                if (_rotations[_currentPosition] == FaceRotation.Y || _rotations[_currentPosition] == FaceRotation.YPrime)
+                {
+                    if (_rotations[_currentPosition] == FaceRotation.Y)
+                    {
+                        _rubikHolder.GetCurrentVisualizer().Y();
+                        _yTurns++;
+                    }
+                    else
+                    {
+                        _rubikHolder.GetCurrentVisualizer().YPrime();
+                        _yTurns--;
+                    }
+
+                    _currentPosition++;
+                    textComponent.color = Color.blue;
+                    textComponent = _messagesParent.GetChild(_currentPosition % MAXMessageCount).GetComponent<TextMeshProUGUI>();
+                }
+
                 if (CheckCorrectTurn(rotation, _rotations[_currentPosition]))
                 {
                     if (_currentPosition == 0)
                         _rubikTimer.StartTimer();
 
-                    if (_rotations[_currentPosition] == FaceRotation.Y || _rotations[_currentPosition] == FaceRotation.YPrime)
-                    {
-                        _yTurns += _rotations[_currentPosition] == FaceRotation.Y ? 1 : -1;
-                        _currentPosition++;
-                        var orientText = messageObject.GetComponent<TextMeshProUGUI>();
-                        orientText.color = Color.blue;
-                    }
-                    else
-                    {
-                        textComponent.color = Color.green;
-                        _currentPosition++;
-                    }
+                    textComponent.color = Color.green;
+                    _currentPosition++;
 
                     if (_currentPosition == _rotations.Count)
                         _rubikTimer.StopTimer();
-                    
                 }
                 else
                 {

@@ -330,12 +330,12 @@ namespace RubikVisualizers
 
         }
 
-        private void Y()
+        public void Y()
         {
             RotateCube(FaceRotation.Y);
         }
 
-        private void YPrime()
+        public void YPrime()
         {
             RotateCube(FaceRotation.YPrime);
         }
@@ -355,7 +355,7 @@ namespace RubikVisualizers
         private IEnumerator CubeRotationCoroutine(FaceRotation rotation, Action callback)
         {
             var currentTime = 0.0f;
-            var angleToRotate = rotation == FaceRotation.Y ? 90f : -90f;
+            var angleToRotate = rotation == FaceRotation.Y ? -90f : 90f;
             const float timeToRotate = 0.25f;
             while (currentTime <= timeToRotate)
             {

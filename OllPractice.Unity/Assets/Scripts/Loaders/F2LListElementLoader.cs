@@ -1,8 +1,6 @@
-﻿using Parser;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace Loaders
 {
@@ -21,6 +19,7 @@ namespace Loaders
         public void OnPointerClick(PointerEventData eventData)
         {
             _loader.LoadF2LCase(_caseNumber);
+            _loader.gameObject.SetActive(false);
         }
     }
 }
