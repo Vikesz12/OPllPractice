@@ -23,7 +23,8 @@ namespace RubikVisualizers
         M2Prime,
         M3,
         M3Prime,
-        Y
+        Y,
+        YPrime
     }
 
     public static class FaceRotationExtensions
@@ -70,6 +71,8 @@ namespace RubikVisualizers
                     return "M3'";
                 case FaceRotation.Y:
                     return "y";
+                case FaceRotation.YPrime:
+                    return "y'";
                 default:
                     throw new ArgumentOutOfRangeException(nameof(rotation), rotation, null);
             }
@@ -77,45 +80,51 @@ namespace RubikVisualizers
 
         public static FaceRotation ToF2LRotation(this FaceRotation rotation, int yTurns)
         {
+            var sideRotationArray = new[] { FaceRotation.F, FaceRotation.L, FaceRotation.B, FaceRotation.R };
+            var primeSideRotationArray = new[] { FaceRotation.FPrime, FaceRotation.LPrime, FaceRotation.BPrime, FaceRotation.RPrime };
+            var mRotationArray = new[] {FaceRotation.M2, FaceRotation.MPrime, FaceRotation.M2Prime, FaceRotation.M};
+            var yValue = yTurns < 0 ? 4 - Math.Abs(yTurns % 4) : yTurns % 4;
             switch (rotation)
             {
-                case FaceRotation.R:
-                    return FaceRotation.F;
+                case FaceRotation.R: 
+                    return sideRotationArray[yValue];
+                case FaceRotation.B:
+                    return sideRotationArray[(1 + yValue) % 4];
+                case FaceRotation.L:
+                    return sideRotationArray[(2 + yValue) % 4];
+                case FaceRotation.F:
+                    return sideRotationArray[(3 + yValue) % 4];
                 case FaceRotation.RPrime:
-                    return FaceRotation.FPrime;
+                    return primeSideRotationArray[yValue];
+                case FaceRotation.BPrime:
+                    return primeSideRotationArray[(1 + yValue) % 4];
+                case FaceRotation.LPrime:
+                    return primeSideRotationArray[(2 + yValue) % 4];
+                case FaceRotation.FPrime:
+                    return primeSideRotationArray[(3 + yValue) % 4];
                 case FaceRotation.U:
                     return FaceRotation.D;
                 case FaceRotation.UPrime:
                     return FaceRotation.DPrime;
-                case FaceRotation.L:
-                    return FaceRotation.B;
-                case FaceRotation.LPrime:
-                    return FaceRotation.BPrime;
-                case FaceRotation.F:
-                    return FaceRotation.R;
-                case FaceRotation.FPrime:
-                    return FaceRotation.RPrime;
-                case FaceRotation.B:
-                    return FaceRotation.L;
-                case FaceRotation.BPrime:
-                    return FaceRotation.LPrime;
                 case FaceRotation.D:
                     return FaceRotation.U;
                 case FaceRotation.DPrime:
                     return FaceRotation.UPrime;
                 case FaceRotation.M:
-                    return FaceRotation.M2;
+                    return mRotationArray[yValue];
                 case FaceRotation.MPrime:
-                    return FaceRotation.M2Prime;
+                    return mRotationArray[(2 + yValue) % 4];
                 case FaceRotation.M2:
-                    return FaceRotation.M;
+                    return mRotationArray[(3 + yValue) % 4];
                 case FaceRotation.M2Prime:
-                    return FaceRotation.MPrime;
+                    return mRotationArray[(1 + yValue) % 4];
                 case FaceRotation.M3:
                     return FaceRotation.M3;
                 case FaceRotation.M3Prime:
                     return FaceRotation.M3Prime;
                 case FaceRotation.Y:
+                    return FaceRotation.YPrime;
+                case FaceRotation.YPrime:
                     return FaceRotation.Y;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(rotation), rotation, null);

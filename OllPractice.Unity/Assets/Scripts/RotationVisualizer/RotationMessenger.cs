@@ -74,20 +74,22 @@ namespace RotationVisualizer
                 {
                     if (_currentPosition == 0)
                         _rubikTimer.StartTimer();
-                    textComponent.color = Color.green;
-                    _currentPosition++;
+
+                    if (_rotations[_currentPosition] == FaceRotation.Y || _rotations[_currentPosition] == FaceRotation.YPrime)
+                    {
+                        _yTurns += _rotations[_currentPosition] == FaceRotation.Y ? 1 : -1;
+                        _currentPosition++;
+                        var orientText = messageObject.GetComponent<TextMeshProUGUI>();
+                        orientText.color = Color.blue;
+                    }
+                    else
+                    {
+                        textComponent.color = Color.green;
+                        _currentPosition++;
+                    }
 
                     if (_currentPosition == _rotations.Count)
                         _rubikTimer.StopTimer();
-
-                    else if (_rotations[_currentPosition] == FaceRotation.Y)
-                    {
-                        _currentPosition++; 
-                        var orientText = messageObject.GetComponent<TextMeshProUGUI>();
-                        orientText.color = Color.blue;
-                        _yTurns++;
-                    }
-
                     
                 }
                 else
@@ -106,6 +108,7 @@ namespace RotationVisualizer
                     {
                         _currentPosition = 0;
                         ShowNextBatch();
+                        _yTurns = 0;
                         PracticeFinished?.Invoke();
                     }
 

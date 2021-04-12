@@ -235,6 +235,12 @@ namespace RubikVisualizers
                     D();
                     UPrime();
                     break;
+                case FaceRotation.Y:
+                    Y();
+                    break;
+                case FaceRotation.YPrime:
+                    YPrime();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(rotation), rotation, null);
             }
@@ -287,7 +293,7 @@ namespace RubikVisualizers
         {
             _animations.Enqueue(
                 new KeyValuePair<Action<bool>, IEnumerator>(
-                    (skip) =>
+                    skip =>
                     {
                         if (skip)
                             _faces[sideToRotate].SkipCoroutine();
@@ -324,6 +330,47 @@ namespace RubikVisualizers
 
         }
 
+        private void Y()
+        {
+            RotateCube(FaceRotation.Y);
+        }
+
+        private void YPrime()
+        {
+            RotateCube(FaceRotation.YPrime);
+        }
+
+        private void RotateCube(FaceRotation rotation)
+        {
+            _animations.Enqueue(new KeyValuePair<Action<bool>, IEnumerator>(
+                skip =>
+                {
+                    if(!skip)
+                        CubeRotateWithoutAnimation(rotation);
+                },
+                CubeRotationCoroutine(rotation, () => _isAnimating = false)
+            ));
+        }
+
+        private IEnumerator CubeRotationCoroutine(FaceRotation rotation, Action callback)
+        {
+            var currentTime = 0.0f;
+            var angleToRotate = rotation == FaceRotation.Y ? 90f : -90f;
+            const float timeToRotate = 0.25f;
+            while (currentTime <= timeToRotate)
+            {
+                currentTime += Time.deltaTime; 
+                gameObject.transform.RotateAround(gameObject.transform.position, gameObject.transform.up, angleToRotate * (Time.deltaTime / timeToRotate));
+                yield return null;
+            }
+            callback.Invoke();
+        }
+
+        private void CubeRotateWithoutAnimation(FaceRotation rotation)
+        {
+            var angleToRotate = rotation == FaceRotation.Y ? 90f : -90f;
+            gameObject.transform.RotateAround(gameObject.transform.position, gameObject.transform.up, angleToRotate);
+        }
         public void Update()
         {
             if (_animations.Count == 0) return;
