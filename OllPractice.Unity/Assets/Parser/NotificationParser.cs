@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using MainThreadDispatcher;
+using MainThreadDispatcher.Unity;
 using UnityEngine;
 
 namespace Parser
@@ -161,12 +163,14 @@ namespace Parser
 
         public async Task AnimateRotations(IEnumerable<FaceRotation> rotations)
         {
+            IMainThreadDispatcher dispatcher = UnityMainThreadDispatcherExtensions.Instance;
+
             await Task.Run(async () =>
             {
                 foreach (var faceRotation in rotations)
                 {
-                    FaceRotated?.Invoke(faceRotation);
-                    await Task.Delay(1000);
+                    await dispatcher.InvokeAsync(() => FaceRotated?.Invoke(faceRotation));
+                    await Task.Delay(750);
                 }
             });
         }

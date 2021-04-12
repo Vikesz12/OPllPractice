@@ -42,7 +42,7 @@ namespace RotationVisualizer
         public async void AnimateCurrentMoves()
         {
             var remainingRotations = _rotations.GetRange(_currentPosition, _rotations.Count).Select(r => r.ToF2LRotation(_yTurns));
-            await _notificationParser.AnimateRotations(remainingRotations)ConfigureAwait(false);
+            await _notificationParser.AnimateRotations(remainingRotations).ConfigureAwait(false);
         }
 
         private void NotificationParserOnFaceRotated(FaceRotation rotation)
