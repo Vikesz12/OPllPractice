@@ -1,6 +1,9 @@
 ﻿using Model;
 using RubikVisualizers;
 using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Parser
@@ -80,7 +83,7 @@ namespace Parser
                         FaceRotated?.Invoke(FaceRotation.DPrime);
                         break;
                     case 8:
-                        FaceRotated?.Invoke(FaceRotation.R); 
+                        FaceRotated?.Invoke(FaceRotation.R);
                         break;
                     case 9:
                         FaceRotated?.Invoke(FaceRotation.RPrime);
@@ -156,6 +159,16 @@ namespace Parser
             Debug.Log("State parsed");
         }
 
-
+        public async Task AnimateRotations(IEnumerable<FaceRotation> rotations)
+        {
+            await Task.Run(async () =>
+            {
+                foreach (var faceRotation in rotations)
+                {
+                    FaceRotated?.Invoke(faceRotation);
+                    await Task.Delay(1000);
+                }
+            });
+        }
     }
 }

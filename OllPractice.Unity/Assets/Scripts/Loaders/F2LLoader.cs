@@ -24,24 +24,25 @@ namespace Loaders
         private void InstantiateListElements()
         {
             var listPrefab = Resources.Load<GameObject>("Prefabs/F2LListElement");
-            foreach (var f2LCase in _cases)
+            for (var i = 0; i < _cases.Count; i++)
             {
-                Instantiate(listPrefab,_listParent).GetComponent<F2LListElementLoader>().LoadCase(f2LCase, this);
+                var f2LCase = _cases[i];
+                Instantiate(listPrefab, _listParent).GetComponent<F2LListElementLoader>().LoadCase(i, f2LCase.name, this);
             }
         }
 
-        public void LoadF2LCase(Face[] state, List<FaceRotation> solution)
+        public void LoadF2LCase(int caseNumber)
         {
-            _rubikHolder.LoadState(state);
+            _rubikHolder.LoadState(_cases[caseNumber].GetStateFromFaces());
             _rubikHolder.Flip();
-            _rotationMessenger.LoadRotations(solution,true);
-            _rotationMessenger.PracticeFinished += PracticeFinished;
+            _rotationMessenger.LoadRotations(_cases[caseNumber].GetSolution(),true);
+            _rotationMessenger.PracticeFinished += () => PracticeFinished(_cases[caseNumber].GetStateFromFaces());
         }
 
-        private void PracticeFinished()
+        private void PracticeFinished(Face[] state)
         {
             _rubikHolder.ResetVisualizer();
-            _rubikHolder.LoadState(_cases[0].GetStateFromFaces());
+            _rubikHolder.LoadState(state);
             _rubikHolder.Flip();
         }
     }

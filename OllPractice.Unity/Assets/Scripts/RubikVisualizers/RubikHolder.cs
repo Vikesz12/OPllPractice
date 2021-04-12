@@ -34,10 +34,10 @@ namespace RubikVisualizers
             _notificationParser.StateParsed -= _currentVisualizer.LoadState;
         }
 
-        public void LoadState(Face[] getStateFromFaces)
+        public void LoadState(Face[] state)
         {
             ResetVisualizer();
-            _currentVisualizer.LoadState(getStateFromFaces);
+            _currentVisualizer.LoadState(state);
         }
 
         public void Flip()
@@ -51,6 +51,7 @@ namespace RubikVisualizers
         {
             UnRegisterEvents();
             Destroy(_currentVisualizer.gameObject);
+            _flipped = false;
             CreateVisualizer();
             RegisterToParserEvents();
         }

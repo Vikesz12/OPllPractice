@@ -24,6 +24,7 @@ namespace RotationVisualizer
         private bool _f2lMode;
         private int _yTurns;
         public Action PracticeFinished;
+        private NotificationParser _notificationParser;
 
         public void Start()
         {
@@ -35,8 +36,14 @@ namespace RotationVisualizer
         public void RegisterNotificationParser(NotificationParser notificationParser)
         {
             notificationParser.FaceRotated += NotificationParserOnFaceRotated;
+            _notificationParser = notificationParser;
         }
 
+        public async void AnimateCurrentMoves()
+        {
+            var remainingRotations = _rotations.GetRange(_currentPosition, _rotations.Count).Select(r => r.ToF2LRotation(_yTurns));
+            await _notificationParser.AnimateRotations(remainingRotations)ConfigureAwait(false);
+        }
 
         private void NotificationParserOnFaceRotated(FaceRotation rotation)
         {
@@ -70,17 +77,18 @@ namespace RotationVisualizer
                     textComponent.color = Color.green;
                     _currentPosition++;
 
-                    if (_rotations[_currentPosition] == FaceRotation.Y)
+                    if (_currentPosition == _rotations.Count)
+                        _rubikTimer.StopTimer();
+
+                    else if (_rotations[_currentPosition] == FaceRotation.Y)
                     {
                         _currentPosition++; 
-                        var orientObject = _messagesParent.GetChild(_currentPosition % MAXMessageCount);
                         var orientText = messageObject.GetComponent<TextMeshProUGUI>();
                         orientText.color = Color.blue;
                         _yTurns++;
                     }
 
-                    if (_currentPosition == _rotations.Count)
-                        _rubikTimer.StopTimer();
+                    
                 }
                 else
                 {
