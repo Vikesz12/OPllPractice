@@ -2,7 +2,8 @@
     "name": "OllPractice",
     "references": [
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
-        "GUID:4fbb1f4b759af2a40b7363014c4173a0"
+        "GUID:4fbb1f4b759af2a40b7363014c4173a0",
+        "GUID:71fc3484f203a6e44808ed95fef65c9b"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

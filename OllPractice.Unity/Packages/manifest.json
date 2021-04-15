@@ -39,13 +39,15 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0",
-    "com.mainthreaddispatcher.unity": "1.1.1"
+    "com.mainthreaddispatcher.unity": "1.1.1",
+    "com.injecter.unity": "5.1.0"
   },
   "scopedRegistries": [
     {
       "name": "package.openupm.com",
       "url": "https://package.openupm.com",
       "scopes": [
+        "com.injecter.unity",
         "com.mainthreaddispatcher.unity",
         "com.openupm"
       ]
