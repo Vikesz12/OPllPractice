@@ -3,6 +3,7 @@ using RubikVisualizers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Injecter;
 using Timer;
 using TMPro;
 using UnityEngine;
@@ -11,11 +12,12 @@ namespace RotationVisualizer
 {
     public class RotationMessenger : MonoBehaviour
     {
-
         [SerializeField] private Transform _messagesParent;
         [SerializeField] private Transform _wrongMessageParent;
         [SerializeField] private RubikTimer _rubikTimer;
         [SerializeField] private RubikHolder _rubikHolder;
+
+        [Inject] private INotificationParser _notificationParser;
 
         private List<FaceRotation> _rotations;
         private GameObject _rotationMessagePrefab;
@@ -25,19 +27,13 @@ namespace RotationVisualizer
         private bool _f2lMode;
         private int _yTurns;
         public Action PracticeFinished;
-        private NotificationParser _notificationParser;
 
         public void Start()
         {
             _rotationMessagePrefab = Resources.Load<GameObject>("Prefabs/RotationMessage");
             _rotations = new List<FaceRotation>();
+            _notificationParser.FaceRotated += NotificationParserOnFaceRotated;
             _correctionTurns = new Stack<FaceRotation>();
-        }
-
-        public void RegisterNotificationParser(NotificationParser notificationParser)
-        {
-            notificationParser.FaceRotated += NotificationParserOnFaceRotated;
-            _notificationParser = notificationParser;
         }
 
         public async void AnimateCurrentMoves()

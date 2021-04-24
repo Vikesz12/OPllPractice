@@ -1,10 +1,10 @@
 ﻿using Config;
+using Injecter;
+using Parser;
+using RubikVisualizers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Parser;
-using RotationVisualizer;
-using RubikVisualizers;
 using TMPro;
 using UnityEngine;
 
@@ -13,21 +13,18 @@ namespace Scanner
     public class RubikScanner : MonoBehaviour
     {
         [SerializeField] private TMP_Dropdown _dropdown;
-        [SerializeField] private RotationMessenger _rotationMessenger;
         [SerializeField] private RubikHolder _rubikHolder;
+
+        [Inject] private INotificationParser _notificationParser;
 
         private bool _isScanningDevices;
         private bool _isSubscribed;
         private List<string> _dropdownIds;
         private Dictionary<string, Dictionary<string, string>> _devices = new Dictionary<string, Dictionary<string, string>>();
         private string _selectedDeviceId;
-        private NotificationParser _notificationParser;
 
         private void Start()
         {
-            _notificationParser = new NotificationParser();
-            _rubikHolder.AddNotificationParser(_notificationParser);
-            _rotationMessenger.RegisterNotificationParser(_notificationParser);
             _dropdown.ClearOptions();
             _dropdownIds = new List<string>();
             _dropdown.onValueChanged.AddListener(OnDropDownSelected);

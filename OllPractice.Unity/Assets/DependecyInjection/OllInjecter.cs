@@ -1,29 +1,53 @@
-using System;
+using Injecter;
 using Injecter.Unity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System;
+using Parser;
 using UnityEngine;
 
-namespace OllPractie.DepenecyInjection
+namespace OllPractice.DepenecyInjection
 {
     [DefaultExecutionOrder(-999)]
     public sealed class OllInjecter : InjectStarter
     {
-        // Override CreateServiceProvider to add service registrations
+        private IHost _host;
+
         protected override IServiceProvider CreateServiceProvider()
         {
-            IServiceCollection services = new ServiceCollection();
+            _host = new HostBuilder()
+                .ConfigureServices(OllInjector.AddOll)
+                .Build();
 
-            // Mandatory to call AddSceneInjector, optionally configure options
+            CompositionRoot.ServiceProvider = _host.Services;
+
+            return CompositionRoot.ServiceProvider;
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            _host.Start();
+        }
+
+        private void OnApplicationQuit() => _host?.Dispose();
+    }
+
+    public static class OllInjector
+    {
+        public static void AddOll(HostBuilderContext hostBuilderContext, IServiceCollection services)
+        {
             services.AddSceneInjector(
                 injecterOptions => injecterOptions.UseCaching = true,
                 sceneInjectorOptions =>
                 {
                     sceneInjectorOptions.DontDestroyOnLoad = true;
-                    sceneInjectorOptions.InjectionBehavior = SceneInjectorOptions.Behavior.Factory;
+                    sceneInjectorOptions.InjectionBehavior = SceneInjectorOptions.Behavior.CompositionRoot;
                 });
 
 
-            return services.BuildServiceProvider();
+            services.AddSingleton<INotificationParser, NotificationParser>();
         }
     }
 }

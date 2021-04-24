@@ -1,4 +1,6 @@
-﻿using Model;
+﻿using System;
+using Injecter;
+using Model;
 using Parser;
 using UnityEngine;
 
@@ -6,22 +8,25 @@ namespace RubikVisualizers
 {
     public class RubikHolder : MonoBehaviour
     {
+        [Inject] private readonly INotificationParser _notificationParser = default;
+
         private RubikVisualizer _currentVisualizer;
-        private NotificationParser _notificationParser;
         private bool _flipped;
 
-        public void Awake() => CreateVisualizer();
-
-        private void CreateVisualizer()
+        public void Awake()
         {
-            _currentVisualizer = Instantiate(Resources.Load<GameObject>("Prefabs/RubiksConnected"), transform).GetComponent<RubikVisualizer>();
+            CreateVisualizer();
         }
 
-        public void AddNotificationParser(NotificationParser notificationParser)
+        public void Start()
         {
-            _notificationParser = notificationParser;
             RegisterToParserEvents();
         }
+
+        private void CreateVisualizer() => _currentVisualizer = 
+            Instantiate(Resources.Load<GameObject>("Prefabs/RubiksConnected"), transform)
+            .GetComponent<RubikVisualizer>();
+
 
         private void RegisterToParserEvents()
         {

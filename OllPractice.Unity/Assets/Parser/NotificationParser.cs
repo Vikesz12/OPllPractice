@@ -1,16 +1,15 @@
-﻿using Model;
+﻿using MainThreadDispatcher;
+using MainThreadDispatcher.Unity;
+using Model;
 using RubikVisualizers;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
-using MainThreadDispatcher;
-using MainThreadDispatcher.Unity;
 using UnityEngine;
 
 namespace Parser
 {
-    public class NotificationParser
+    public class NotificationParser : INotificationParser
     {
         public void ParseNotification(byte[] notification, short dataSize)
         {
