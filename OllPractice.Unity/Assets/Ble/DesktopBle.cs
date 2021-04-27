@@ -12,7 +12,12 @@ namespace Ble
     {
         private Dictionary<string, Dictionary<string, string>> _devices = new Dictionary<string, Dictionary<string, string>>();
 
-        public void ScanDevices(TMP_Dropdown dropdown, List<string> dropdownIds, ref string selectedDeviceId, ref bool isScanning)
+        public void StartScan(TMP_Dropdown dropdown, List<string> dropdownIds)
+        {
+            BleApi.StartDeviceScan();
+        }
+
+        public void ScanDevices(TMP_Dropdown dropdown, List<string> dropdownIds, ref bool isScanning)
         {
             var res = new BleApi.DeviceUpdate();
             BleApi.ScanStatus status;
@@ -39,7 +44,6 @@ namespace Ble
                         dropdownIds.Add(res.id);
                         dropdown.options.Add(newDeviceOption);
                         dropdown.RefreshShownValue();
-                        if (dropdownIds.Count == 1) selectedDeviceId = dropdownIds[0];
                     }
                 }
                 else if (status == BleApi.ScanStatus.FINISHED)

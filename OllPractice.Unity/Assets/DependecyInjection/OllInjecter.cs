@@ -49,7 +49,12 @@ namespace OllPractice.DepenecyInjection
 
 
             services.AddSingleton<INotificationParser, NotificationParser>();
+
+#if UNITY_ANDROID
+            services.AddSingleton<IBle, AndroidBle>();
+#else
             services.AddSingleton<IBle, DesktopBle>();
+#endif
         }
     }
 }
