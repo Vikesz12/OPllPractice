@@ -3,6 +3,7 @@ using Injecter.Unity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using Ble;
 using Parser;
 using UnityEngine;
 
@@ -48,6 +49,7 @@ namespace OllPractice.DepenecyInjection
 
 
             services.AddSingleton<INotificationParser, NotificationParser>();
+            services.AddSingleton<IBle, DesktopBle>();
         }
     }
 }
