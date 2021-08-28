@@ -17,7 +17,8 @@ namespace RotationVisualizer
         [SerializeField] private RubikTimer _rubikTimer;
         [SerializeField] private RubikHolder _rubikHolder;
 
-        [Inject] private INotificationParser _notificationParser;
+        [Inject] 
+        private INotificationParser _notificationParser;
 
         private List<FaceRotation> _rotations;
         private GameObject _rotationMessagePrefab;

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BleWinrt;
 using Config;
 using Parser;
 using Scanner;
@@ -17,7 +18,7 @@ namespace Ble
             BleApi.StartDeviceScan();
         }
 
-        public void ScanDevices(TMP_Dropdown dropdown, List<string> dropdownIds, ref bool isScanning)
+        public void ScanDevices(TMP_Dropdown dropdown, List<string> dropdownIds, ref string selectedDeviceId, ref bool isScanning)
         {
             var res = new BleApi.DeviceUpdate();
             BleApi.ScanStatus status;
@@ -44,6 +45,7 @@ namespace Ble
                         dropdownIds.Add(res.id);
                         dropdown.options.Add(newDeviceOption);
                         dropdown.RefreshShownValue();
+                        if (dropdownIds.Count == 1) selectedDeviceId = dropdownIds[0];
                     }
                 }
                 else if (status == BleApi.ScanStatus.FINISHED)
@@ -63,6 +65,9 @@ namespace Ble
 
         public void Subscribe(string deviceId)
         {
+            if(deviceId == null)
+                return;
+            BleApi.StopDeviceScan();
             // no error code available in non-blocking mode
             BleApi.SubscribeCharacteristic(deviceId, RubikBleConfig.serviceUuid, RubikBleConfig.readCharacteristicUuid, false);
         }

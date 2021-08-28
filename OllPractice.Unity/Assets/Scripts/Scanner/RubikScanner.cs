@@ -2,6 +2,7 @@
 using Parser;
 using RubikVisualizers;
 using System.Collections.Generic;
+using BleWinrt;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -33,7 +34,7 @@ namespace Scanner
         public void StartScan()
         {
             _dropdown.ClearOptions();
-            BleApi.StartDeviceScan();
+            _bleScanner.StartScan(_dropdown, _dropdownIds);
             _isScanningDevices = true;
             Debug.Log($"Scanning {_isScanningDevices}");
         }
@@ -42,7 +43,7 @@ namespace Scanner
         {
             if (_isScanningDevices)
             {
-                _bleScanner.ScanDevices(_dropdown, _dropdownIds, ref _isScanningDevices);
+                _bleScanner.ScanDevices(_dropdown, _dropdownIds, ref _selectedDeviceId, ref _isScanningDevices);
             }
             if (_isSubscribed)
             {
