@@ -1,12 +1,13 @@
 ﻿using Model;
 using Parser;
 using UnityEngine;
+using Zenject;
 
 namespace RubikVisualizers
 {
     public class RubikHolder : MonoBehaviour
     {
-        [Inject] private readonly INotificationParser _notificationParser = default;
+        [Inject] private readonly INotificationParser _notificationParser;
 
         private RubikVisualizer _currentVisualizer;
         private bool _flipped;

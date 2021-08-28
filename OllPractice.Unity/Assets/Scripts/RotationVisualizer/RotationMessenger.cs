@@ -6,6 +6,7 @@ using System.Linq;
 using Timer;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace RotationVisualizer
 {
