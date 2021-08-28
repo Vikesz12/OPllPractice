@@ -1,8 +1,7 @@
-﻿using Injecter;
+﻿using Ble;
 using Parser;
 using RubikVisualizers;
 using System.Collections.Generic;
-using Ble;
 using TMPro;
 using UnityEngine;
 
@@ -42,11 +41,11 @@ namespace Scanner
         {
             if (_isScanningDevices)
             {
-                _bleScanner.ScanDevices(_dropdown, _dropdownIds, ref _selectedDeviceId, ref _isScanningDevices);
+                _bleScanner.ScanDevices(_dropdown, _dropdownIds, ref _isScanningDevices);
             }
             if (_isSubscribed)
             {
-               _bleScanner.PollData(_notificationParser);
+                _bleScanner.PollData(_notificationParser);
             }
         }
         public void Subscribe()

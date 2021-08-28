@@ -1,6 +1,4 @@
-﻿using System;
-using Injecter;
-using Model;
+﻿using Model;
 using Parser;
 using UnityEngine;
 
@@ -23,7 +21,7 @@ namespace RubikVisualizers
             RegisterToParserEvents();
         }
 
-        private void CreateVisualizer() => _currentVisualizer = 
+        private void CreateVisualizer() => _currentVisualizer =
             Instantiate(Resources.Load<GameObject>("Prefabs/RubiksConnected"), transform)
             .GetComponent<RubikVisualizer>();
 
@@ -47,7 +45,7 @@ namespace RubikVisualizers
 
         public void Flip()
         {
-            if(_flipped) return;
+            if (_flipped) return;
             _flipped = true;
             _currentVisualizer.Flip();
         }
