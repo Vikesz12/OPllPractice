@@ -1,4 +1,5 @@
-﻿using Ble;
+﻿using System;
+using Ble;
 using Parser;
 using RubikVisualizers;
 using System.Collections.Generic;
@@ -68,9 +69,9 @@ namespace Scanner
         public void AndroidMessage(string message)
         {
             var messageParts = message.Split('|');
-            if (messageParts[0] == "Notification")
+            if (messageParts[0] == "notification")
             {
-                var bytes = Encoding.ASCII.GetBytes(messageParts[1]);
+                var bytes = Convert.FromBase64String(messageParts[1]);
                 _notificationParser.ParseNotification(bytes, (short)bytes.Length);
             }
             else
@@ -80,6 +81,7 @@ namespace Scanner
                 _dropdownIds.Add(messageParts[1]);
                 _dropdown.options.Add(newDeviceOption);
                 _dropdown.RefreshShownValue();
+                if (_dropdownIds.Count == 1) _selectedDeviceId = _dropdownIds[0]; 
             }
         }
     }

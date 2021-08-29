@@ -1,11 +1,13 @@
 package com.viktor.ble;
 
-import android.Manifest;
+import static android.util.Base64.DEFAULT;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothProfile;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
@@ -13,14 +15,16 @@ import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.ParcelUuid;
+import android.util.Base64;
 import android.util.Log;
 
 import com.unity3d.player.UnityPlayer;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,6 +37,7 @@ public class Ble {
     private static UUID SERVICE_UUID;
     private static UUID READ_CHARACTERISTIC_UUID;
     private static UUID WRITE_CHARACTERISTIC_UUID;
+    private static UUID NOTIFY_DESCRIPTOR_UUID;
 
     private final String mGameObjName;
     private final String mCallBackName;
@@ -78,6 +83,10 @@ public class Ble {
 
     public void setWRITE_CHARACTERISTIC_UUID(String WRITE_CHARACTERISTIC_UUID) {
         Ble.WRITE_CHARACTERISTIC_UUID = UUID.fromString(WRITE_CHARACTERISTIC_UUID);
+    }
+
+    public void setNOTIFY_DESCRIPTOR_UUID(String NOTIFY_DESCRIPTOR_UUID) {
+        Ble.NOTIFY_DESCRIPTOR_UUID = UUID.fromString(NOTIFY_DESCRIPTOR_UUID);
     }
 
     public void scanLeDevice() {
@@ -159,7 +168,7 @@ public class Ble {
             return false;
         }
         mWriteCharacteristic.setValue(data);
-        return mBluetoothGatt.writeCharacteristic(mReadCharacteristic);
+        return mBluetoothGatt.writeCharacteristic(mWriteCharacteristic);
     }
 
 
@@ -186,10 +195,16 @@ public class Ble {
                 mWriteCharacteristic = gatt.getService(SERVICE_UUID).
                         getCharacteristic(WRITE_CHARACTERISTIC_UUID);
 
+                Log.i(TAG, "Subscribed to: " + mReadCharacteristic);
                 gatt.setCharacteristicNotification(
                         mReadCharacteristic,
                         true
                 );
+                if (READ_CHARACTERISTIC_UUID.equals(mReadCharacteristic.getUuid())) {
+                    BluetoothGattDescriptor descriptor = mReadCharacteristic.getDescriptor(NOTIFY_DESCRIPTOR_UUID);
+                    descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                    mBluetoothGatt.writeDescriptor(descriptor);
+                }
             } else {
                 Log.w(TAG, "onServicesDiscovered received: " + status);
             }
@@ -198,9 +213,12 @@ public class Ble {
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt,
                                             BluetoothGattCharacteristic characteristic) {
+
+            Log.i(TAG, "Noti recieved: " + Arrays.toString(characteristic.getValue()));
+            String base64 = Base64.encodeToString(characteristic.getValue(),DEFAULT);
             UnityPlayer.UnitySendMessage(mGameObjName,
                     mCallBackName,
-                    "notification|" + new String(characteristic.getValue()));
+                    "notification|" + base64);
         }
     };
 }
