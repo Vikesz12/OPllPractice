@@ -9,14 +9,19 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothProfile;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Handler;
+import android.os.ParcelUuid;
 import android.util.Log;
 
 import com.unity3d.player.UnityPlayer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -84,8 +89,17 @@ public class Ble {
             }, SCAN_PERIOD);
 
             scanning = true;
-            Log.i(TAG, "Started scanning");
-            mBlueToothLeScanner.startScan(leScanCallback);
+            Log.i(TAG, "Started scanning for uuid: " +SERVICE_UUID);
+
+            ScanSettings settings = new ScanSettings.Builder().setScanMode(1).build();
+
+            ScanFilter filter = new ScanFilter.Builder()
+                    .setServiceUuid(new ParcelUuid(SERVICE_UUID))
+                    .build();
+            List<ScanFilter> filters = new ArrayList<>();
+            filters.add(filter);
+
+            mBlueToothLeScanner.startScan(filters, settings, leScanCallback);
         } else {
             scanning = false;
             mBlueToothLeScanner.stopScan(leScanCallback);
