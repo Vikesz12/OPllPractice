@@ -47,7 +47,9 @@ namespace Scanner
             }
             if (_isSubscribed)
             {
+#if !UNITY_ANDROID
                 _bleScanner.PollData(_notificationParser);
+#endif
             }
         }
         public void Subscribe()
@@ -60,5 +62,10 @@ namespace Scanner
         public void Write(string writeData) => _bleScanner.Write(writeData, _selectedDeviceId);
         private void OnApplicationQuit() => _bleScanner.Quit();
         private void OnDestroy() => _dropdown.onValueChanged.RemoveAllListeners();
+
+        public void AndroidMessage(string message)
+        {
+            Debug.Log("BLE:" + message);
+        }
     }
 }
