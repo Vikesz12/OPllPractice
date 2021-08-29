@@ -2,6 +2,8 @@
 using Parser;
 using RubikVisualizers;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using BleWinrt;
 using TMPro;
 using UnityEngine;
@@ -65,7 +67,20 @@ namespace Scanner
 
         public void AndroidMessage(string message)
         {
-            Debug.Log("BLE:" + message);
+            var messageParts = message.Split('|');
+            if (messageParts[0] == "Notification")
+            {
+                var bytes = Encoding.ASCII.GetBytes(messageParts[1]);
+                _notificationParser.ParseNotification(bytes, (short)bytes.Length);
+            }
+            else
+            {
+                if (_dropdownIds.Any(id => id == messageParts[1])) return;
+                var newDeviceOption = new TMP_Dropdown.OptionData(messageParts[2]);
+                _dropdownIds.Add(messageParts[1]);
+                _dropdown.options.Add(newDeviceOption);
+                _dropdown.RefreshShownValue();
+            }
         }
     }
 }
