@@ -5,6 +5,7 @@ using RubikVisualizers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Events;
 using UnityEngine;
 
 namespace Parser
@@ -158,6 +159,7 @@ namespace Parser
 
             StateParsed?.Invoke(faces);
             Debug.Log("State parsed");
+            EventBus.Instance.Value.Invoke(new StateParsed());
         }
 
         public async Task AnimateRotations(IEnumerable<FaceRotation> rotations)

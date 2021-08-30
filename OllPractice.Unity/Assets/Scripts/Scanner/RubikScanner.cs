@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Ble;
 using Parser;
 using RubikVisualizers;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using BleWinrt;
+using Events;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -14,39 +16,40 @@ namespace Scanner
 {
     public class RubikScanner : MonoBehaviour
     {
-        [SerializeField] private TMP_Dropdown _dropdown;
-        [SerializeField] private RubikHolder _rubikHolder;
+        [SerializeField] private Transform _foundCubeButtonsParent;
 
         [Inject] private INotificationParser _notificationParser;
         [Inject] private IBle _bleScanner;
 
         private bool _isScanningDevices;
         private bool _isSubscribed;
-        private List<string> _dropdownIds;
-        private string _selectedDeviceId;
+        private string _connectedDeviceId;
+        private List<string> _foundIds;
 
         private void Start()
         {
-            _dropdown.ClearOptions();
-            _dropdownIds = new List<string>();
-            _dropdown.onValueChanged.AddListener(OnDropDownSelected);
+            EventBus.Instance.Value.Subscribe<ScanStatusChanged>(ScanStatusChanged);
+            _foundIds = new List<string>();
+            StartScan();
         }
 
-        private void OnDropDownSelected(int arg0) => _selectedDeviceId = _dropdownIds[arg0];
+        private void ScanStatusChanged(ScanStatusChanged obj) => _isScanningDevices = obj.Status;
 
         public void StartScan()
         {
-            _dropdown.ClearOptions();
-            _bleScanner.StartScan(_dropdown, _dropdownIds);
-            _isScanningDevices = true;
+            _bleScanner.StartScan();
+            EventBus.Instance.Value.Invoke(new ScanStatusChanged { Status = true });
             Debug.Log($"Scanning {_isScanningDevices}");
+#if UNITY_ANDROID
+            StartCoroutine(ScanFinished());
+#endif
         }
 
         public void Update()
         {
             if (_isScanningDevices)
             {
-                _bleScanner.ScanDevices(_dropdown, _dropdownIds, ref _selectedDeviceId, ref _isScanningDevices);
+                _bleScanner.ScanDevices(this);
             }
             if (_isSubscribed)
             {
@@ -55,16 +58,18 @@ namespace Scanner
 #endif
             }
         }
-        public void Subscribe()
+
+        private void ConnectToCube(string deviceId)
         {
-            _bleScanner.Subscribe(_selectedDeviceId);
+            _bleScanner.Subscribe(deviceId);
             _isSubscribed = true;
-            Debug.Log($"connected to {_selectedDeviceId}");
+            Debug.Log($"connected to {deviceId}");
+            _connectedDeviceId = deviceId;
+            EventBus.Instance.Value.Invoke(new ConnectedToDevice{DeviceId = deviceId});
         }
 
-        public void Write(string writeData) => _bleScanner.Write(writeData, _selectedDeviceId);
+        public void Write(string writeData) => _bleScanner.Write(writeData, _connectedDeviceId);
         private void OnApplicationQuit() => _bleScanner.Quit();
-        private void OnDestroy() => _dropdown.onValueChanged.RemoveAllListeners();
 
         public void AndroidMessage(string message)
         {
@@ -76,13 +81,24 @@ namespace Scanner
             }
             else
             {
-                if (_dropdownIds.Any(id => id == messageParts[1])) return;
-                var newDeviceOption = new TMP_Dropdown.OptionData(messageParts[2]);
-                _dropdownIds.Add(messageParts[1]);
-                _dropdown.options.Add(newDeviceOption);
-                _dropdown.RefreshShownValue();
-                if (_dropdownIds.Count == 1) _selectedDeviceId = _dropdownIds[0]; 
+                CreateNewCubeButton(messageParts[1],messageParts[2]);
             }
+        }
+
+        public void CreateNewCubeButton(string deviceId, string cubeName)
+        {
+            if (_foundIds.Any(id => id == deviceId)) return;
+            _foundIds.Add(deviceId);
+            var newCubeButton = Instantiate(Resources.Load<GameObject>("Prefabs/FoundCubeButton"),_foundCubeButtonsParent);
+            var foundCubeButton = newCubeButton.GetComponent<FoundCubeButton>();
+            foundCubeButton.SetCubeName(cubeName);
+            foundCubeButton.GetButton.onClick.AddListener(() => ConnectToCube(deviceId));
+        }
+
+        private static IEnumerator ScanFinished()
+        {
+            yield return new WaitForSeconds(15);
+            EventBus.Instance.Value.Invoke(new ScanStatusChanged{Status = false});
         }
     }
 }

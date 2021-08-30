@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using BleWinrt;
+﻿using BleWinrt;
 using Config;
+using Events;
 using Parser;
 using Scanner;
-using TMPro;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Ble
 {
@@ -13,12 +12,12 @@ namespace Ble
     {
         private Dictionary<string, Dictionary<string, string>> _devices = new Dictionary<string, Dictionary<string, string>>();
 
-        public void StartScan(TMP_Dropdown dropdown, List<string> dropdownIds)
+        public void StartScan()
         {
             BleApi.StartDeviceScan();
         }
 
-        public void ScanDevices(TMP_Dropdown dropdown, List<string> dropdownIds, ref string selectedDeviceId, ref bool isScanning)
+        public void ScanDevices(RubikScanner rubikScanner)
         {
             var res = new BleApi.DeviceUpdate();
             BleApi.ScanStatus status;
@@ -40,17 +39,12 @@ namespace Ble
                     if (_devices[res.id]["name"] != string.Empty && _devices[res.id]["isConnectable"] == "True")
                     {
                         // add new device to list
-                        if (dropdownIds.Any(id => id == res.id)) continue;
-                        var newDeviceOption = new TMP_Dropdown.OptionData(_devices[res.id]["name"]);
-                        dropdownIds.Add(res.id);
-                        dropdown.options.Add(newDeviceOption);
-                        dropdown.RefreshShownValue();
-                        if (dropdownIds.Count == 1) selectedDeviceId = dropdownIds[0];
+                        rubikScanner.CreateNewCubeButton(res.id, _devices[res.id]["name"]);
                     }
                 }
                 else if (status == BleApi.ScanStatus.FINISHED)
                 {
-                    isScanning = false;
+                    EventBus.Instance.Value.Invoke(new ScanStatusChanged { Status = false });
                 }
             } while (status == BleApi.ScanStatus.AVAILABLE);
         }
@@ -65,7 +59,7 @@ namespace Ble
 
         public void Subscribe(string deviceId)
         {
-            if(deviceId == null)
+            if (deviceId == null)
                 return;
             BleApi.StopDeviceScan();
             // no error code available in non-blocking mode

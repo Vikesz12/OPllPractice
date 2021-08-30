@@ -3,12 +3,13 @@ using Parser;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Scanner;
 using TMPro;
 using UnityEngine;
 
 namespace Ble
 {
-    class AndroidBle : IBle
+    public class AndroidBle : IBle
     {
         private Dictionary<string, string> _devices = new Dictionary<string, string>();
         private readonly AndroidJavaObject _plugin;
@@ -23,12 +24,12 @@ namespace Ble
             _plugin.Call("setNOTIFY_DESCRIPTOR_UUID", RubikBleConfig.notifyDescriptorUuid);
         }
 
-        public void StartScan(TMP_Dropdown dropdown, List<string> dropdownIds)
+        public void StartScan()
         {
             _plugin.Call("scanLeDevice");
         }
 
-        public void ScanDevices(TMP_Dropdown dropdown, List<string> dropdownIds, ref string selectedDeviceId, ref bool isScanning)
+        public void ScanDevices(RubikScanner rubikScanner)
         {
         }
 
