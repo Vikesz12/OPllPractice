@@ -23,8 +23,8 @@ namespace Scanner
         private void StateParsedHandler(StateParsed parsed)
         {
             _tryParse = false;
-            gameObject.SetActive(false);
-            EventBus.Instance.Value.Unsubscribe<StateParsed>(StateParsedHandler);
+            if (gameObject.activeSelf)
+                gameObject.SetActive(false);
         }
 
         private void RequestState(ConnectedToDevice device)
@@ -38,9 +38,9 @@ namespace Scanner
         {
             while (_tryParse)
             {
-                _bleScanner.Write("3", _connectedDeviceId);
+                yield return new WaitForSeconds(3);
 
-                yield return new WaitForSeconds(5);
+                _bleScanner.Write("3", _connectedDeviceId);
             }
         }
     }
