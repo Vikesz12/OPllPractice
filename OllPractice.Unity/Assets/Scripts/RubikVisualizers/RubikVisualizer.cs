@@ -400,14 +400,14 @@ namespace RubikVisualizers
         public void Flip()
         {
             var transform1 = transform;
-            if (transform.localPosition.y == 0f)
+            if (transform.localEulerAngles == Vector3.zero)
             {
-                transform1.localPosition = new Vector3(0, -0.75f, 0);
+                transform1.localPosition = new Vector3(0, -0.45f, 0);
                 transform1.localEulerAngles = new Vector3(0, -75f, 180f);
             }
             else
             {
-                transform1.localPosition = Vector3.zero;
+                transform1.localPosition = new Vector3(0, -0.12f, 0);
                 transform1.localEulerAngles = Vector3.zero;
             }
         }

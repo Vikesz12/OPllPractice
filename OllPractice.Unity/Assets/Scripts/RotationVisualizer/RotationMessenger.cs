@@ -1,6 +1,7 @@
 ﻿using Parser;
 using RubikVisualizers;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Timer;
@@ -28,6 +29,7 @@ namespace RotationVisualizer
         private bool _f2lMode;
         private int _yTurns;
         public Action PracticeFinished;
+        private bool _animating;
 
         public void Start()
         {
@@ -39,6 +41,7 @@ namespace RotationVisualizer
 
         public async void AnimateCurrentMoves()
         {
+            _animating = true;
             var remainingRotations = _rotations
                 .GetRange(_currentPosition, _rotations.Count)
                 .Select(r => r.ToF2LRotation(_yTurns))
@@ -116,7 +119,14 @@ namespace RotationVisualizer
                         _currentPosition = 0;
                         ShowNextBatch();
                         _yTurns = 0;
-                        PracticeFinished?.Invoke();
+                        if(_animating)
+                        {
+                            StartCoroutine(PracticeFinishedCoroutine());
+                        }
+                        else
+                        {
+                            PracticeFinished?.Invoke();
+                        }
                     }
 
                 }
@@ -125,6 +135,13 @@ namespace RotationVisualizer
                     ShowNextBatch();
                 }
             }
+        }
+
+        private IEnumerator PracticeFinishedCoroutine()
+        {
+            yield return new WaitForSeconds(3);
+            _animating = false;
+            PracticeFinished?.Invoke();
         }
 
         private bool CheckCorrectTurn(FaceRotation rotationToCheck, FaceRotation correctFaceRotation)
