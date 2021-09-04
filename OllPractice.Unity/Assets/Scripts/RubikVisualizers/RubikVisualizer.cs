@@ -38,6 +38,7 @@ namespace RubikVisualizers
             SetupFaces();
         }
 
+        public Cube GetCurrentCube => _cube;
         private void SetupFaces()
         {
             if (_setupComplete) return;

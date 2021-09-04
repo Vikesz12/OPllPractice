@@ -75,6 +75,12 @@ namespace Model
             return (RubikColor) bytes[index];
         }
 
+        public IEnumerable<byte> GetAllColors()
+        {
+            var bytes = BitConverter.GetBytes(squares);
+
+            return bytes;
+        }
         public string PrintSide()
         {
             var bytes = BitConverter.GetBytes(squares);

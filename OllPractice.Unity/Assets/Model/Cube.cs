@@ -32,6 +32,8 @@ namespace Model
             _centers[5] = RubikColor.Y;
         }
 
+        public Face[] GetFaces => _faces;
+
         public void U()
         {
             _faces[0].Rotate(Rotation.ONE);
