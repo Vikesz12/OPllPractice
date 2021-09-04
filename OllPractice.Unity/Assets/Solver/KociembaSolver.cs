@@ -12,42 +12,15 @@ namespace Solver
         public static FaceRotation[] SolveCube(Face[] currentFaces)
         {
             var faceletBytes = new List<byte>();
-            faceletBytes.AddRange(ToSolverColor(currentFaces[0].GetAllColors()));
-            faceletBytes.AddRange(ToSolverColor(currentFaces[3].GetAllColors()));
-            faceletBytes.AddRange(ToSolverColor(currentFaces[1].GetAllColors()));
-            faceletBytes.AddRange(ToSolverColor(currentFaces[2].GetAllColors()));
-            faceletBytes.AddRange(ToSolverColor(currentFaces[4].GetAllColors()));
-            faceletBytes.AddRange(ToSolverColor(currentFaces[5].GetAllColors()));
-
+            foreach (var face in currentFaces)
+            {
+                faceletBytes.AddRange(face.GetAllColors());
+            }
+            
             var cube = new TwoPhaseSolver.Cube(faceletBytes.ToArray());
             var move = Search.fullSolve(cube, 22);
 
             return MoveListToFaceRotation(move);
-        }
-
-        private static IEnumerable<byte> ToSolverColor(IEnumerable<byte> colors)
-        {
-            var result = new List<byte>();
-            foreach (var color in colors)
-            {
-                switch (color)
-                {
-                    case 1:
-                        result.Add(2);
-                        break;
-                    case 2:
-                        result.Add(3);
-                        break;
-                    case 3:
-                        result.Add(1);
-                        break;
-                    default:
-                        result.Add(color);
-                        break;
-                }
-            }
-
-            return result.ToArray();
         }
 
         private static FaceRotation[] MoveListToFaceRotation(Move move)

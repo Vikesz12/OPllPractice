@@ -60,11 +60,11 @@ namespace RubikVisualizers
                 switch (i)
                 {
                     case 0:
-                        _faces[3].AddCube(middleEdge);
+                        _faces[2].AddCube(middleEdge);
                         break;
 
                     case 1:
-                        _faces[1].AddCube(middleEdge);
+                        _faces[3].AddCube(middleEdge);
                         break;
 
                     case 2:
@@ -72,7 +72,7 @@ namespace RubikVisualizers
                         break;
 
                     case 3:
-                        _faces[2].AddCube(middleEdge);
+                        _faces[1].AddCube(middleEdge);
                         break;
                 }
             }
@@ -94,19 +94,19 @@ namespace RubikVisualizers
                 switch (i)
                 {
                     case 0:
+                        _faces[3].AddCube(topCorner);
                         _faces[2].AddCube(topCorner);
-                        _faces[1].AddCube(topCorner);
                         break;
                     case 1:
                         _faces[4].AddCube(topCorner);
-                        _faces[2].AddCube(topCorner);
+                        _faces[3].AddCube(topCorner);
                         break;
                     case 2:
+                        _faces[2].AddCube(topCorner);
                         _faces[1].AddCube(topCorner);
-                        _faces[3].AddCube(topCorner);
                         break;
                     case 3:
-                        _faces[3].AddCube(topCorner);
+                        _faces[1].AddCube(topCorner);
                         _faces[4].AddCube(topCorner);
                         break;
                 }
@@ -123,20 +123,20 @@ namespace RubikVisualizers
                 switch (i)
                 {
                     case 0:
-                        _faces[3].AddCube(bottomCorner);
-                        _faces[1].AddCube(bottomCorner);
-                        break;
-                    case 1:
                         _faces[1].AddCube(bottomCorner);
                         _faces[2].AddCube(bottomCorner);
+                        break;
+                    case 1:
+                        _faces[2].AddCube(bottomCorner);
+                        _faces[3].AddCube(bottomCorner);
                         break;
                     case 2:
                         _faces[4].AddCube(bottomCorner);
-                        _faces[3].AddCube(bottomCorner);
+                        _faces[1].AddCube(bottomCorner);
                         break;
                     case 3:
                         _faces[4].AddCube(bottomCorner);
-                        _faces[2].AddCube(bottomCorner);
+                        _faces[3].AddCube(bottomCorner);
                         break;
                 }
 
@@ -265,30 +265,30 @@ namespace RubikVisualizers
 
 
 
-        private void U() => RotateSide(0, 1, 2, 4, 3, Rotation.ONE);
+        private void U() => RotateSide(0, 2, 3, 4, 1, Rotation.ONE);
 
-        private void UPrime() => RotateSide(0, 1, 3, 4, 2, Rotation.PRIME);
+        private void UPrime() => RotateSide(0, 2, 1, 4, 3, Rotation.PRIME);
 
-        private void R() => RotateSide(3, 0, 4, 5, 1, Rotation.ONE);
+        private void R() => RotateSide(1, 0, 4, 5, 2, Rotation.ONE);
 
-        private void RPrime() => RotateSide(3, 0, 1, 5, 4, Rotation.PRIME);
+        private void RPrime() => RotateSide(1, 0, 2, 5, 4, Rotation.PRIME);
 
 
-        private void L() => RotateSide(2, 0, 1, 5, 4, Rotation.ONE);
+        private void L() => RotateSide(3, 0, 2, 5, 4, Rotation.ONE);
 
-        private void LPrime() => RotateSide(2, 0, 4, 5, 1, Rotation.PRIME);
+        private void LPrime() => RotateSide(3, 0, 4, 5, 2, Rotation.PRIME);
 
-        private void F() => RotateSide(1, 0, 3, 5, 2, Rotation.ONE);
+        private void F() => RotateSide(2, 0, 1, 5, 3, Rotation.ONE);
 
-        private void FPrime() => RotateSide(1, 0, 2, 5, 3, Rotation.PRIME);
+        private void FPrime() => RotateSide(2, 0, 3, 5, 1, Rotation.PRIME);
 
-        private void B() => RotateSide(4, 0, 2, 5, 3, Rotation.ONE);
+        private void B() => RotateSide(4, 0, 3, 5, 1, Rotation.ONE);
 
-        private void BPrime() => RotateSide(4, 0, 3, 5, 2, Rotation.PRIME);
+        private void BPrime() => RotateSide(4, 0, 1, 5, 3, Rotation.PRIME);
 
-        private void D() => RotateSide(5, 1, 3, 4, 2, Rotation.ONE);
+        private void D() => RotateSide(5, 2, 1, 4, 3, Rotation.ONE);
 
-        private void DPrime() => RotateSide(5, 1, 2, 4, 3, Rotation.PRIME);
+        private void DPrime() => RotateSide(5, 2, 3, 4, 1, Rotation.PRIME);
 
         private void RotateSide(int sideToRotate, int side1, int side2, int side3, int side4, Rotation rotation)
         {

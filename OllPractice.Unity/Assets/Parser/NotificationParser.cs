@@ -155,7 +155,7 @@ namespace Parser
             faces[2].Rotate(Rotation.TWO);
             faces[3].Rotate(Rotation.TWO);
             faces[4].Rotate(Rotation.TWO);
-            faces[5].Rotate(Rotation.ONE);
+            faces[5].Rotate(Rotation.PRIME);
 
             StateParsed?.Invoke(faces);
             Debug.Log("State parsed");
