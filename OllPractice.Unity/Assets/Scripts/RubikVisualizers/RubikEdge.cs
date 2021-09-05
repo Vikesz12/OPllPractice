@@ -5,19 +5,19 @@ namespace RubikVisualizers
 {
     public class RubikEdge : MonoBehaviour, ISetFaceColor
     {
-        [SerializeField] private MeshRenderer topFaceMeshRenderer;
-        [SerializeField] private MeshRenderer frontFaceMeshRenderer;
+        [SerializeField] private MeshRenderer _topFaceMeshRenderer;
+        [SerializeField] private MeshRenderer _frontFaceMeshRenderer;
         public void SetFaceColorForFacing(Vector3 facing, Material materialToSet)
         {
-            if (topFaceMeshRenderer.transform.up == facing)
+            if (_topFaceMeshRenderer.transform.up == facing)
             {
-                topFaceMeshRenderer.material = materialToSet;
+                _topFaceMeshRenderer.material = materialToSet;
                 return;
             }
 
-            if (frontFaceMeshRenderer.transform.up == facing)
+            if (_frontFaceMeshRenderer.transform.up == facing)
             {
-                frontFaceMeshRenderer.material = materialToSet;
+                _frontFaceMeshRenderer.material = materialToSet;
                 return;
             }
 

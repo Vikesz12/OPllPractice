@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5826339102710d44ea5c834dd0450761, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topFaceMeshRenderer: {fileID: 1715724826922594034}
-  frontFaceMeshRenderer: {fileID: 6978355218193282489}
+  _topFaceMeshRenderer: {fileID: 1715724826922594034}
+  _frontFaceMeshRenderer: {fileID: 6978355218193282489}
 --- !u!1001 &128179490600478111
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -4,23 +4,23 @@ namespace RubikVisualizers
 {
     public class RubikCorner : MonoBehaviour, ISetFaceColor
     {
-        [SerializeField] private MeshRenderer topFaceMeshRenderer;
-        [SerializeField] private MeshRenderer leftFaceMeshRenderer;
-        [SerializeField] private MeshRenderer frontFaceMeshRenderer;
+        [SerializeField] private MeshRenderer _topFaceMeshRenderer;
+        [SerializeField] private MeshRenderer _leftFaceMeshRenderer;
+        [SerializeField] private MeshRenderer _frontFaceMeshRenderer;
 
         public void SetFaceColorForFacing(Vector3 facing, Material materialToSet)
         {
-            if (topFaceMeshRenderer.transform.forward * -1 == facing)
+            if (_topFaceMeshRenderer.transform.forward * -1 == facing)
             {
-                topFaceMeshRenderer.material = materialToSet;
+                _topFaceMeshRenderer.material = materialToSet;
             }
-            else if (leftFaceMeshRenderer.transform.forward * -1 == facing)
+            else if (_leftFaceMeshRenderer.transform.forward * -1 == facing)
             {
-                leftFaceMeshRenderer.material = materialToSet;
+                _leftFaceMeshRenderer.material = materialToSet;
             }
-            else if (frontFaceMeshRenderer.transform.forward * -1 == facing)
+            else if (_frontFaceMeshRenderer.transform.forward * -1 == facing)
             {
-                frontFaceMeshRenderer.material = materialToSet;
+                _frontFaceMeshRenderer.material = materialToSet;
             }
         }
     }
