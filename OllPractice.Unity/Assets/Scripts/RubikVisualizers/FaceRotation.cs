@@ -1,5 +1,4 @@
 ﻿using System;
-using Model;
 
 namespace RubikVisualizers
 {
@@ -82,11 +81,11 @@ namespace RubikVisualizers
         {
             var sideRotationArray = new[] { FaceRotation.F, FaceRotation.L, FaceRotation.B, FaceRotation.R };
             var primeSideRotationArray = new[] { FaceRotation.FPrime, FaceRotation.LPrime, FaceRotation.BPrime, FaceRotation.RPrime };
-            var mRotationArray = new[] {FaceRotation.M2, FaceRotation.MPrime, FaceRotation.M2Prime, FaceRotation.M};
+            var mRotationArray = new[] { FaceRotation.M2, FaceRotation.MPrime, FaceRotation.M2Prime, FaceRotation.M };
             var yValue = yTurns < 0 ? 4 - Math.Abs(yTurns % 4) : yTurns % 4;
             switch (rotation)
             {
-                case FaceRotation.R: 
+                case FaceRotation.R:
                     return sideRotationArray[yValue];
                 case FaceRotation.B:
                     return sideRotationArray[(1 + yValue) % 4];

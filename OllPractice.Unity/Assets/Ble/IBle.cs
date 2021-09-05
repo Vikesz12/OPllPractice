@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using Parser;
+﻿using Parser;
 using Scanner;
-using TMPro;
 
 namespace Ble
 {

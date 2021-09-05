@@ -1,7 +1,6 @@
-using System;
-using System.Collections;
 using Ble;
 using Events;
+using System.Collections;
 using UnityEngine;
 using Zenject;
 

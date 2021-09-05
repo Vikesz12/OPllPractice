@@ -22,7 +22,7 @@ namespace Parser
                     ParseFaceRotation(notification);
                     break;
                 case 2:
-                    ParseState(notification, dataSize);
+                    ParseState(notification);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(notification), "notification type unknown");
@@ -125,7 +125,7 @@ namespace Parser
             }
         }
 
-        private void ParseState(byte[] notification, short dataSize)
+        private void ParseState(byte[] notification)
         {
             var startIndex = 3;
             var faces = new Face[6];
@@ -151,12 +151,12 @@ namespace Parser
                 faces[enumInt] = new Face(faceColors);
             }
 
-            faces[0].Rotate(Rotation.ONE);
-            faces[1].Rotate(Rotation.TWO);
-            faces[2].Rotate(Rotation.TWO);
-            faces[3].Rotate(Rotation.TWO);
-            faces[4].Rotate(Rotation.TWO);
-            faces[5].Rotate(Rotation.PRIME);
+            faces[0].Rotate(Rotation.One);
+            faces[1].Rotate(Rotation.Two);
+            faces[2].Rotate(Rotation.Two);
+            faces[3].Rotate(Rotation.Two);
+            faces[4].Rotate(Rotation.Two);
+            faces[5].Rotate(Rotation.Prime);
 
             Debug.Log("State parsed");
             EventBus.Instance.Value.Invoke(new StateParsed{Faces = faces});

@@ -4,11 +4,8 @@ namespace RubikVisualizers
 {
     public class RubikCenter : MonoBehaviour, ISetFaceColor
     {
-        [SerializeField] private MeshRenderer faceMeshRenderer;
+        [SerializeField] private MeshRenderer _faceMeshRenderer;
 
-        public void SetFaceColorForFacing(Vector3 facing, Material materialToSet)
-        {
-            faceMeshRenderer.material = materialToSet;
-        }
+        public void SetFaceColorForFacing(Vector3 facing, Material materialToSet) => _faceMeshRenderer.material = materialToSet;
     }
 }

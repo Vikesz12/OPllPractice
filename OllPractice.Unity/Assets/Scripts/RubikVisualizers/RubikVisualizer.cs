@@ -1,12 +1,10 @@
-﻿using Model;
-using Parser;
-using Scanner;
+﻿using Events;
+using Model;
 using Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Events;
 using UnityEngine;
 using View;
 
@@ -37,10 +35,7 @@ namespace RubikVisualizers
             EventBus.Instance.Value.Subscribe<StateParsed>(parsed => LoadState(parsed.Faces));
         }
 
-        public void Start()
-        {
-            SetupFaces();
-        }
+        public void Start() => SetupFaces();
 
         private void OnDestroy()
         {
@@ -276,33 +271,32 @@ namespace RubikVisualizers
 
 
 
-        private void U() => RotateSide(0, 2, 3, 4, 1, Rotation.ONE);
+        private void U() => RotateSide(0, 2, 3, 4, 1, Rotation.One);
 
-        private void UPrime() => RotateSide(0, 2, 1, 4, 3, Rotation.PRIME);
+        private void UPrime() => RotateSide(0, 2, 1, 4, 3, Rotation.Prime);
 
-        private void R() => RotateSide(1, 0, 4, 5, 2, Rotation.ONE);
+        private void R() => RotateSide(1, 0, 4, 5, 2, Rotation.One);
 
-        private void RPrime() => RotateSide(1, 0, 2, 5, 4, Rotation.PRIME);
+        private void RPrime() => RotateSide(1, 0, 2, 5, 4, Rotation.Prime);
 
 
-        private void L() => RotateSide(3, 0, 2, 5, 4, Rotation.ONE);
+        private void L() => RotateSide(3, 0, 2, 5, 4, Rotation.One);
 
-        private void LPrime() => RotateSide(3, 0, 4, 5, 2, Rotation.PRIME);
+        private void LPrime() => RotateSide(3, 0, 4, 5, 2, Rotation.Prime);
 
-        private void F() => RotateSide(2, 0, 1, 5, 3, Rotation.ONE);
+        private void F() => RotateSide(2, 0, 1, 5, 3, Rotation.One);
 
-        private void FPrime() => RotateSide(2, 0, 3, 5, 1, Rotation.PRIME);
+        private void FPrime() => RotateSide(2, 0, 3, 5, 1, Rotation.Prime);
 
-        private void B() => RotateSide(4, 0, 3, 5, 1, Rotation.ONE);
+        private void B() => RotateSide(4, 0, 3, 5, 1, Rotation.One);
 
-        private void BPrime() => RotateSide(4, 0, 1, 5, 3, Rotation.PRIME);
+        private void BPrime() => RotateSide(4, 0, 1, 5, 3, Rotation.Prime);
 
-        private void D() => RotateSide(5, 2, 1, 4, 3, Rotation.ONE);
+        private void D() => RotateSide(5, 2, 1, 4, 3, Rotation.One);
 
-        private void DPrime() => RotateSide(5, 2, 3, 4, 1, Rotation.PRIME);
+        private void DPrime() => RotateSide(5, 2, 3, 4, 1, Rotation.Prime);
 
-        private void RotateSide(int sideToRotate, int side1, int side2, int side3, int side4, Rotation rotation)
-        {
+        private void RotateSide(int sideToRotate, int side1, int side2, int side3, int side4, Rotation rotation) =>
             _animations.Enqueue(
                 new KeyValuePair<Action<bool>, IEnumerator>(
                     skip =>
@@ -340,29 +334,19 @@ namespace RubikVisualizers
                         _isAnimating = false;
                     })));
 
-        }
+        public void Y() => RotateCube(FaceRotation.Y);
 
-        public void Y()
-        {
-            RotateCube(FaceRotation.Y);
-        }
+        public void YPrime() => RotateCube(FaceRotation.YPrime);
 
-        public void YPrime()
-        {
-            RotateCube(FaceRotation.YPrime);
-        }
-
-        private void RotateCube(FaceRotation rotation)
-        {
+        private void RotateCube(FaceRotation rotation) =>
             _animations.Enqueue(new KeyValuePair<Action<bool>, IEnumerator>(
                 skip =>
                 {
-                    if(!skip)
+                    if (!skip)
                         CubeRotateWithoutAnimation(rotation);
                 },
                 CubeRotationCoroutine(rotation, () => _isAnimating = false)
             ));
-        }
 
         private IEnumerator CubeRotationCoroutine(FaceRotation rotation, Action callback)
         {
@@ -371,8 +355,9 @@ namespace RubikVisualizers
             const float timeToRotate = 0.25f;
             while (currentTime <= timeToRotate)
             {
-                currentTime += Time.deltaTime; 
-                gameObject.transform.RotateAround(gameObject.transform.position, gameObject.transform.up, angleToRotate * (Time.deltaTime / timeToRotate));
+                currentTime += Time.deltaTime;
+                var o = gameObject;
+                gameObject.transform.RotateAround(o.transform.position, o.transform.up, angleToRotate * (Time.deltaTime / timeToRotate));
                 yield return null;
             }
             callback.Invoke();
@@ -381,7 +366,8 @@ namespace RubikVisualizers
         private void CubeRotateWithoutAnimation(FaceRotation rotation)
         {
             var angleToRotate = rotation == FaceRotation.Y ? 90f : -90f;
-            gameObject.transform.RotateAround(gameObject.transform.position, gameObject.transform.up, angleToRotate);
+            var o = gameObject;
+            gameObject.transform.RotateAround(o.transform.position, o.transform.up, angleToRotate);
         }
         public void Update()
         {

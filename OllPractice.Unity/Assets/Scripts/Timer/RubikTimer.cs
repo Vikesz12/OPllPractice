@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using TMPro;
 using UnityEngine;
 
@@ -26,13 +25,12 @@ namespace Timer
 
         public void StopTimer() => _running = false;
 
-        private string GetMinutesText()
-        {
-            return _minutes == 0 ? string.Empty : _minutes.ToString(CultureInfo.InvariantCulture) + ":";
-        }
+        private string GetMinutesText() 
+            => _minutes == 0 ? string.Empty : _minutes.ToString(CultureInfo.InvariantCulture) + ":";
+
         public void Update()
         {
-            if(!_running) return;
+            if (!_running) return;
 
             if (_milliseconds >= 100)
             {
@@ -49,7 +47,7 @@ namespace Timer
             _milliseconds += Time.deltaTime * 100;
 
 
-            _timerText.text = $"{GetMinutesText()}{_seconds}:{(int) _milliseconds}";
+            _timerText.text = $"{GetMinutesText()}{_seconds}:{(int)_milliseconds}";
         }
     }
 }

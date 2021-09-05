@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49cb40f2f06ce724a9ad4ac8dde8a94d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  faceMeshRenderer: {fileID: 7733203959401081893}
+  _faceMeshRenderer: {fileID: 7733203959401081893}
 --- !u!114 &7682314886495613586
 MonoBehaviour:
   m_ObjectHideFlags: 0

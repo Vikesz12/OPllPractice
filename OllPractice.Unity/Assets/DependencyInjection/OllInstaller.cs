@@ -1,6 +1,5 @@
 using Ble;
 using Parser;
-using Scanner;
 using Zenject;
 
 namespace DependencyInjection

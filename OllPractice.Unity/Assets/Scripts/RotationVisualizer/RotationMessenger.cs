@@ -27,7 +27,7 @@ namespace RotationVisualizer
         private int _currentPosition;
         private const int MAXMessageCount = 10;
         private Stack<FaceRotation> _correctionTurns;
-        private bool _f2lMode;
+        private bool _f2LMode;
         private int _yTurns;
         public Action PracticeFinished;
         private bool _animating;
@@ -112,7 +112,7 @@ namespace RotationVisualizer
 
                 if (_currentPosition > _rotations.Count - 1)
                 {
-                    if (!_f2lMode)
+                    if (!_f2LMode)
                     {
                         Clear();
                     }
@@ -148,13 +148,13 @@ namespace RotationVisualizer
 
         private bool CheckCorrectTurn(FaceRotation rotationToCheck, FaceRotation correctFaceRotation)
         {
-            if (!_f2lMode)
+            if (!_f2LMode)
                 return rotationToCheck == correctFaceRotation;
             return rotationToCheck == correctFaceRotation.ToF2LRotation(_yTurns);
         }
         private void AddCorrectionTurnFor(FaceRotation rotation)
         {
-            var correctionTurn = GetInvertedTurn(_f2lMode ? rotation.ToF2LRotation(_yTurns) : rotation);
+            var correctionTurn = GetInvertedTurn(_f2LMode ? rotation.ToF2LRotation(_yTurns) : rotation);
 
             _correctionTurns.Push(correctionTurn);
             var createdMessage = Instantiate(_rotationMessagePrefab, _wrongMessageParent);
@@ -194,7 +194,7 @@ namespace RotationVisualizer
         public void LoadRotations(IEnumerable<FaceRotation> rotations, bool f2LMode)
         {
             _currentPosition = 0;
-            _f2lMode = f2LMode;
+            _f2LMode = f2LMode;
             _rotations = rotations.ToList();
             ShowNextBatch();
         }

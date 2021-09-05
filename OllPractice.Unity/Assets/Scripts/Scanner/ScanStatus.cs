@@ -15,9 +15,7 @@ namespace Scanner
             EventBus.Instance.Value.Subscribe<ScanStatusChanged>(StatusChanged);
         }
 
-        private void StatusChanged(ScanStatusChanged statusChanged)
-        {
-            _scanText.text = statusChanged.Status ? "Scanning..." : "Scan finished";
-        }
+        private void StatusChanged(ScanStatusChanged statusChanged) 
+            => _scanText.text = statusChanged.Status ? "Scanning..." : "Scan finished";
     }
 }

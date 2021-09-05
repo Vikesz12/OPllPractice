@@ -12,10 +12,7 @@ namespace Ble
     {
         private Dictionary<string, Dictionary<string, string>> _devices = new Dictionary<string, Dictionary<string, string>>();
 
-        public void StartScan()
-        {
-            BleApi.StartDeviceScan();
-        }
+        public void StartScan() => BleApi.StartDeviceScan();
 
         public void ScanDevices(RubikScanner rubikScanner)
         {
@@ -63,7 +60,7 @@ namespace Ble
                 return;
             BleApi.StopDeviceScan();
             // no error code available in non-blocking mode
-            BleApi.SubscribeCharacteristic(deviceId, RubikBleConfig.serviceUuid, RubikBleConfig.readCharacteristicUuid, false);
+            BleApi.SubscribeCharacteristic(deviceId, RubikBleConfig.ServiceUuid, RubikBleConfig.ReadCharacteristicUuid, false);
         }
 
         public void Write(string dataToWrite, string deviceId)
@@ -74,8 +71,8 @@ namespace Ble
                 buf = new byte[512],
                 size = (short)payload.Length,
                 deviceId = deviceId,
-                serviceUuid = RubikBleConfig.serviceUuid,
-                characteristicUuid = RubikBleConfig.writeCharacteristicUuid
+                serviceUuid = RubikBleConfig.ServiceUuid,
+                characteristicUuid = RubikBleConfig.WriteCharacteristicUuid
             };
             for (var i = 0; i < payload.Length; i++)
                 data.buf[i] = payload[i];
@@ -83,9 +80,6 @@ namespace Ble
             BleApi.SendData(in data, false);
         }
 
-        public void Quit()
-        {
-            BleApi.Quit();
-        }
+        public void Quit() => BleApi.Quit();
     }
 }

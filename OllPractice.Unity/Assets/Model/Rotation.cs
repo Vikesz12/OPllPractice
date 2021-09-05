@@ -2,8 +2,8 @@
 {
     public enum Rotation
     {
-        PRIME,
-        ONE,
-        TWO
+        Prime,
+        One,
+        Two
     }
 }

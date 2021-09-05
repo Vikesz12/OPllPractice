@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections;
-using Ble;
+﻿using Ble;
+using Events;
 using Parser;
-using RubikVisualizers;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using BleWinrt;
-using Events;
-using TMPro;
 using UnityEngine;
 using Zenject;
 
@@ -65,7 +61,7 @@ namespace Scanner
             _isSubscribed = true;
             Debug.Log($"connected to {deviceId}");
             _connectedDeviceId = deviceId;
-            EventBus.Instance.Value.Invoke(new ConnectedToDevice{DeviceId = deviceId});
+            EventBus.Instance.Value.Invoke(new ConnectedToDevice { DeviceId = deviceId });
         }
 
         public void Write(string writeData) => _bleScanner.Write(writeData, _connectedDeviceId);
@@ -81,7 +77,7 @@ namespace Scanner
             }
             else
             {
-                CreateNewCubeButton(messageParts[1],messageParts[2]);
+                CreateNewCubeButton(messageParts[1], messageParts[2]);
             }
         }
 
@@ -89,16 +85,17 @@ namespace Scanner
         {
             if (_foundIds.Any(id => id == deviceId)) return;
             _foundIds.Add(deviceId);
-            var newCubeButton = Instantiate(Resources.Load<GameObject>("Prefabs/FoundCubeButton"),_foundCubeButtonsParent);
+            var newCubeButton = Instantiate(Resources.Load<GameObject>("Prefabs/FoundCubeButton"), _foundCubeButtonsParent);
             var foundCubeButton = newCubeButton.GetComponent<FoundCubeButton>();
             foundCubeButton.SetCubeName(cubeName);
             foundCubeButton.GetButton.onClick.AddListener(() => ConnectToCube(deviceId));
         }
 
+        // ReSharper disable once UnusedMember.Local
         private static IEnumerator ScanFinished()
         {
             yield return new WaitForSeconds(15);
-            EventBus.Instance.Value.Invoke(new ScanStatusChanged{Status = false});
+            EventBus.Instance.Value.Invoke(new ScanStatusChanged { Status = false });
         }
     }
 }

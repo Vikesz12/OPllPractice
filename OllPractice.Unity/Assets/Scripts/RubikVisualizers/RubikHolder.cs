@@ -1,21 +1,14 @@
 ﻿using Model;
-using Parser;
 using UnityEngine;
-using Zenject;
 
 namespace RubikVisualizers
 {
     public class RubikHolder : MonoBehaviour
     {
-        [Inject] private readonly INotificationParser _notificationParser;
-
         private RubikVisualizer _currentVisualizer;
         private bool _flipped;
 
-        public void Awake()
-        {
-            CreateVisualizer();
-        }
+        public void Awake() => CreateVisualizer();
 
         private void CreateVisualizer() => _currentVisualizer =
             Instantiate(Resources.Load<GameObject>("Prefabs/RubiksConnected"), transform)

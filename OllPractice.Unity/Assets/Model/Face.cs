@@ -6,23 +6,23 @@ namespace Model
 {
     public class Face
     {
-        private ulong squares;
+        private ulong _squares;
 
         public Face(RubikColor color)
         {
-            squares = 0;
+            _squares = 0;
             for (var index = 0; index < 8; index++)
             {
-                squares = squares << 8 | (byte)color;
+                _squares = _squares << 8 | (byte)color;
             }
         }
 
         public Face(IEnumerable<RubikColor> colors)
         {
-            squares = 0;
+            _squares = 0;
             foreach (var rubikColor in colors)
             {
-                squares = squares << 8 | (byte) rubikColor;
+                _squares = _squares << 8 | (byte) rubikColor;
             }
         }
 
@@ -31,23 +31,23 @@ namespace Model
             var shift = 16;
             switch (rotation)
             {
-                case Rotation.ONE:
+                case Rotation.One:
                     break;
-                case Rotation.TWO:
+                case Rotation.Two:
                     shift = 32;
                     break;
-                case Rotation.PRIME:
-                    squares = (squares >> shift) | (squares << (64 - shift));
+                case Rotation.Prime:
+                    _squares = (_squares >> shift) | (_squares << (64 - shift));
                     return;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(rotation), rotation, null);
             }
-            squares = (squares << shift) | (squares >> (64 - shift));
+            _squares = (_squares << shift) | (_squares >> (64 - shift));
         }
 
         public byte[] RotateSide(int startIndex, byte[] newSquares = default)
         {
-            var bytes = BitConverter.GetBytes(squares);
+            var bytes = BitConverter.GetBytes(_squares);
             var oldSquares = new byte[3];
             if (startIndex == 6)
             {
@@ -64,26 +64,26 @@ namespace Model
                 bytes[startIndex] = newSquares[0];
                 bytes[startIndex+1] = newSquares[1];
                 bytes[startIndex == 6 ? 0: startIndex+2] = newSquares[2];
-                squares = BitConverter.ToUInt64(bytes,0);
+                _squares = BitConverter.ToUInt64(bytes,0);
             }
             return oldSquares;
         }
 
         public RubikColor GetColorAt(int index)
         {
-            var bytes = BitConverter.GetBytes(squares);
+            var bytes = BitConverter.GetBytes(_squares);
             return (RubikColor) bytes[index];
         }
 
         public IEnumerable<byte> GetAllColors()
         {
-            var bytes = BitConverter.GetBytes(squares);
+            var bytes = BitConverter.GetBytes(_squares);
 
             return bytes;
         }
         public string PrintSide()
         {
-            var bytes = BitConverter.GetBytes(squares);
+            var bytes = BitConverter.GetBytes(_squares);
             var result = "";
             result += (RubikColor)bytes[0];
             result += (RubikColor)bytes[1];

@@ -22,17 +22,14 @@ namespace View
 
         public Vector3 Facing => _center.transform.up;
 
-        public void AddCube(GameObject cube)
-        {
-            Cubes.Add(cube);
-        }
+        public void AddCube(GameObject cube) => Cubes.Add(cube);
 
         public IEnumerator RotateCoroutine(Rotation rot, Action callback)
         {
             SetCubeParents();
 
             _currentTime = 0.0f;
-            _angleToRotate = rot == Rotation.ONE ? 90f : -90f;
+            _angleToRotate = rot == Rotation.One ? 90f : -90f;
             _timeToRotate = 0.25f;
             while (_currentTime <= _timeToRotate)
             {
@@ -55,13 +52,14 @@ namespace View
         public void RotateWithoutAnimation(Rotation rot)
         {
             SetCubeParents();
-            _center.transform.RotateAround(_center.transform.position, _center.transform.up, rot == Rotation.ONE ? 90 : -90);
+            _center.transform.RotateAround(_center.transform.position, _center.transform.up, rot == Rotation.One ? 90 : -90);
         }
 
-        public void SkipCoroutine()
-        {
-            _center.transform.RotateAround(_center.transform.position, _center.transform.up, _angleToRotate * (_timeToRotate - _currentTime) / _timeToRotate);
-        }
+        public void SkipCoroutine() 
+            => _center.transform.RotateAround(
+                    _center.transform.position,
+                    _center.transform.up,
+                    _angleToRotate * (_timeToRotate - _currentTime) / _timeToRotate);
 
         public IEnumerable<GameObject> RemoveCubes(IEnumerable<GameObject> cubes)
         {
@@ -97,12 +95,6 @@ namespace View
             }
 
             return relativePos.z > 0 ? 1 : 5;
-        }
-
-        private bool PositionEquals(float a, float b)
-        {
-            const float epsilon = 0.005f;
-            return Math.Abs(a - b) < epsilon;
         }
     }
 }

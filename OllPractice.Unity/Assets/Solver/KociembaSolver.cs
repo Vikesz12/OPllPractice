@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Model;
 using RubikVisualizers;
+using System;
+using System.Collections.Generic;
 using TwoPhaseSolver;
-using Cube = Model.Cube;
 
 namespace Solver
 {
@@ -16,7 +15,7 @@ namespace Solver
             {
                 faceletBytes.AddRange(face.GetAllColors());
             }
-            
+
             var cube = new TwoPhaseSolver.Cube(faceletBytes.ToArray());
             var move = Search.fullSolve(cube, 22);
 
