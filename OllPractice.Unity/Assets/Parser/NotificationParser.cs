@@ -29,7 +29,6 @@ namespace Parser
             }
         }
 
-        public event Action<FaceRotation> FaceRotated;
         private void ParseFaceRotation(byte[] notification)
         {
             if (notification[1] == 8)
@@ -37,22 +36,22 @@ namespace Parser
                 switch (notification[3])
                 {
                     case 0:
-                        FaceRotated?.Invoke(FaceRotation.M2);
+                        InvokeFaceRotatedEvent(FaceRotation.M2);
                         break;
                     case 1:
-                        FaceRotated?.Invoke(FaceRotation.M2Prime);
+                        InvokeFaceRotatedEvent(FaceRotation.M2Prime);
                         break;
                     case 4:
-                        FaceRotated?.Invoke(FaceRotation.M3);
+                        InvokeFaceRotatedEvent(FaceRotation.M3);
                         break;
                     case 5:
-                        FaceRotated?.Invoke(FaceRotation.M3Prime);
+                        InvokeFaceRotatedEvent(FaceRotation.M3Prime);
                         break;
                     case 8:
-                        FaceRotated?.Invoke(FaceRotation.M);
+                        InvokeFaceRotatedEvent(FaceRotation.M);
                         break;
                     case 9:
-                        FaceRotated?.Invoke(FaceRotation.MPrime);
+                        InvokeFaceRotatedEvent(FaceRotation.MPrime);
                         break;
                 }
             }
@@ -61,46 +60,50 @@ namespace Parser
                 switch (notification[3])
                 {
                     case 0:
-                        FaceRotated?.Invoke(FaceRotation.B);
+                        InvokeFaceRotatedEvent(FaceRotation.B);
                         break;
                     case 1:
-                        FaceRotated?.Invoke(FaceRotation.BPrime);
+                        InvokeFaceRotatedEvent(FaceRotation.BPrime);
                         break;
                     case 2:
-                        FaceRotated?.Invoke(FaceRotation.F);
+                        InvokeFaceRotatedEvent(FaceRotation.F);
                         break;
                     case 3:
-                        FaceRotated?.Invoke(FaceRotation.FPrime);
+                        InvokeFaceRotatedEvent(FaceRotation.FPrime);
                         break;
                     case 4:
-                        FaceRotated?.Invoke(FaceRotation.U);
+                        InvokeFaceRotatedEvent(FaceRotation.U);
                         break;
                     case 5:
-                        FaceRotated?.Invoke(FaceRotation.UPrime);
+                        InvokeFaceRotatedEvent(FaceRotation.UPrime);
                         break;
                     case 6:
-                        FaceRotated?.Invoke(FaceRotation.D);
+                        InvokeFaceRotatedEvent(FaceRotation.D);
                         break;
                     case 7:
-                        FaceRotated?.Invoke(FaceRotation.DPrime);
+                        InvokeFaceRotatedEvent(FaceRotation.DPrime);
                         break;
                     case 8:
-                        FaceRotated?.Invoke(FaceRotation.R);
+                        InvokeFaceRotatedEvent(FaceRotation.R);
                         break;
                     case 9:
-                        FaceRotated?.Invoke(FaceRotation.RPrime);
+                        InvokeFaceRotatedEvent(FaceRotation.RPrime);
                         break;
                     case 10:
-                        FaceRotated?.Invoke(FaceRotation.L);
+                        InvokeFaceRotatedEvent(FaceRotation.L);
                         break;
                     case 11:
-                        FaceRotated?.Invoke(FaceRotation.LPrime);
+                        InvokeFaceRotatedEvent(FaceRotation.LPrime);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(notification), "rotation unknown");
                 }
             }
         }
+
+        private static void InvokeFaceRotatedEvent(FaceRotation rotation) 
+            => EventBus.Instance.Value.Invoke(new FaceRotated{Rotation = rotation});
+
         private static RubikColor ParseNotificationColor(byte col)
         {
             switch (col)
@@ -121,8 +124,6 @@ namespace Parser
                     throw new ArgumentOutOfRangeException(nameof(col), "color unknown");
             }
         }
-
-        public event Action<Face[]> StateParsed;
 
         private void ParseState(byte[] notification, short dataSize)
         {
@@ -157,9 +158,8 @@ namespace Parser
             faces[4].Rotate(Rotation.TWO);
             faces[5].Rotate(Rotation.PRIME);
 
-            StateParsed?.Invoke(faces);
             Debug.Log("State parsed");
-            EventBus.Instance.Value.Invoke(new StateParsed());
+            EventBus.Instance.Value.Invoke(new StateParsed{Faces = faces});
         }
 
         public async Task AnimateRotations(IEnumerable<FaceRotation> rotations)
@@ -170,7 +170,7 @@ namespace Parser
             {
                 foreach (var faceRotation in rotations)
                 {
-                    await dispatcher.InvokeAsync(() => FaceRotated?.Invoke(faceRotation));
+                    await dispatcher.InvokeAsync(() => InvokeFaceRotatedEvent(faceRotation));
                     await Task.Delay(750);
                 }
             });

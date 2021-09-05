@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Events;
 using UnityEngine;
 using View;
 
@@ -31,11 +32,20 @@ namespace RubikVisualizers
                 center.GetComponent<RubikCenter>()
                     .SetFaceColorForFacing(center.transform.up, RubikColorMaterialService.GetRubikColorMaterial((RubikColor)i));
             }
+
+            EventBus.Instance.Value.Subscribe<FaceRotated>(OnFaceRotated);
+            EventBus.Instance.Value.Subscribe<StateParsed>(parsed => LoadState(parsed.Faces));
         }
 
         public void Start()
         {
             SetupFaces();
+        }
+
+        private void OnDestroy()
+        {
+            EventBus.Instance.Value.Unsubscribe<FaceRotated>(OnFaceRotated);
+            EventBus.Instance.Value.Unsubscribe<StateParsed>(parsed => LoadState(parsed.Faces));
         }
 
         public Cube GetCurrentCube => _cube;
@@ -147,8 +157,9 @@ namespace RubikVisualizers
         }
 
 
-        public void NotificationParserOnFaceRotated(FaceRotation rotation)
+        private void OnFaceRotated(FaceRotated faceRotated)
         {
+            var rotation = faceRotated.Rotation;
 
             switch (rotation)
             {

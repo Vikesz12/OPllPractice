@@ -17,26 +17,10 @@ namespace RubikVisualizers
             CreateVisualizer();
         }
 
-        public void Start()
-        {
-            RegisterToParserEvents();
-        }
-
         private void CreateVisualizer() => _currentVisualizer =
             Instantiate(Resources.Load<GameObject>("Prefabs/RubiksConnected"), transform)
             .GetComponent<RubikVisualizer>();
 
-
-        private void RegisterToParserEvents()
-        {
-            _notificationParser.FaceRotated += _currentVisualizer.NotificationParserOnFaceRotated;
-            _notificationParser.StateParsed += _currentVisualizer.LoadState;
-        }
-        private void UnRegisterEvents()
-        {
-            _notificationParser.FaceRotated -= _currentVisualizer.NotificationParserOnFaceRotated;
-            _notificationParser.StateParsed -= _currentVisualizer.LoadState;
-        }
 
         public void LoadState(Face[] state)
         {
@@ -53,11 +37,9 @@ namespace RubikVisualizers
 
         public void ResetVisualizer()
         {
-            UnRegisterEvents();
             Destroy(_currentVisualizer.gameObject);
             _flipped = false;
             CreateVisualizer();
-            RegisterToParserEvents();
         }
 
         public RubikVisualizer GetCurrentVisualizer() => _currentVisualizer;

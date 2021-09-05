@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Events;
 using Timer;
 using TMPro;
 using UnityEngine;
@@ -35,8 +36,8 @@ namespace RotationVisualizer
         {
             _rotationMessagePrefab = Resources.Load<GameObject>("Prefabs/RotationMessage");
             _rotations = new List<FaceRotation>();
-            _notificationParser.FaceRotated += NotificationParserOnFaceRotated;
             _correctionTurns = new Stack<FaceRotation>();
+            EventBus.Instance.Value.Subscribe<FaceRotated>(NotificationParserOnFaceRotated);
         }
 
         public async void AnimateCurrentMoves()
@@ -49,8 +50,9 @@ namespace RotationVisualizer
             await _notificationParser.AnimateRotations(remainingRotations).ConfigureAwait(false);
         }
 
-        private void NotificationParserOnFaceRotated(FaceRotation rotation)
+        private void NotificationParserOnFaceRotated(FaceRotated faceRotated)
         {
+            var rotation = faceRotated.Rotation;
             if (_rotations.Count == 0 && _correctionTurns.Count == 0) return;
             if (_correctionTurns.Count != 0)
             {
