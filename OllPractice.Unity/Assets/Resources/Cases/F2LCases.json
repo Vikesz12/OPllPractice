@@ -4,11 +4,11 @@
             "name": "1AWhiteUp1",
             "faces": [
                 "LLWWLWWL",
+                "LRRRLLGL",
                 "GGLLRLLG",
                 "LLOOLLLL",
-                "LRRRLLGL",
                 "BLLLLGLB",
-                "LRLLLLWL"
+                "LLWLLRLL"
             ],
             "solution": "U,U,R,U,R',U,R,U',R'"
         },
@@ -16,11 +16,11 @@
             "name": "1AWhiteUp2",
             "faces": [
                 "LLWWLWWL",
+                "LRRRLLGL",
                 "GGLLRLLG",
                 "LLOOLRLL",
-                "LRRRLLGL",
                 "BLLLLLLB",
-                "LLLGLLWL"
+                "LLWLLLLG"
             ],
             "solution": "Y,U,U,L',U',L,U',L',U,L"
         }

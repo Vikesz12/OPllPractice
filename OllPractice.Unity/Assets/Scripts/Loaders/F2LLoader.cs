@@ -41,7 +41,7 @@ namespace Loaders
 
         private void PracticeFinished(Face[] state)
         {
-            _rubikHolder.ResetVisualizer();
+            //_rubikHolder.ResetVisualizer();
             _rubikHolder.LoadState(state);
             _rubikHolder.Flip();
         }

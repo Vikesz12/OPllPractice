@@ -127,7 +127,7 @@ namespace RotationVisualizer
                         }
                         else
                         {
-                            PracticeFinished?.Invoke();
+                            StartCoroutine(PracticeFinishedCoroutine());
                         }
                     }
 
