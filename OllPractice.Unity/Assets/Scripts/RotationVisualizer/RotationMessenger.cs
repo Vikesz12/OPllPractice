@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Events;
-using Timer;
+using Timers;
 using TMPro;
 using UnityEngine;
 using Zenject;
