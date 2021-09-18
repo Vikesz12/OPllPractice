@@ -4,7 +4,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Events;
+using EventBus;
+using EventBus.Events;
 using Timers;
 using TMPro;
 using UnityEngine;
@@ -19,8 +20,8 @@ namespace RotationVisualizer
         [SerializeField] private RubikTimer _rubikTimer;
         [SerializeField] private RubikHolder _rubikHolder;
 
-        [Inject] 
-        private INotificationParser _notificationParser;
+        [Inject] private INotificationParser _notificationParser;
+        [Inject] private IEventBus _eventBus;
 
         private List<FaceRotation> _rotations;
         private GameObject _rotationMessagePrefab;
@@ -37,7 +38,7 @@ namespace RotationVisualizer
             _rotationMessagePrefab = Resources.Load<GameObject>("Prefabs/RotationMessage");
             _rotations = new List<FaceRotation>();
             _correctionTurns = new Stack<FaceRotation>();
-            EventBus.Instance.Value.Subscribe<FaceRotated>(NotificationParserOnFaceRotated);
+            _eventBus.Subscribe<FaceRotated>(NotificationParserOnFaceRotated);
         }
 
         public async void AnimateCurrentMoves()

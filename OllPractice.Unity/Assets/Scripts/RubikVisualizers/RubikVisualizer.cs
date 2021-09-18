@@ -1,17 +1,21 @@
-﻿using Events;
-using Model;
+﻿using Model;
 using Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using EventBus;
+using EventBus.Events;
 using UnityEngine;
 using View;
+using Zenject;
 
 namespace RubikVisualizers
 {
     public class RubikVisualizer : MonoBehaviour
     {
+        [Inject] private IEventBus _eventBus;
+
         private Cube _cube;
         private List<FaceView> _faces;
         private Queue<KeyValuePair<Action<bool>, IEnumerator>> _animations;
@@ -31,16 +35,16 @@ namespace RubikVisualizers
                     .SetFaceColorForFacing(center.transform.up, RubikColorMaterialService.GetRubikColorMaterial((RubikColor)i));
             }
 
-            EventBus.Instance.Value.Subscribe<FaceRotated>(OnFaceRotated);
-            EventBus.Instance.Value.Subscribe<StateParsed>(parsed => LoadState(parsed.Faces));
+            _eventBus.Subscribe<FaceRotated>(OnFaceRotated);
+            _eventBus.Subscribe<StateParsed>(parsed => LoadState(parsed.Faces));
         }
 
         public void Start() => SetupFaces();
 
         private void OnDestroy()
         {
-            EventBus.Instance.Value.Unsubscribe<FaceRotated>(OnFaceRotated);
-            EventBus.Instance.Value.Unsubscribe<StateParsed>(parsed => LoadState(parsed.Faces));
+            _eventBus.Unsubscribe<FaceRotated>(OnFaceRotated);
+            _eventBus.Unsubscribe<StateParsed>(parsed => LoadState(parsed.Faces));
         }
 
         public Cube GetCurrentCube => _cube;

@@ -1,6 +1,7 @@
 using Ble;
-using Events;
 using System.Collections;
+using EventBus;
+using EventBus.Events;
 using UnityEngine;
 using Zenject;
 
@@ -9,14 +10,15 @@ namespace Scanner
     public class Menu : MonoBehaviour
     {
         [Inject] private IBle _bleScanner;
+        [Inject] private IEventBus _eventBus;
 
         private string _connectedDeviceId;
         private bool _tryParse;
 
         private void Start()
         {
-            EventBus.Instance.Value.Subscribe<StateParsed>(StateParsedHandler);
-            EventBus.Instance.Value.Subscribe<ConnectedToDevice>(RequestState);
+            _eventBus.Subscribe<StateParsed>(StateParsedHandler);
+            _eventBus.Subscribe<ConnectedToDevice>(RequestState);
         }
 
         private void StateParsedHandler(StateParsed parsed)

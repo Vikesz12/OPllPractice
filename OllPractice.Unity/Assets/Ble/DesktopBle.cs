@@ -1,15 +1,19 @@
 ﻿using BleWinrt;
 using Config;
-using Events;
 using Parser;
 using Scanner;
 using System.Collections.Generic;
 using System.Text;
+using EventBus;
+using EventBus.Events;
+using Zenject;
 
 namespace Ble
 {
     public class DesktopBle : IBle
     {
+        [Inject] private IEventBus _eventBus;
+
         private Dictionary<string, Dictionary<string, string>> _devices = new Dictionary<string, Dictionary<string, string>>();
 
         public void StartScan() => BleApi.StartDeviceScan();
@@ -41,7 +45,7 @@ namespace Ble
                 }
                 else if (status == BleApi.ScanStatus.FINISHED)
                 {
-                    EventBus.Instance.Value.Invoke(new ScanStatusChanged { Status = false });
+                    _eventBus.Invoke(new ScanStatusChanged { Status = false });
                 }
             } while (status == BleApi.ScanStatus.AVAILABLE);
         }

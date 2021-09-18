@@ -1,10 +1,11 @@
 ﻿using Ble;
-using Events;
 using Parser;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using EventBus;
+using EventBus.Events;
 using UnityEngine;
 using Zenject;
 
@@ -16,6 +17,7 @@ namespace Scanner
 
         [Inject] private INotificationParser _notificationParser;
         [Inject] private IBle _bleScanner;
+        [Inject] private static  IEventBus _eventBus;
 
         private bool _isScanningDevices;
         private bool _isSubscribed;
@@ -24,7 +26,7 @@ namespace Scanner
 
         private void Start()
         {
-            EventBus.Instance.Value.Subscribe<ScanStatusChanged>(ScanStatusChanged);
+            _eventBus.Subscribe<ScanStatusChanged>(ScanStatusChanged);
             _foundIds = new List<string>();
             StartScan();
         }
@@ -34,7 +36,7 @@ namespace Scanner
         public void StartScan()
         {
             _bleScanner.StartScan();
-            EventBus.Instance.Value.Invoke(new ScanStatusChanged { Status = true });
+            _eventBus.Invoke(new ScanStatusChanged { Status = true });
             Debug.Log($"Scanning {_isScanningDevices}");
 #if UNITY_ANDROID
             StartCoroutine(ScanFinished());
@@ -61,7 +63,7 @@ namespace Scanner
             _isSubscribed = true;
             Debug.Log($"connected to {deviceId}");
             _connectedDeviceId = deviceId;
-            EventBus.Instance.Value.Invoke(new ConnectedToDevice { DeviceId = deviceId });
+            _eventBus.Invoke(new ConnectedToDevice { DeviceId = deviceId });
         }
 
         public void Write(string writeData) => _bleScanner.Write(writeData, _connectedDeviceId);
@@ -95,7 +97,7 @@ namespace Scanner
         private static IEnumerator ScanFinished()
         {
             yield return new WaitForSeconds(15);
-            EventBus.Instance.Value.Invoke(new ScanStatusChanged { Status = false });
+            _eventBus.Invoke(new ScanStatusChanged { Status = false });
         }
     }
 }

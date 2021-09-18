@@ -1,4 +1,4 @@
-﻿namespace Events
+﻿namespace EventBus.Events
 {
     public class ConnectedToDevice : IEvent
     {

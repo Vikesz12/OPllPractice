@@ -1,4 +1,5 @@
 using Ble;
+using EventBus;
 using Parser;
 using Zenject;
 
@@ -8,6 +9,7 @@ namespace DependencyInjection
     {
         public override void InstallBindings()
         {
+            Container.Bind<IEventBus>().To<EventBus.EventBus>().AsSingle();
             Container.Bind<INotificationParser>().To<NotificationParser>().AsCached();
 #if UNITY_ANDROID
             Container.Bind<IBle>().To<AndroidBle>().AsSingle();

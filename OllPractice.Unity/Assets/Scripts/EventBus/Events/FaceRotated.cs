@@ -1,6 +1,6 @@
 ﻿using RubikVisualizers;
 
-namespace Events
+namespace EventBus.Events
 {
     public class FaceRotated : IEvent
     {

@@ -1,21 +1,25 @@
-using Events;
+using EventBus;
+using EventBus.Events;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace Scanner
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class ScanStatus : MonoBehaviour
     {
+        [Inject] private IEventBus _eventBus;
+
         private TextMeshProUGUI _scanText;
 
         private void Start()
         {
             _scanText = GetComponent<TextMeshProUGUI>();
-            EventBus.Instance.Value.Subscribe<ScanStatusChanged>(StatusChanged);
+            _eventBus.Subscribe<ScanStatusChanged>(StatusChanged);
         }
 
-        private void StatusChanged(ScanStatusChanged statusChanged) 
+        private void StatusChanged(ScanStatusChanged statusChanged)
             => _scanText.text = statusChanged.Status ? "Scanning..." : "Scan finished";
     }
 }

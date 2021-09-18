@@ -5,13 +5,17 @@ using RubikVisualizers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Events;
+using EventBus;
+using EventBus.Events;
 using UnityEngine;
+using Zenject;
 
 namespace Parser
 {
     public class NotificationParser : INotificationParser
     {
+        [Inject] private static IEventBus _eventBus;
+
         public void ParseNotification(byte[] notification, short dataSize)
         {
             var messageType = notification[2];
@@ -102,7 +106,7 @@ namespace Parser
         }
 
         private static void InvokeFaceRotatedEvent(FaceRotation rotation) 
-            => EventBus.Instance.Value.Invoke(new FaceRotated{Rotation = rotation});
+            => _eventBus.Invoke(new FaceRotated{Rotation = rotation});
 
         private static RubikColor ParseNotificationColor(byte col)
         {
@@ -159,7 +163,7 @@ namespace Parser
             faces[5].Rotate(Rotation.Prime);
 
             Debug.Log("State parsed");
-            EventBus.Instance.Value.Invoke(new StateParsed{Faces = faces});
+            _eventBus.Invoke(new StateParsed{Faces = faces});
         }
 
         public async Task AnimateRotations(IEnumerable<FaceRotation> rotations)

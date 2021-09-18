@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Timers;
 using TMPro;
 using UnityEngine;
 
@@ -23,7 +22,7 @@ namespace Timers
 
         private void Update()
         {
-            if(!_isRunning) return;
+            if (!_isRunning) return;
 
             _elapsed += Time.deltaTime;
             var span = TimeSpan.FromSeconds(_elapsed);

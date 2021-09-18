@@ -1,6 +1,6 @@
 ﻿using Model;
 
-namespace Events
+namespace EventBus.Events
 {
     public class StateParsed : IEvent
     {

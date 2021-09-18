@@ -1,17 +1,11 @@
 using System;
 using System.Collections.Generic;
 
-namespace Events
+namespace EventBus
 {
-    public sealed class EventBus
+    public sealed class EventBus : IEventBus
     {
         private readonly Dictionary<Type, List<Delegate>> _handlers = new Dictionary<Type, List<Delegate>>();
-
-        private EventBus()
-        {
-        }
-
-        public static Lazy<EventBus> Instance { get; } = new Lazy<EventBus>(() => new EventBus());
 
         public void Subscribe<T>(Action<T> handler) where T : IEvent
         {
