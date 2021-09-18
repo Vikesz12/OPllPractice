@@ -1,11 +1,11 @@
-﻿using Model;
+﻿using EventBus;
+using EventBus.Events;
+using Model;
 using Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using EventBus;
-using EventBus.Events;
 using UnityEngine;
 using View;
 using Zenject;

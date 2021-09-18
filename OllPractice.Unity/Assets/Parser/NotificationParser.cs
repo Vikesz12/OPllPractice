@@ -14,7 +14,7 @@ namespace Parser
 {
     public class NotificationParser : INotificationParser
     {
-        [Inject] private static IEventBus _eventBus;
+        [Inject] private IEventBus _eventBus;
 
         public void ParseNotification(byte[] notification, short dataSize)
         {
@@ -105,7 +105,7 @@ namespace Parser
             }
         }
 
-        private static void InvokeFaceRotatedEvent(FaceRotation rotation) 
+        private void InvokeFaceRotatedEvent(FaceRotation rotation) 
             => _eventBus.Invoke(new FaceRotated{Rotation = rotation});
 
         private static RubikColor ParseNotificationColor(byte col)
@@ -163,7 +163,7 @@ namespace Parser
             faces[5].Rotate(Rotation.Prime);
 
             Debug.Log("State parsed");
-            _eventBus.Invoke(new StateParsed{Faces = faces});
+           _eventBus.Invoke(new StateParsed{Faces = faces});
         }
 
         public async Task AnimateRotations(IEnumerable<FaceRotation> rotations)

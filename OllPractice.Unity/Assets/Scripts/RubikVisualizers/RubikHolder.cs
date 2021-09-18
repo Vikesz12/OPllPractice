@@ -1,17 +1,27 @@
-﻿using Model;
+﻿using System;
+using Model;
 using UnityEngine;
+using Zenject;
 
 namespace RubikVisualizers
 {
     public class RubikHolder : MonoBehaviour
     {
+        [Inject] private DiContainer _container;
+
         private RubikVisualizer _currentVisualizer;
         private bool _flipped;
 
-        public void Awake() => CreateVisualizer();
+        private void Awake() => CreateVisualizer();
+
+        private void OnDestroy()
+        {
+            Destroy(_currentVisualizer.gameObject);
+            _currentVisualizer = null;
+        }
 
         private void CreateVisualizer() => _currentVisualizer =
-            Instantiate(Resources.Load<GameObject>("Prefabs/RubiksConnected"), transform)
+            _container.InstantiatePrefab(Resources.Load<GameObject>("Prefabs/RubiksConnected"), transform)
             .GetComponent<RubikVisualizer>();
 
 

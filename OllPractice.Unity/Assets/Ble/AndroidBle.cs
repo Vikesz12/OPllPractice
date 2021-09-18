@@ -13,7 +13,7 @@ namespace Ble
 
         public AndroidBle()
         {
-            _plugin = new AndroidJavaObject("com.viktor.ble.Ble", "RubikScanner", "AndroidMessage");
+            _plugin = new AndroidJavaObject("com.viktor.ble.Ble", "AndroidMessageObject", "AndroidMessage");
 
             _plugin.Call("setSERVICE_UUID", RubikBleConfig.ServiceUuid);
             _plugin.Call("setREAD_CHARACTERISTIC_UUID", RubikBleConfig.ReadCharacteristicUuid);

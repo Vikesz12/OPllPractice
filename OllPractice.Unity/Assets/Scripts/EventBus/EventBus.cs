@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace EventBus
 {
@@ -23,7 +25,10 @@ namespace EventBus
         public void Unsubscribe<T>(Action<T> handler) where T : IEvent
         {
             if (!_handlers.TryGetValue(typeof(T), out var handlers)) return;
-            handlers.Remove(handler);
+            var success = handlers.Remove(handler);
+            
+            if(!success)
+                Debug.Log("Couldnt remove handler from eventbus");
         }
 
         public void Invoke<T>(T item) where T : IEvent
@@ -32,6 +37,22 @@ namespace EventBus
             foreach (var handler in handlers)
             {
                 handler.DynamicInvoke(item);
+            }
+        }
+
+        public void CleanUp()
+        {
+            foreach (var handler in _handlers)
+            {
+                foreach (var delegateObject in handler.Value.ToList())
+                {
+                    if (delegateObject.Target.ToString() == "null")
+                    {
+                        var success = handler.Value.Remove(delegateObject);
+                        if (!success)
+                            Debug.Log("Couldnt remove handler from eventbus in cleanup");
+                    }
+                }
             }
         }
     }

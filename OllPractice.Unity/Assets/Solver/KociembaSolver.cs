@@ -89,6 +89,8 @@ namespace Solver
                     case "B'":
                         result.Add(FaceRotation.BPrime);
                         break;
+                    case "None":
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(rotationString), "rotation string unknown");
                 }

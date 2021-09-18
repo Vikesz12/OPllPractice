@@ -1,11 +1,11 @@
-﻿using Ble;
+﻿using System;
+using Ble;
+using EventBus;
+using EventBus.Events;
 using Parser;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using EventBus;
-using EventBus.Events;
 using UnityEngine;
 using Zenject;
 
@@ -17,19 +17,29 @@ namespace Scanner
 
         [Inject] private INotificationParser _notificationParser;
         [Inject] private IBle _bleScanner;
-        [Inject] private static  IEventBus _eventBus;
+        [Inject] private IEventBus _eventBus;
 
         private bool _isScanningDevices;
         private bool _isSubscribed;
         private string _connectedDeviceId;
         private List<string> _foundIds;
 
-        private void Start()
+        private void Awake()
         {
             _eventBus.Subscribe<ScanStatusChanged>(ScanStatusChanged);
             _foundIds = new List<string>();
-            StartScan();
+            if (ConnectedDeviceData.ConnectedDeviceId != null)
+            {
+                _isSubscribed = true;
+                _connectedDeviceId = ConnectedDeviceData.ConnectedDeviceId;
+            }
+            else
+            {
+                StartScan();
+            }
         }
+
+        private void OnDestroy() => _eventBus.Unsubscribe<ScanStatusChanged>(ScanStatusChanged);
 
         private void ScanStatusChanged(ScanStatusChanged obj) => _isScanningDevices = obj.Status;
 
@@ -42,7 +52,6 @@ namespace Scanner
             StartCoroutine(ScanFinished());
 #endif
         }
-
         public void Update()
         {
             if (_isScanningDevices)
@@ -63,25 +72,12 @@ namespace Scanner
             _isSubscribed = true;
             Debug.Log($"connected to {deviceId}");
             _connectedDeviceId = deviceId;
+            ConnectedDeviceData.ConnectedDeviceId = deviceId;
             _eventBus.Invoke(new ConnectedToDevice { DeviceId = deviceId });
         }
 
         public void Write(string writeData) => _bleScanner.Write(writeData, _connectedDeviceId);
         private void OnApplicationQuit() => _bleScanner.Quit();
-
-        public void AndroidMessage(string message)
-        {
-            var messageParts = message.Split('|');
-            if (messageParts[0] == "notification")
-            {
-                var bytes = Convert.FromBase64String(messageParts[1]);
-                _notificationParser.ParseNotification(bytes, (short)bytes.Length);
-            }
-            else
-            {
-                CreateNewCubeButton(messageParts[1], messageParts[2]);
-            }
-        }
 
         public void CreateNewCubeButton(string deviceId, string cubeName)
         {
@@ -94,7 +90,7 @@ namespace Scanner
         }
 
         // ReSharper disable once UnusedMember.Local
-        private static IEnumerator ScanFinished()
+        private IEnumerator ScanFinished()
         {
             yield return new WaitForSeconds(15);
             _eventBus.Invoke(new ScanStatusChanged { Status = false });
