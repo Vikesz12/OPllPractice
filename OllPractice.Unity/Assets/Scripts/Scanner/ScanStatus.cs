@@ -1,4 +1,3 @@
-using System;
 using EventBus;
 using EventBus.Events;
 using TMPro;

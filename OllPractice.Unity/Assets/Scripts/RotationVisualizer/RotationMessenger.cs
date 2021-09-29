@@ -33,7 +33,7 @@ namespace RotationVisualizer
         public Action PracticeFinished;
         private bool _animating;
 
-        public void Start()
+        public void Awake()
         {
             _rotationMessagePrefab = Resources.Load<GameObject>("Prefabs/RotationMessage");
             _rotations = new List<FaceRotation>();

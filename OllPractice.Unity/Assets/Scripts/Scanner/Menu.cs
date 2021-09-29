@@ -1,4 +1,3 @@
-using System;
 using Ble;
 using EventBus;
 using EventBus.Events;

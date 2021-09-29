@@ -1,5 +1,4 @@
-﻿using System;
-using Model;
+﻿using Model;
 using UnityEngine;
 using Zenject;
 
@@ -20,27 +19,35 @@ namespace RubikVisualizers
             _currentVisualizer = null;
         }
 
-        private void CreateVisualizer() => _currentVisualizer =
-            _container.InstantiatePrefab(Resources.Load<GameObject>("Prefabs/RubiksConnected"), transform)
-            .GetComponent<RubikVisualizer>();
+        private void CreateVisualizer() =>
+            _currentVisualizer =
+                _container.InstantiatePrefab(Resources.Load<GameObject>("Prefabs/RubiksConnected"), transform)
+                    .GetComponent<RubikVisualizer>();
 
 
-        public void LoadState(Face[] state)
+        public void LoadState(Face[] state, bool flip = false)
         {
             ResetVisualizer();
             _currentVisualizer.LoadState(state);
+            if(flip)
+                _currentVisualizer.Flip();
         }
 
         public void Flip()
         {
             if (_flipped) return;
             _flipped = true;
-            _currentVisualizer.Flip();
+            if(_currentVisualizer != null)
+                _currentVisualizer.Flip();
         }
 
-        public void ResetVisualizer()
+        private void ResetVisualizer()
         {
-            Destroy(_currentVisualizer.gameObject);
+            if (_currentVisualizer != null)
+            {
+                Destroy(_currentVisualizer.gameObject);
+            }
+
             _flipped = false;
             CreateVisualizer();
         }

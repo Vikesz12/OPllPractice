@@ -1,5 +1,4 @@
-﻿using System;
-using Ble;
+﻿using Ble;
 using EventBus;
 using EventBus.Events;
 using Parser;

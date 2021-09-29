@@ -7,23 +7,24 @@ using UnityEngine;
 
 namespace Parser
 {
-    public sealed class F2LCaseParser
+    public sealed class RubikCaseParser
     {
-        public static List<F2LCase> LoadJson()
+        public static List<RubikCase> LoadJson()
         {
             var jsonFile = Resources.Load<TextAsset>("Cases/F2LCases");
 
-            return JsonUtility.FromJson<F2LCaseList>(jsonFile.text).f2LCases;
+            return JsonUtility.FromJson<RubikCaseList>(jsonFile.text).rubikCases;
 
         }
 
         [Serializable]
-        private sealed class F2LCaseList
+        private sealed class RubikCaseList
         {
-            public List<F2LCase> f2LCases;
+            public List<RubikCase> rubikCases;
         }
+
         [Serializable]
-        public sealed class F2LCase
+        public sealed class RubikCase
         {
             public string name;
             public List<string> faces;
