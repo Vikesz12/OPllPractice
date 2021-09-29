@@ -41,6 +41,8 @@ namespace RotationVisualizer
             _eventBus.Subscribe<FaceRotated>(NotificationParserOnFaceRotated);
         }
 
+        private void OnDestroy() => _eventBus.Unsubscribe<FaceRotated>(NotificationParserOnFaceRotated);
+
         public async void AnimateCurrentMoves()
         {
             _animating = true;

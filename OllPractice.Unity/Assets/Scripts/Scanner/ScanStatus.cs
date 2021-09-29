@@ -1,3 +1,4 @@
+using System;
 using EventBus;
 using EventBus.Events;
 using TMPro;
@@ -18,6 +19,8 @@ namespace Scanner
             _scanText = GetComponent<TextMeshProUGUI>();
             _eventBus.Subscribe<ScanStatusChanged>(StatusChanged);
         }
+
+        private void OnDestroy() => _eventBus.Unsubscribe<ScanStatusChanged>(StatusChanged);
 
         private void StatusChanged(ScanStatusChanged statusChanged)
             => _scanText.text = statusChanged.Status ? "Scanning..." : "Scan finished";

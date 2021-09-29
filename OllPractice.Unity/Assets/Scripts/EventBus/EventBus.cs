@@ -26,9 +26,9 @@ namespace EventBus
         {
             if (!_handlers.TryGetValue(typeof(T), out var handlers)) return;
             var success = handlers.Remove(handler);
-            
-            if(!success)
-                Debug.Log("Couldnt remove handler from eventbus");
+
+            if (!success)
+                Debug.Log("Couldn't remove handler from event bus");
         }
 
         public void Invoke<T>(T item) where T : IEvent
@@ -44,14 +44,9 @@ namespace EventBus
         {
             foreach (var handler in _handlers)
             {
-                foreach (var delegateObject in handler.Value.ToList())
+                foreach (var delegateObject in handler.Value.ToList().Where(delegateObject => delegateObject.Target.ToString() == "null"))
                 {
-                    if (delegateObject.Target.ToString() == "null")
-                    {
-                        var success = handler.Value.Remove(delegateObject);
-                        if (!success)
-                            Debug.Log("Couldnt remove handler from eventbus in cleanup");
-                    }
+                    handler.Value.Remove(delegateObject);
                 }
             }
         }
