@@ -1,11 +1,11 @@
-﻿using Parser;
+﻿using EventBus;
+using EventBus.Events;
+using Parser;
 using RubikVisualizers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using EventBus;
-using EventBus.Events;
 using Timers;
 using TMPro;
 using UnityEngine;
@@ -122,16 +122,8 @@ namespace RotationVisualizer
                     else
                     {
                         _currentPosition = 0;
-                        ShowNextBatch();
                         _yTurns = 0;
-                        if(_animating)
-                        {
-                            StartCoroutine(PracticeFinishedCoroutine());
-                        }
-                        else
-                        {
-                            StartCoroutine(PracticeFinishedCoroutine());
-                        }
+                        StartCoroutine(PracticeFinishedCoroutine());
                     }
 
                 }
