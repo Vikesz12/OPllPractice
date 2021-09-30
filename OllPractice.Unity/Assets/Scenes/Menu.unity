@@ -587,9 +587,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 355617272}
     m_Modifications:
+    - target: {fileID: 568910693482205129, guid: c3d35f9ea99706744ad49c5a4710d7dc, type: 3}
+      propertyPath: m_Name
+      value: PracticeButtons
+      objectReference: {fileID: 0}
     - target: {fileID: 3382072744294352129, guid: c3d35f9ea99706744ad49c5a4710d7dc, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.09450164
+      value: -0.000020510684
       objectReference: {fileID: 0}
     - target: {fileID: 5079418741365536372, guid: c3d35f9ea99706744ad49c5a4710d7dc, type: 3}
       propertyPath: m_AnchorMax.x

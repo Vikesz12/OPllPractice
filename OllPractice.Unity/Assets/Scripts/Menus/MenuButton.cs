@@ -7,6 +7,7 @@ namespace Menus
     public class MenuButton : MonoBehaviour
     {
         [SerializeField] private GameObject _toActivate;
+        [SerializeField] private GameObject _toDeActivate;
 
         private Button _button;
 
@@ -21,7 +22,7 @@ namespace Menus
         private void ShowNewMenu()
         {
             _toActivate.SetActive(true);
-            transform.parent.gameObject.SetActive(false);
+            _toDeActivate.SetActive(false);
         }
     }
 }
