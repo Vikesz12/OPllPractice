@@ -37,7 +37,6 @@ namespace View
                 _center.transform.RotateAround(_center.transform.position, _center.transform.up, _angleToRotate * (Time.deltaTime / _timeToRotate));
                 yield return null;
             }
-            Debug.Log($"{_center.transform.eulerAngles} angles after rotation");
             callback.Invoke();
         }
 

@@ -11,6 +11,7 @@ namespace Parser
 
         public static void AddCase(RubikCaseParser.RubikCase rubikCase) => _selectedCases.Add(rubikCase);
         public static void RemoveCase(RubikCaseParser.RubikCase rubikCase) => _selectedCases.Remove(rubikCase);
+        public static void ClearCases() => _selectedCases.Clear();
 
         public static RubikCaseParser.RubikCase GetRandomCase() => _selectedCases[new Random().Next(_selectedCases.Count)];
     }

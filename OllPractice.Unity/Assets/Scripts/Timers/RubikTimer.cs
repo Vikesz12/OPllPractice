@@ -9,31 +9,27 @@ namespace Timers
     {
         private TextMeshProUGUI _timerText;
         private bool _isRunning;
-        private float _elapsed;
-        public void Start() => _timerText = GetComponent<TextMeshProUGUI>();
 
-        public void StartTimer()
-        {
-            _isRunning = true;
-            _elapsed = 0f;
-        }
-
-        public void StopTimer() => _isRunning = false;
-
+        private void Start() => _timerText = GetComponent<TextMeshProUGUI>();
         private void Update()
         {
             if (!_isRunning) return;
 
-            _elapsed += Time.deltaTime;
-            var span = TimeSpan.FromSeconds(_elapsed);
-            if (_elapsed > 60f)
-            {
-                _timerText.text = $@"{span:m\:ss\.ff}";
-            }
-            else
-            {
-                _timerText.text = $@"{span:ss\.ff}";
-            }
+            TimeElapsed += Time.deltaTime;
+            var span = TimeSpan.FromSeconds(TimeElapsed);
+            _timerText.text = TimeElapsed > 60f ? $@"{span:m\:ss\.ff}" : $@"{span:ss\.ff}";
         }
+
+        public float TimeElapsed { get; private set; }
+
+        public void StartTimer()
+        {
+            _isRunning = true;
+            TimeElapsed = 0f;
+        }
+
+        public void StopTimer() => _isRunning = false;
+
+        
     }
 }

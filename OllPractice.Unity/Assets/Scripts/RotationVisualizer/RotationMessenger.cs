@@ -20,8 +20,8 @@ namespace RotationVisualizer
         [SerializeField] private RubikTimer _rubikTimer;
         [SerializeField] private RubikHolder _rubikHolder;
 
-        [Inject] private INotificationParser _notificationParser;
-        [Inject] private IEventBus _eventBus;
+        [Inject] private readonly INotificationParser _notificationParser;
+        [Inject] private readonly IEventBus _eventBus;
 
         private List<FaceRotation> _rotations;
         private GameObject _rotationMessagePrefab;
@@ -30,7 +30,6 @@ namespace RotationVisualizer
         private Stack<FaceRotation> _correctionTurns;
         private bool _f2LMode;
         private int _yTurns;
-        public Action PracticeFinished;
         private bool _animating;
 
         public void Awake()
@@ -92,6 +91,9 @@ namespace RotationVisualizer
                     }
 
                     _currentPosition++;
+
+                    if (_currentPosition == 0)
+                        _rubikTimer.StartTimer();
                     textComponent.color = Color.blue;
                     textComponent = _messagesParent.GetChild(_currentPosition % MAXMessageCount).GetComponent<TextMeshProUGUI>();
                 }
@@ -138,7 +140,7 @@ namespace RotationVisualizer
         {
             yield return new WaitForSeconds(3);
             _animating = false;
-            PracticeFinished?.Invoke();
+            _eventBus.Invoke(new RotationsEmpty(_rubikTimer.TimeElapsed));
         }
 
         private bool CheckCorrectTurn(FaceRotation rotationToCheck, FaceRotation correctFaceRotation)

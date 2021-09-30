@@ -146,6 +146,10 @@ PrefabInstance:
       value: RubikCaseLoader
       objectReference: {fileID: 0}
     - target: {fileID: 5255528231393274134, guid: 57390126bbe1a1a41a6aaf3a82866646, type: 3}
+      propertyPath: _isPractice
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5255528231393274134, guid: 57390126bbe1a1a41a6aaf3a82866646, type: 3}
       propertyPath: _rubikHolder
       value: 
       objectReference: {fileID: 381789488}
