@@ -9,9 +9,9 @@ namespace Parser
 {
     public sealed class RubikCaseParser
     {
-        public static List<RubikCase> LoadJson()
+        public static List<RubikCase> LoadJson(string jsonName)
         {
-            var jsonFile = Resources.Load<TextAsset>("Cases/F2LCases");
+            var jsonFile = Resources.Load<TextAsset>("Cases/" + jsonName);
 
             return JsonUtility.FromJson<RubikCaseList>(jsonFile.text).rubikCases;
 
@@ -33,9 +33,9 @@ namespace Parser
             public Face[] GetStateFromFaces()
             {
                 var result = new Face[6];
-                for (var index1 = 0; index1 < faces.Count; index1++)
+                for (var i = 0; i < faces.Count; i++)
                 {
-                    var face = faces[index1];
+                    var face = faces[i];
                     var faceResult = new RubikColor[8];
                     for (var index = 0; index < face.Length; index++)
                     {
@@ -44,7 +44,7 @@ namespace Parser
                         faceResult[index] = color;
                     }
 
-                    result[index1] = new Face(faceResult.Reverse());
+                    result[i] = new Face(faceResult.Reverse());
                 }
 
                 return result;
@@ -57,8 +57,18 @@ namespace Parser
                 foreach (var note in notes)
                 {
                     var faceRotationString = note.Replace("'", "Prime");
-                    Enum.TryParse(faceRotationString, out FaceRotation rotationToAdd);
-                    result.Add(rotationToAdd);
+                    if (faceRotationString.Contains('2'))
+                    {
+                        var singleRotation = faceRotationString[0].ToString(); 
+                        Enum.TryParse(singleRotation, out FaceRotation rotationToAdd);
+                        result.Add(rotationToAdd);
+                        result.Add(rotationToAdd);
+                    }
+                    else
+                    {
+                        Enum.TryParse(faceRotationString, out FaceRotation rotationToAdd);
+                        result.Add(rotationToAdd);
+                    }
                 }
 
                 return result;

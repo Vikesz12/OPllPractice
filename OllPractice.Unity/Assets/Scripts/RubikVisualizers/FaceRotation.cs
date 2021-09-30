@@ -23,7 +23,13 @@ namespace RubikVisualizers
         M3,
         M3Prime,
         Y,
-        YPrime
+        YPrime,
+        X,
+        XPrime,
+        r,
+        rPrime,
+        l,
+        lPrime
     }
 
     public static class FaceRotationExtensions
@@ -72,6 +78,18 @@ namespace RubikVisualizers
                     return "y";
                 case FaceRotation.YPrime:
                     return "y'";
+                case FaceRotation.X:
+                    return "x";
+                case FaceRotation.XPrime:
+                    return "x'";
+                case FaceRotation.r:
+                    return "r";
+                case FaceRotation.rPrime:
+                    return "r'";
+                case FaceRotation.l:
+                    return "l";
+                case FaceRotation.lPrime:
+                    return "lPrime";
                 default:
                     throw new ArgumentOutOfRangeException(nameof(rotation), rotation, null);
             }
@@ -125,6 +143,18 @@ namespace RubikVisualizers
                     return FaceRotation.YPrime;
                 case FaceRotation.YPrime:
                     return FaceRotation.Y;
+                case FaceRotation.X:
+                    return FaceRotation.X;
+                case FaceRotation.XPrime:
+                    return FaceRotation.XPrime;
+                case FaceRotation.r:
+                    return FaceRotation.r;
+                case FaceRotation.rPrime:
+                    return FaceRotation.rPrime;
+                case FaceRotation.l:
+                    return FaceRotation.l;
+                case FaceRotation.lPrime:
+                    return FaceRotation.lPrime;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(rotation), rotation, null);
             }

@@ -1,0 +1,28 @@
+{
+    "rubikCases": [
+        {
+            "name": "Aa",
+            "faces": [
+                "WWWWWWWW",
+                "RRRRRROR",
+                "GGGGBGRG",
+                "OOOOGOGO",
+                "BBBBOBBB",
+                "YYYYYYYY"
+            ],
+            "solution": "x,L2,D2,L',U',L,D2,L',U,L'"
+        },
+        {
+            "name": "Ab",
+            "faces": [
+                "WWWWWWWW",
+                "RRRRLYLR",
+                "GGGGYYLG",
+                "OOOOYYLO",
+                "BBBBLYLB",
+                "LLLLLLLL"
+            ],
+            "solution": "x',L2,D2,L,U,L',D2,L,U',L"
+        }
+    ]
+}
