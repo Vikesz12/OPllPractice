@@ -1,4 +1,5 @@
-﻿using RubikVisualizers;
+﻿using Model;
+using RubikVisualizers;
 
 namespace EventBus.Events
 {

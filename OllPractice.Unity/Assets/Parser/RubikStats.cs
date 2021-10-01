@@ -10,19 +10,19 @@ namespace Parser
         public static RubikCaseStats PracticeStats;
         public static RubikCaseStats TrainingStats;
 
-        private static readonly string _practiceStatsPath = Application.persistentDataPath + "/PracticeStats.dat";
-        private static readonly string _trainingStatsPath = Application.persistentDataPath + "/TrainingStats.dat";
+        private static readonly string PracticeStatsPath = Application.persistentDataPath + "/PracticeStats.dat";
+        private static readonly string TrainingStatsPath = Application.persistentDataPath + "/TrainingStats.dat";
 
         public static void LoadData()
         {
-            PracticeStats = LoadStats(_practiceStatsPath);
-            TrainingStats = LoadStats(_trainingStatsPath);
+            PracticeStats = LoadStats(PracticeStatsPath);
+            TrainingStats = LoadStats(TrainingStatsPath);
         }
 
         public static void SaveData()
         {
-            SaveStats(_practiceStatsPath, PracticeStats);
-            SaveStats(_trainingStatsPath, TrainingStats);
+            SaveStats(PracticeStatsPath, PracticeStats);
+            SaveStats(TrainingStatsPath, TrainingStats);
         }
 
         private static void SaveStats(string filePath, RubikCaseStats data)

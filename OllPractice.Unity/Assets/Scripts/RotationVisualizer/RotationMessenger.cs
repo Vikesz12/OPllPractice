@@ -1,5 +1,6 @@
 ﻿using EventBus;
 using EventBus.Events;
+using Model;
 using Parser;
 using RubikVisualizers;
 using System;
@@ -28,9 +29,9 @@ namespace RotationVisualizer
         private int _currentPosition;
         private const int MAXMessageCount = 10;
         private Stack<FaceRotation> _correctionTurns;
-        private bool _f2LMode;
-        private int _yTurns;
+        private readonly List<FaceRotation> _cubeRotations = new List<FaceRotation>();
         private bool _animating;
+        private bool _practiceMode;
 
         public void Awake()
         {
@@ -47,8 +48,8 @@ namespace RotationVisualizer
             _animating = true;
             var remainingRotations = _rotations
                 .GetRange(_currentPosition, _rotations.Count)
-                .Select(r => r.ToF2LRotation(_yTurns))
-                .Where(r => r != FaceRotation.Y && r != FaceRotation.YPrime);
+                .Select(r => r.ToCubeTurnedRotation(_cubeRotations))
+                .Where(r => !r.IsCubeRotation);
             await _notificationParser.AnimateRotations(remainingRotations).ConfigureAwait(false);
         }
 
@@ -77,18 +78,39 @@ namespace RotationVisualizer
                 var messageObject = _messagesParent.GetChild(_currentPosition % MAXMessageCount);
                 var textComponent = messageObject.GetComponent<TextMeshProUGUI>();
 
-                if (_rotations[_currentPosition] == FaceRotation.Y || _rotations[_currentPosition] == FaceRotation.YPrime)
+                if (_rotations[_currentPosition].IsCubeRotation)
                 {
-                    if (_rotations[_currentPosition] == FaceRotation.Y)
+                    var rotationType = _rotations[_currentPosition].RotationType;
+                    switch (_rotations[_currentPosition].CubeRotation)
                     {
-                        _rubikHolder.GetCurrentVisualizer().Y();
-                        _yTurns++;
+                        case CubeRotation.Y:
+                            if (rotationType == Rotation.One)
+                            {
+                                _rubikHolder.GetCurrentVisualizer().Y();
+                                _cubeRotations.Add(new FaceRotation(CubeRotation.Y, Rotation.One));
+                            }
+                            else
+                            {
+                                _rubikHolder.GetCurrentVisualizer().YPrime();
+                                _cubeRotations.Add(new FaceRotation(CubeRotation.Y, Rotation.Prime));
+                            }
+                            break;
+                        case CubeRotation.X:
+                            if (rotationType == Rotation.One)
+                            {
+                                _rubikHolder.GetCurrentVisualizer().X();
+                                _cubeRotations.Add(new FaceRotation(CubeRotation.X, Rotation.One));
+                            }
+                            else
+                            {
+                                _rubikHolder.GetCurrentVisualizer().XPrime();
+                                _cubeRotations.Add(new FaceRotation(CubeRotation.X, Rotation.Prime));
+                            }
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
-                    else
-                    {
-                        _rubikHolder.GetCurrentVisualizer().YPrime();
-                        _yTurns--;
-                    }
+
 
                     _currentPosition++;
 
@@ -117,14 +139,13 @@ namespace RotationVisualizer
 
                 if (_currentPosition > _rotations.Count - 1)
                 {
-                    if (!_f2LMode)
+                    if (!_practiceMode)
                     {
                         Clear();
                     }
                     else
                     {
                         _currentPosition = 0;
-                        _yTurns = 0;
                         StartCoroutine(PracticeFinishedCoroutine());
                     }
 
@@ -143,15 +164,12 @@ namespace RotationVisualizer
             _eventBus.Invoke(new RotationsEmpty(_rubikTimer.TimeElapsed));
         }
 
-        private bool CheckCorrectTurn(FaceRotation rotationToCheck, FaceRotation correctFaceRotation)
-        {
-            if (!_f2LMode)
-                return rotationToCheck == correctFaceRotation;
-            return rotationToCheck == correctFaceRotation.ToF2LRotation(_yTurns);
-        }
+        private bool CheckCorrectTurn(FaceRotation rotationToCheck, FaceRotation correctFaceRotation) 
+            => Equals(rotationToCheck, correctFaceRotation.ToCubeTurnedRotation(_cubeRotations));
+
         private void AddCorrectionTurnFor(FaceRotation rotation)
         {
-            var correctionTurn = GetInvertedTurn(_f2LMode ? rotation.ToF2LRotation(_yTurns) : rotation);
+            var correctionTurn = GetInvertedTurn(rotation.ToCubeTurnedRotation(_cubeRotations));
 
             _correctionTurns.Push(correctionTurn);
             var createdMessage = Instantiate(_rotationMessagePrefab, _wrongMessageParent);
@@ -159,19 +177,9 @@ namespace RotationVisualizer
             createdMessage.transform.SetAsFirstSibling();
         }
 
-        private static FaceRotation GetInvertedTurn(FaceRotation rotation)
-        {
-            if (rotation.ToString().Contains("Prime"))
-            {
-                Enum.TryParse(rotation.ToString().Replace("Prime", ""), out FaceRotation result);
-                return result;
-            }
-            else
-            {
-                Enum.TryParse(rotation + "Prime", out FaceRotation result);
-                return result;
-            }
-        }
+        private static FaceRotation GetInvertedTurn(FaceRotation rotation) =>
+            new FaceRotation(rotation.BasicRotation,
+                rotation.RotationType == Rotation.One ? Rotation.Prime : Rotation.One);
 
         private void Clear()
         {
@@ -191,7 +199,13 @@ namespace RotationVisualizer
         public void LoadRotations(IEnumerable<FaceRotation> rotations, bool f2LMode)
         {
             _currentPosition = 0;
-            _f2LMode = f2LMode;
+            if (f2LMode)
+            {
+                _cubeRotations.Add(new FaceRotation(CubeRotation.X, Rotation.One));
+                _cubeRotations.Add(new FaceRotation(CubeRotation.X, Rotation.One));
+                _cubeRotations.Add(new FaceRotation(CubeRotation.Y, Rotation.One));
+                _practiceMode = true;
+            }
             _rotations = rotations.ToList();
             ShowNextBatch();
         }

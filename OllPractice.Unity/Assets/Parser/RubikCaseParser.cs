@@ -1,8 +1,8 @@
 ﻿using Model;
+using RubikVisualizers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using RubikVisualizers;
 using UnityEngine;
 
 namespace Parser
@@ -53,25 +53,8 @@ namespace Parser
             public List<FaceRotation> GetSolution()
             {
                 var notes = solution.Split(',');
-                var result = new List<FaceRotation>();
-                foreach (var note in notes)
-                {
-                    var faceRotationString = note.Replace("'", "Prime");
-                    if (faceRotationString.Contains('2'))
-                    {
-                        var singleRotation = faceRotationString[0].ToString(); 
-                        Enum.TryParse(singleRotation, out FaceRotation rotationToAdd);
-                        result.Add(rotationToAdd);
-                        result.Add(rotationToAdd);
-                    }
-                    else
-                    {
-                        Enum.TryParse(faceRotationString, out FaceRotation rotationToAdd);
-                        result.Add(rotationToAdd);
-                    }
-                }
 
-                return result;
+                return notes.Select(n => new FaceRotation(n)).ToList();
             }
         }
     }

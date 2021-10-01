@@ -1,6 +1,7 @@
 ﻿using RubikVisualizers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Model;
 
 namespace Parser
 {

@@ -48,6 +48,7 @@ namespace RubikVisualizers
         }
 
         public Cube GetCurrentCube => _cube;
+
         private void SetupFaces()
         {
             if (_setupComplete) return;
@@ -160,100 +161,148 @@ namespace RubikVisualizers
         {
             var rotation = faceRotated.Rotation;
 
-            switch (rotation)
+            if (!rotation.IsCubeRotation)
             {
-                case FaceRotation.R:
-                    _cube.R();
-                    R();
-                    break;
-                case FaceRotation.RPrime:
-                    _cube.RPrime();
-                    RPrime();
-                    break;
-                case FaceRotation.U:
-                    _cube.U();
-                    U();
-                    break;
-                case FaceRotation.UPrime:
-                    _cube.UPrime();
-                    UPrime();
-                    break;
-                case FaceRotation.L:
-                    _cube.L();
-                    L();
-                    break;
-                case FaceRotation.LPrime:
-                    _cube.LPrime();
-                    LPrime();
-                    break;
-                case FaceRotation.F:
-                    _cube.F();
-                    F();
-                    break;
-                case FaceRotation.FPrime:
-                    _cube.FPrime();
-                    FPrime();
-                    break;
-                case FaceRotation.B:
-                    _cube.B();
-                    B();
-                    break;
-                case FaceRotation.BPrime:
-                    _cube.BPrime();
-                    BPrime();
-                    break;
-                case FaceRotation.D:
-                    _cube.D();
-                    D();
-                    break;
-                case FaceRotation.DPrime:
-                    _cube.DPrime();
-                    DPrime();
-                    break;
-                case FaceRotation.M:
-                    _cube.R();
-                    _cube.LPrime();
-                    R();
-                    LPrime();
-                    break;
-                case FaceRotation.MPrime:
-                    _cube.RPrime();
-                    _cube.L();
-                    RPrime();
-                    L();
-                    break;
-                case FaceRotation.M2:
-                    _cube.FPrime();
-                    _cube.B();
-                    FPrime();
-                    B();
-                    break;
-                case FaceRotation.M2Prime:
-                    _cube.F();
-                    _cube.BPrime();
-                    F();
-                    BPrime();
-                    break;
-                case FaceRotation.M3:
-                    _cube.DPrime();
-                    _cube.U();
-                    DPrime();
-                    U();
-                    break;
-                case FaceRotation.M3Prime:
-                    _cube.D();
-                    _cube.UPrime();
-                    D();
-                    UPrime();
-                    break;
-                case FaceRotation.Y:
-                    Y();
-                    break;
-                case FaceRotation.YPrime:
-                    YPrime();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(rotation), rotation, null);
+                switch (rotation.BasicRotation)
+                {
+                    case BasicRotation.R:
+                        if (rotation.RotationType == Rotation.One)
+                        {
+                            R();
+                        }
+                        else if (rotation.RotationType == Rotation.Prime)
+                        {
+                            RPrime();
+                        }
+
+                        break;
+                    case BasicRotation.U:
+                        if (rotation.RotationType == Rotation.One)
+                        {
+                            U();
+                        }
+                        else if (rotation.RotationType == Rotation.Prime)
+                        {
+                            UPrime();
+                        }
+
+                        break;
+                    case BasicRotation.L:
+                        if (rotation.RotationType == Rotation.One)
+                        {
+                            L();
+                        }
+                        else if (rotation.RotationType == Rotation.Prime)
+                        {
+                            LPrime();
+                        }
+
+                        break;
+                    case BasicRotation.F:
+                        if (rotation.RotationType == Rotation.One)
+                        {
+                            F();
+                        }
+                        else if (rotation.RotationType == Rotation.Prime)
+                        {
+                            FPrime();
+                        }
+
+                        break;
+                    case BasicRotation.B:
+                        if (rotation.RotationType == Rotation.One)
+                        {
+                            B();
+                        }
+                        else if (rotation.RotationType == Rotation.Prime)
+                        {
+                            BPrime();
+                        }
+
+                        break;
+                    case BasicRotation.D:
+                        if (rotation.RotationType == Rotation.One)
+                        {
+                            D();
+                        }
+                        else if (rotation.RotationType == Rotation.Prime)
+                        {
+                            DPrime();
+                        }
+
+                        break;
+                    case BasicRotation.M:
+                        if (rotation.RotationType == Rotation.One)
+                        {
+                            R();
+                            LPrime();
+                        }
+                        else if (rotation.RotationType == Rotation.Prime)
+                        {
+                            RPrime();
+                            L();
+                        }
+
+                        break;
+                    case BasicRotation.M2:
+                        if (rotation.RotationType == Rotation.One)
+                        {
+                            FPrime();
+                            B();
+                        }
+                        else if (rotation.RotationType == Rotation.Prime)
+                        {
+                            F();
+                            BPrime();
+                        }
+
+                        break;
+                    case BasicRotation.M3:
+                        if (rotation.RotationType == Rotation.One)
+                        {
+                            DPrime();
+                            U();
+                        }
+                        else if (rotation.RotationType == Rotation.Prime)
+                        {
+                            D();
+                            UPrime();
+                        }
+
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(rotation.BasicRotation), rotation.BasicRotation,
+                            null);
+                }
+            }
+
+            else
+            {
+                switch (rotation.CubeRotation)
+                {
+                    case CubeRotation.Y:
+                        if (rotation.RotationType == Rotation.One)
+                        {
+                            Y();
+                        }
+                        else if (rotation.RotationType == Rotation.Prime)
+                        {
+                            YPrime();
+                        }
+                        break;
+                    case CubeRotation.X:
+                        if (rotation.RotationType == Rotation.One)
+                        {
+                            X();
+                        }
+                        else if (rotation.RotationType == Rotation.Prime)
+                        {
+                            XPrime();
+                        }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
         }
 
@@ -275,30 +324,78 @@ namespace RubikVisualizers
 
 
 
-        private void U() => RotateSide(0, 2, 3, 4, 1, Rotation.One);
+        private void U()
+        {
+            _cube.U();
+            RotateSide(0, 2, 3, 4, 1, Rotation.One);
+        }
 
-        private void UPrime() => RotateSide(0, 2, 1, 4, 3, Rotation.Prime);
+        private void UPrime()
+        {
+            _cube.UPrime();
+            RotateSide(0, 2, 1, 4, 3, Rotation.Prime);
+        }
 
-        private void R() => RotateSide(1, 0, 4, 5, 2, Rotation.One);
+        private void R()
+        {
+            _cube.R();
+            RotateSide(1, 0, 4, 5, 2, Rotation.One);
+        }
 
-        private void RPrime() => RotateSide(1, 0, 2, 5, 4, Rotation.Prime);
+        private void RPrime()
+        {
+            _cube.RPrime();
+            RotateSide(1, 0, 2, 5, 4, Rotation.Prime);
+        }
 
 
-        private void L() => RotateSide(3, 0, 2, 5, 4, Rotation.One);
+        private void L()
+        {
+            _cube.L();
+            RotateSide(3, 0, 2, 5, 4, Rotation.One);
+        }
 
-        private void LPrime() => RotateSide(3, 0, 4, 5, 2, Rotation.Prime);
+        private void LPrime()
+        {
+            _cube.LPrime();
+            RotateSide(3, 0, 4, 5, 2, Rotation.Prime);
+        }
 
-        private void F() => RotateSide(2, 0, 1, 5, 3, Rotation.One);
+        private void F()
+        {
+            _cube.F();
+            RotateSide(2, 0, 1, 5, 3, Rotation.One);
+        }
 
-        private void FPrime() => RotateSide(2, 0, 3, 5, 1, Rotation.Prime);
+        private void FPrime()
+        {
+            _cube.FPrime();
+            RotateSide(2, 0, 3, 5, 1, Rotation.Prime);
+        }
 
-        private void B() => RotateSide(4, 0, 3, 5, 1, Rotation.One);
+        private void B()
+        {
+            _cube.B();
+            RotateSide(4, 0, 3, 5, 1, Rotation.One);
+        }
 
-        private void BPrime() => RotateSide(4, 0, 1, 5, 3, Rotation.Prime);
+        private void BPrime()
+        {
+            _cube.BPrime();
+            RotateSide(4, 0, 1, 5, 3, Rotation.Prime);
+        }
 
-        private void D() => RotateSide(5, 2, 1, 4, 3, Rotation.One);
+        private void D()
+        {
+            _cube.D();
+            RotateSide(5, 2, 1, 4, 3, Rotation.One);
+        }
 
-        private void DPrime() => RotateSide(5, 2, 3, 4, 1, Rotation.Prime);
+        private void DPrime()
+        {
+            _cube.DPrime();
+            RotateSide(5, 2, 3, 4, 1, Rotation.Prime);
+        }
 
         private void RotateSide(int sideToRotate, int side1, int side2, int side3, int side4, Rotation rotation) =>
             _animations.Enqueue(
@@ -323,7 +420,6 @@ namespace RubikVisualizers
                     },
                     _faces[sideToRotate].RotateCoroutine(rotation, () =>
                     {
-
                         _faces[sideToRotate].SkipCoroutine();
                         var firstSideCubes = _faces[side1].RemoveCubes(_faces[sideToRotate].Cubes);
                         var secondSideCubes = _faces[side2].RemoveCubes(_faces[sideToRotate].Cubes);
@@ -338,9 +434,12 @@ namespace RubikVisualizers
                         _isAnimating = false;
                     })));
 
-        public void Y() => RotateCube(FaceRotation.Y);
+        public void Y() => RotateCube(new FaceRotation(CubeRotation.Y, Rotation.One));
 
-        public void YPrime() => RotateCube(FaceRotation.YPrime);
+        public void YPrime() => RotateCube(new FaceRotation(CubeRotation.Y, Rotation.Prime));
+
+        public void X() => RotateCube(new FaceRotation(CubeRotation.X, Rotation.One));
+        public void XPrime() => RotateCube(new FaceRotation(CubeRotation.X, Rotation.Prime));
 
         private void RotateCube(FaceRotation rotation) =>
             _animations.Enqueue(new KeyValuePair<Action<bool>, IEnumerator>(
@@ -355,13 +454,28 @@ namespace RubikVisualizers
         private IEnumerator CubeRotationCoroutine(FaceRotation rotation, Action callback)
         {
             var currentTime = 0.0f;
-            var angleToRotate = rotation == FaceRotation.Y ? -90f : 90f;
+
+            var angleToRotate = rotation.RotationType switch
+            {
+                Rotation.Prime => -90f,
+                Rotation.One => 90f,
+                Rotation.Two => 180f,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+            var o = gameObject;
+            var axisToRotateAround = rotation.CubeRotation switch
+            {
+                CubeRotation.Y => o.transform.up,
+                CubeRotation.X => o.transform.right,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
             const float timeToRotate = 0.25f;
             while (currentTime <= timeToRotate)
             {
                 currentTime += Time.deltaTime;
-                var o = gameObject;
-                gameObject.transform.RotateAround(o.transform.position, o.transform.up, angleToRotate * (Time.deltaTime / timeToRotate));
+                gameObject.transform.RotateAround(o.transform.position, axisToRotateAround, angleToRotate * (Time.deltaTime / timeToRotate));
                 yield return null;
             }
             callback.Invoke();
@@ -369,9 +483,23 @@ namespace RubikVisualizers
 
         private void CubeRotateWithoutAnimation(FaceRotation rotation)
         {
-            var angleToRotate = rotation == FaceRotation.Y ? 90f : -90f;
+            var angleToRotate = rotation.RotationType switch
+            {
+                Rotation.Prime => -90f,
+                Rotation.One => 90f,
+                Rotation.Two => 180f,
+                _ => throw new ArgumentOutOfRangeException()
+            };
             var o = gameObject;
-            gameObject.transform.RotateAround(o.transform.position, o.transform.up, angleToRotate);
+
+            var axisToRotateAround = rotation.CubeRotation switch
+            {
+                CubeRotation.Y => o.transform.up,
+                CubeRotation.X => o.transform.right,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+            gameObject.transform.RotateAround(o.transform.position, axisToRotateAround, angleToRotate);
         }
         public void Update()
         {
