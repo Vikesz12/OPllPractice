@@ -30,6 +30,7 @@ namespace RotationVisualizer
         private const int MAXMessageCount = 10;
         private Stack<FaceRotation> _correctionTurns;
         private readonly List<FaceRotation> _cubeRotations = new List<FaceRotation>();
+        private readonly List<RotationStep> _rotationSteps = new List<RotationStep>();
         private bool _animating;
         private bool _practiceMode;
 
@@ -59,7 +60,7 @@ namespace RotationVisualizer
             if (_rotations.Count == 0 && _correctionTurns.Count == 0) return;
             if (_correctionTurns.Count != 0)
             {
-                if (CheckCorrectTurn(rotation, _correctionTurns.Peek()))
+                if (CheckCorrectTurn( _correctionTurns.Peek(), rotation))
                 {
                     _correctionTurns.Pop();
                     Destroy(_wrongMessageParent.GetChild(0).gameObject);
@@ -75,65 +76,60 @@ namespace RotationVisualizer
             }
             else
             {
-                var messageObject = _messagesParent.GetChild(_currentPosition % MAXMessageCount);
-                var textComponent = messageObject.GetComponent<TextMeshProUGUI>();
+                var rotationStep = _rotationSteps[_currentPosition % MAXMessageCount];
 
                 if (_rotations[_currentPosition].IsCubeRotation)
                 {
                     var rotationType = _rotations[_currentPosition].RotationType;
                     switch (_rotations[_currentPosition].CubeRotation)
                     {
-                        case CubeRotation.Y:
+                        case CubeRotation.y:
                             if (rotationType == Rotation.One)
                             {
                                 _rubikHolder.GetCurrentVisualizer().Y();
-                                _cubeRotations.Add(new FaceRotation(CubeRotation.Y, Rotation.One));
+                                _cubeRotations.Add(new FaceRotation(CubeRotation.y, Rotation.One));
                             }
                             else
                             {
                                 _rubikHolder.GetCurrentVisualizer().YPrime();
-                                _cubeRotations.Add(new FaceRotation(CubeRotation.Y, Rotation.Prime));
+                                _cubeRotations.Add(new FaceRotation(CubeRotation.y, Rotation.Prime));
                             }
                             break;
-                        case CubeRotation.X:
+                        case CubeRotation.x:
                             if (rotationType == Rotation.One)
                             {
                                 _rubikHolder.GetCurrentVisualizer().X();
-                                _cubeRotations.Add(new FaceRotation(CubeRotation.X, Rotation.One));
+                                _cubeRotations.Add(new FaceRotation(CubeRotation.x, Rotation.One));
                             }
                             else
                             {
                                 _rubikHolder.GetCurrentVisualizer().XPrime();
-                                _cubeRotations.Add(new FaceRotation(CubeRotation.X, Rotation.Prime));
+                                _cubeRotations.Add(new FaceRotation(CubeRotation.x, Rotation.Prime));
                             }
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
 
+                    if (_currentPosition == 0)
+                        _rubikTimer.StartTimer();
 
                     _currentPosition++;
 
-                    if (_currentPosition == 0)
-                        _rubikTimer.StartTimer();
-                    textComponent.color = Color.blue;
-                    textComponent = _messagesParent.GetChild(_currentPosition % MAXMessageCount).GetComponent<TextMeshProUGUI>();
+                    rotationStep.SetColor(Color.blue);
+                    rotationStep = _rotationSteps[_currentPosition % MAXMessageCount];
                 }
 
-                if (CheckCorrectTurn(rotation, _rotations[_currentPosition]))
+                if (rotationStep.CheckCorrectTurn(rotation, _cubeRotations, ref _currentPosition))
                 {
                     if (_currentPosition == 0)
                         _rubikTimer.StartTimer();
-
-                    textComponent.color = Color.green;
-                    _currentPosition++;
 
                     if (_currentPosition == _rotations.Count)
                         _rubikTimer.StopTimer();
                 }
                 else
                 {
-                    textComponent.color = Color.red;
                     AddCorrectionTurnFor(rotation);
                 }
 
@@ -150,7 +146,7 @@ namespace RotationVisualizer
                     }
 
                 }
-                else if (_currentPosition % MAXMessageCount == 0)
+                else if (_currentPosition % MAXMessageCount == 0 && rotationStep.Finished)
                 {
                     ShowNextBatch();
                 }
@@ -159,12 +155,14 @@ namespace RotationVisualizer
 
         private IEnumerator PracticeFinishedCoroutine()
         {
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(2);
+            if (!_animating)
+                _eventBus.Invoke(new RotationsEmpty(_rubikTimer.TimeElapsed));
             _animating = false;
-            _eventBus.Invoke(new RotationsEmpty(_rubikTimer.TimeElapsed));
+            AddPracticeModeRotations();
         }
 
-        private bool CheckCorrectTurn(FaceRotation rotationToCheck, FaceRotation correctFaceRotation) 
+        private bool CheckCorrectTurn(FaceRotation rotationToCheck, FaceRotation correctFaceRotation)
             => Equals(rotationToCheck, correctFaceRotation.ToCubeTurnedRotation(_cubeRotations));
 
         private void AddCorrectionTurnFor(FaceRotation rotation)
@@ -190,6 +188,7 @@ namespace RotationVisualizer
 
         private void DeleteMessageObjects()
         {
+            _rotationSteps.Clear();
             foreach (Transform child in _messagesParent.transform)
             {
                 Destroy(child.gameObject);
@@ -201,13 +200,19 @@ namespace RotationVisualizer
             _currentPosition = 0;
             if (f2LMode)
             {
-                _cubeRotations.Add(new FaceRotation(CubeRotation.X, Rotation.One));
-                _cubeRotations.Add(new FaceRotation(CubeRotation.X, Rotation.One));
-                _cubeRotations.Add(new FaceRotation(CubeRotation.Y, Rotation.One));
+                AddPracticeModeRotations();
                 _practiceMode = true;
             }
             _rotations = rotations.ToList();
             ShowNextBatch();
+        }
+
+        private void AddPracticeModeRotations()
+        {
+            _cubeRotations.Clear();
+            _cubeRotations.Add(new FaceRotation(CubeRotation.x, Rotation.One));
+            _cubeRotations.Add(new FaceRotation(CubeRotation.x, Rotation.One));
+            _cubeRotations.Add(new FaceRotation(CubeRotation.y, Rotation.One));
         }
 
         private void ShowNextBatch()
@@ -217,7 +222,9 @@ namespace RotationVisualizer
             for (var i = _currentPosition; i < endPosition; i++)
             {
                 var createdMessage = Instantiate(_rotationMessagePrefab, _messagesParent);
-                createdMessage.GetComponent<TextMeshProUGUI>().text = _rotations[i].ToRubikNotation();
+                var rotationStep = createdMessage.GetComponent<RotationStep>();
+                _rotationSteps.Add(rotationStep);
+                rotationStep.LoadStep(_rotations[i]);
             }
         }
     }

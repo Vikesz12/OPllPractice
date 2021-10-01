@@ -280,7 +280,7 @@ namespace RubikVisualizers
             {
                 switch (rotation.CubeRotation)
                 {
-                    case CubeRotation.Y:
+                    case CubeRotation.y:
                         if (rotation.RotationType == Rotation.One)
                         {
                             Y();
@@ -290,7 +290,7 @@ namespace RubikVisualizers
                             YPrime();
                         }
                         break;
-                    case CubeRotation.X:
+                    case CubeRotation.x:
                         if (rotation.RotationType == Rotation.One)
                         {
                             X();
@@ -434,12 +434,12 @@ namespace RubikVisualizers
                         _isAnimating = false;
                     })));
 
-        public void Y() => RotateCube(new FaceRotation(CubeRotation.Y, Rotation.One));
+        public void Y() => RotateCube(new FaceRotation(CubeRotation.y, Rotation.One));
 
-        public void YPrime() => RotateCube(new FaceRotation(CubeRotation.Y, Rotation.Prime));
+        public void YPrime() => RotateCube(new FaceRotation(CubeRotation.y, Rotation.Prime));
 
-        public void X() => RotateCube(new FaceRotation(CubeRotation.X, Rotation.One));
-        public void XPrime() => RotateCube(new FaceRotation(CubeRotation.X, Rotation.Prime));
+        public void X() => RotateCube(new FaceRotation(CubeRotation.x, Rotation.One));
+        public void XPrime() => RotateCube(new FaceRotation(CubeRotation.x, Rotation.Prime));
 
         private void RotateCube(FaceRotation rotation) =>
             _animations.Enqueue(new KeyValuePair<Action<bool>, IEnumerator>(
@@ -457,8 +457,8 @@ namespace RubikVisualizers
 
             var angleToRotate = rotation.RotationType switch
             {
-                Rotation.Prime => -90f,
-                Rotation.One => 90f,
+                Rotation.Prime => 90f,
+                Rotation.One => -90f,
                 Rotation.Two => 180f,
                 _ => throw new ArgumentOutOfRangeException()
             };
@@ -466,8 +466,8 @@ namespace RubikVisualizers
             var o = gameObject;
             var axisToRotateAround = rotation.CubeRotation switch
             {
-                CubeRotation.Y => o.transform.up,
-                CubeRotation.X => o.transform.right,
+                CubeRotation.y => o.transform.up,
+                CubeRotation.x => o.transform.forward,
                 _ => throw new ArgumentOutOfRangeException()
             };
 
@@ -494,8 +494,8 @@ namespace RubikVisualizers
 
             var axisToRotateAround = rotation.CubeRotation switch
             {
-                CubeRotation.Y => o.transform.up,
-                CubeRotation.X => o.transform.right,
+                CubeRotation.y => o.transform.up,
+                CubeRotation.x => o.transform.right,
                 _ => throw new ArgumentOutOfRangeException()
             };
 
@@ -532,12 +532,12 @@ namespace RubikVisualizers
             var transform1 = transform;
             if (transform.localEulerAngles == Vector3.zero)
             {
-                transform1.localPosition = new Vector3(0, -0.45f, 0);
+                transform1.localPosition = new Vector3(0, -0.2f, 0);
                 transform1.localEulerAngles = new Vector3(0, -75f, 180f);
             }
             else
             {
-                transform1.localPosition = new Vector3(0, -0.12f, 0);
+                transform1.localPosition = new Vector3(0, 0, 0);
                 transform1.localEulerAngles = Vector3.zero;
             }
         }

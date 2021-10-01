@@ -5,6 +5,6 @@ namespace Stats
 {
     public class SaveDataLoader : MonoBehaviour
     {
-        private void Awake() => RubikStats.LoadData();
+        private void Awake() => RotationEqualityTable.LoadData();
     }
 }

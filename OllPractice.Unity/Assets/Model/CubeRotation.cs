@@ -2,7 +2,7 @@
 {
     public enum CubeRotation
     {
-        Y,
-        X,
+        y,
+        x,
     }
 }

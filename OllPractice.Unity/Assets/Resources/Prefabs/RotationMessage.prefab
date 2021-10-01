@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 468975915497764234}
   - component: {fileID: 468975915497764341}
   - component: {fileID: 4853017469593980894}
+  - component: {fileID: 8762489914355801291}
   m_Layer: 5
   m_Name: RotationMessage
   m_TagString: Untagged
@@ -149,3 +150,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 0
+--- !u!114 &8762489914355801291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468975915497764343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 538b6f6c222e431bb63c5a49e30c2841, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

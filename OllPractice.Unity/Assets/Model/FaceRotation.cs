@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Parser;
+using System;
 using System.Collections.Generic;
 
 namespace Model
 {
     public class FaceRotation
     {
-        public BasicRotation BasicRotation { get; }
+        public BasicRotation BasicRotation { get; set; }
 
         public CubeRotation CubeRotation { get; }
 
@@ -28,16 +29,43 @@ namespace Model
 
         public FaceRotation(string notation)
         {
-            Enum.TryParse(notation[0].ToString(), out BasicRotation basicRotation);
-            BasicRotation = basicRotation;
-            if (notation.Length == 1)
+            if (notation[0] == 'x' || notation[0] == 'y')
             {
-                RotationType = Rotation.One;
-                return;
+                Enum.TryParse(notation[0].ToString(), out CubeRotation cubeRotation);
+                IsCubeRotation = true;
+                CubeRotation = cubeRotation;
+            }
+            else if (notation[0] != 'M')
+            {
+                Enum.TryParse(notation[0].ToString(), out BasicRotation basicRotation);
+                BasicRotation = basicRotation;
             }
 
-            var rotationType = notation[1] == '2' ? Rotation.Two : Rotation.Prime;
-            RotationType = rotationType;
+            if (notation.Contains("'"))
+            {
+                RotationType = Rotation.Prime;
+            }
+
+            else if (notation.Contains("2") && !notation.Contains("M2"))
+            {
+                RotationType = Rotation.Two;
+            }
+            else if (notation == "M22")
+            {
+                RotationType = Rotation.Two;
+            }
+            else
+            {
+                RotationType = Rotation.One;
+            }
+        }
+
+        public FaceRotation(FaceRotation other)
+        {
+            BasicRotation = other.BasicRotation;
+            CubeRotation = other.CubeRotation;
+            IsCubeRotation = other.IsCubeRotation;
+            RotationType = other.RotationType;
         }
 
         public override bool Equals(object obj)
@@ -59,7 +87,6 @@ namespace Model
         public override int GetHashCode()
         {
             var hash = 12;
-            hash = hash * 7 + BasicRotation.GetHashCode();
             hash = hash * 7 + RotationType.GetHashCode();
             hash = hash * 7 + CubeRotation.GetHashCode();
             return hash;
@@ -70,6 +97,8 @@ namespace Model
     {
         public static string ToRubikNotation(this FaceRotation rotation)
         {
+            if (rotation.IsCubeRotation)
+                return rotation.CubeRotation.ToString();
             if (rotation.RotationType == Rotation.One)
                 return rotation.BasicRotation.ToString();
 
@@ -77,14 +106,32 @@ namespace Model
             return rotation.BasicRotation + extraChar;
         }
 
-        public static FaceRotation ToCubeTurnedRotation(this FaceRotation rotation, List<FaceRotation> rotations)
+        public static FaceRotation ToCubeTurnedRotation(this FaceRotation rotation, List<FaceRotation> cubeRotations)
         {
-            if (rotations.Count == 0)
+            if (cubeRotations.Count == 0)
                 return rotation;
-            else
+
+            var resultRotation = new FaceRotation(rotation);
+            foreach (var cubeRotation in cubeRotations)
             {
-                return rotation;
+                var timesToCheck = cubeRotation.RotationType switch
+                {
+                    Rotation.Prime => 3,
+                    Rotation.One => 1,
+                    Rotation.Two => 2,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+
+                for (var i = 0; i < timesToCheck; i++)
+                {
+                    var valueTuple = RotationEqualityTable.EqualityTable[resultRotation.BasicRotation];
+                    resultRotation.BasicRotation = cubeRotation.CubeRotation == CubeRotation.x
+                        ? valueTuple.xRotation
+                        : valueTuple.yRotation;
+                }
             }
+
+            return resultRotation;
         }
     }
 }
