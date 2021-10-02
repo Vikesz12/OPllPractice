@@ -57,6 +57,7 @@ namespace RotationVisualizer
         private void NotificationParserOnFaceRotated(FaceRotated faceRotated)
         {
             var rotation = faceRotated.Rotation;
+            _rubikTimer.StartTimer();
             if (_rotations.Count == 0 && _correctionTurns.Count == 0) return;
             if (_correctionTurns.Count != 0)
             {
@@ -66,7 +67,7 @@ namespace RotationVisualizer
                     Destroy(_wrongMessageParent.GetChild(0).gameObject);
                     if (_correctionTurns.Count == 0)
                     {
-                        _messagesParent.GetChild(_currentPosition % MAXMessageCount).GetComponent<TextMeshProUGUI>().color = Color.black;
+                        _messagesParent.GetChild(_currentPosition % MAXMessageCount).GetComponent<RotationStep>().ResetColor();
                     }
                 }
                 else
@@ -111,9 +112,6 @@ namespace RotationVisualizer
                             throw new ArgumentOutOfRangeException();
                     }
 
-                    if (_currentPosition == 0)
-                        _rubikTimer.StartTimer();
-
                     _currentPosition++;
 
                     rotationStep.SetColor(Color.blue);
@@ -122,9 +120,6 @@ namespace RotationVisualizer
 
                 if (rotationStep.CheckCorrectTurn(rotation, _cubeRotations, ref _currentPosition))
                 {
-                    if (_currentPosition == 0)
-                        _rubikTimer.StartTimer();
-
                     if (_currentPosition == _rotations.Count)
                         _rubikTimer.StopTimer();
                 }

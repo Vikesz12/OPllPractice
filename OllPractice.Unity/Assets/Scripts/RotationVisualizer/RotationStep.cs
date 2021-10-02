@@ -42,20 +42,23 @@ namespace RotationVisualizer
                 return false;
             }
 
+            var basicRotationSame = Equals(cubeTurnedRotation.BasicRotation, _faceRotation.BasicRotation);
             switch (_secondTurn)
             {
-                case true when Equals(cubeTurnedRotation.BasicRotation, _faceRotation.BasicRotation) 
+                case true when basicRotationSame 
                                && cubeTurnedRotation.RotationType == _firstTurnType:
                     Finished = true;
                     _rotationText.color = Color.green;
                     currentPosition++;
                     return true;
-                case true:
+                case true when basicRotationSame
+                               && cubeTurnedRotation.RotationType != _firstTurnType:
+                    _secondTurn = false;
                     _rotationText.color = Color.black;
-                    return false;
+                    return true;
             }
 
-            if (Equals(cubeTurnedRotation.BasicRotation, _faceRotation.BasicRotation))
+            if (basicRotationSame)
             {
                 _rotationText.color = Color.yellow;
                 _secondTurn = true;
@@ -65,6 +68,11 @@ namespace RotationVisualizer
 
             _rotationText.color = Color.red;
             return false;
+        }
+
+        public void ResetColor()
+        {
+            _rotationText.color = _secondTurn ? Color.yellow : Color.black;
         }
     }
 }
