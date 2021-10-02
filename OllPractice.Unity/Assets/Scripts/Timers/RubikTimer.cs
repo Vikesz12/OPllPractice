@@ -24,6 +24,7 @@ namespace Timers
 
         public void StartTimer()
         {
+            if (_isRunning) return;
             _isRunning = true;
             TimeElapsed = 0f;
         }

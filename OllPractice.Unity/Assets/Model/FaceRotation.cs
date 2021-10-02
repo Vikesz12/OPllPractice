@@ -97,13 +97,15 @@ namespace Model
     {
         public static string ToRubikNotation(this FaceRotation rotation)
         {
-            if (rotation.IsCubeRotation)
-                return rotation.CubeRotation.ToString();
+            var basicString = rotation.IsCubeRotation
+                ? rotation.CubeRotation.ToString()
+                : rotation.BasicRotation.ToString();
+
             if (rotation.RotationType == Rotation.One)
-                return rotation.BasicRotation.ToString();
+                return basicString;
 
             var extraChar = rotation.RotationType == Rotation.Prime ? "'" : "2";
-            return rotation.BasicRotation + extraChar;
+            return basicString + extraChar;
         }
 
         public static FaceRotation ToCubeTurnedRotation(this FaceRotation rotation, List<FaceRotation> cubeRotations)
