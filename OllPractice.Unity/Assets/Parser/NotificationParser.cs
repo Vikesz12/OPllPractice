@@ -1,12 +1,11 @@
-﻿using MainThreadDispatcher;
+﻿using EventBus;
+using EventBus.Events;
+using MainThreadDispatcher;
 using MainThreadDispatcher.Unity;
 using Model;
-using RubikVisualizers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using EventBus;
-using EventBus.Events;
 using UnityEngine;
 using Zenject;
 
@@ -28,9 +27,18 @@ namespace Parser
                 case 2:
                     ParseState(notification);
                     break;
+                case 5:
+                    ParseBattery(notification);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(notification), "notification type unknown");
             }
+        }
+
+        private void ParseBattery(byte[] notification)
+        {
+            var batteryLevel = notification[3] / 100f;
+            _eventBus.Invoke(new BatteryLevelParsed(batteryLevel));
         }
 
         private void ParseFaceRotation(byte[] notification)
@@ -40,7 +48,7 @@ namespace Parser
                 switch (notification[3])
                 {
                     case 0:
-                        InvokeFaceRotatedEvent(new FaceRotation(BasicRotation.M2,Rotation.One));
+                        InvokeFaceRotatedEvent(new FaceRotation(BasicRotation.M2, Rotation.One));
                         break;
                     case 1:
                         InvokeFaceRotatedEvent(new FaceRotation(BasicRotation.M2, Rotation.Prime));
@@ -105,8 +113,8 @@ namespace Parser
             }
         }
 
-        private void InvokeFaceRotatedEvent(FaceRotation rotation) 
-            => _eventBus.Invoke(new FaceRotated{Rotation = rotation});
+        private void InvokeFaceRotatedEvent(FaceRotation rotation)
+            => _eventBus.Invoke(new FaceRotated { Rotation = rotation });
 
         private static RubikColor ParseNotificationColor(byte col) =>
             col switch
@@ -154,7 +162,7 @@ namespace Parser
             faces[5].Rotate(Rotation.Prime);
 
             Debug.Log("State parsed");
-           _eventBus.Invoke(new StateParsed{Faces = faces});
+            _eventBus.Invoke(new StateParsed { Faces = faces });
         }
 
         public async Task AnimateRotations(IEnumerable<FaceRotation> rotations)
