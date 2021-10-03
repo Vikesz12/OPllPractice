@@ -28,7 +28,7 @@ namespace RotationVisualizer
         private async UniTask OnConnect(ConnectedToDevice obj)
         {
             await UniTask.Delay(TimeSpan.FromSeconds(2));
-            _ble.Write("2", ConnectedDeviceData.ConnectedDeviceId);
+            _ble.Write("2", obj.DeviceId);
         }
 
         private void OnDestroy()

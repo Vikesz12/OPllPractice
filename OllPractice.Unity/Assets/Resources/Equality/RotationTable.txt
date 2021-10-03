@@ -1,6 +1,6 @@
-U,B,U
-R,R,F
-L,L,B
-F,U,L
-B,D,R
-D,F,D
+U,B,U,R
+R,R,F,D
+L,L,B,U
+F,U,L,F
+B,D,R,B
+D,F,D,L

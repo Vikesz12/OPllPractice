@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Model;
-using RubikVisualizers;
 using TMPro;
 using UnityEngine;
 
@@ -70,9 +69,6 @@ namespace RotationVisualizer
             return false;
         }
 
-        public void ResetColor()
-        {
-            _rotationText.color = _secondTurn ? Color.yellow : Color.black;
-        }
+        public void ResetColor() => _rotationText.color = _secondTurn ? Color.yellow : Color.black;
     }
 }

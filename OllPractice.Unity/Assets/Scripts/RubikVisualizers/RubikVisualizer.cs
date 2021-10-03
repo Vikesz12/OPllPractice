@@ -161,7 +161,7 @@ namespace RubikVisualizers
         {
             var rotation = faceRotated.Rotation;
 
-            if (!rotation.IsCubeRotation)
+            if (rotation.TurnType != TurnType.Cube)
             {
                 switch (rotation.BasicRotation)
                 {
@@ -434,28 +434,32 @@ namespace RubikVisualizers
                         _isAnimating = false;
                     })));
 
-        public void Y() => RotateCube(new FaceRotation(CubeRotation.y, Rotation.One));
+        public void Y() => RotateCube(Rotation.One, CubeRotation.y);
 
-        public void YPrime() => RotateCube(new FaceRotation(CubeRotation.y, Rotation.Prime));
+        public void YPrime() => RotateCube(Rotation.Prime, CubeRotation.y);
 
-        public void X() => RotateCube(new FaceRotation(CubeRotation.x, Rotation.One));
-        public void XPrime() => RotateCube(new FaceRotation(CubeRotation.x, Rotation.Prime));
+        public void X() => RotateCube(Rotation.One, CubeRotation.x);
+        public void XPrime() => RotateCube(Rotation.Prime, CubeRotation.x);
 
-        private void RotateCube(FaceRotation rotation) =>
+
+        public void Z() => RotateCube(Rotation.One, CubeRotation.z);
+        public void ZPrime() => RotateCube(Rotation.Prime, CubeRotation.z);
+
+        private void RotateCube(Rotation rotationType, CubeRotation cubeRotation) =>
             _animations.Enqueue(new KeyValuePair<Action<bool>, IEnumerator>(
                 skip =>
                 {
                     if (!skip)
-                        CubeRotateWithoutAnimation(rotation);
+                        CubeRotateWithoutAnimation(rotationType, cubeRotation);
                 },
-                CubeRotationCoroutine(rotation, () => _isAnimating = false)
+                CubeRotationCoroutine(rotationType, cubeRotation, () => _isAnimating = false)
             ));
 
-        private IEnumerator CubeRotationCoroutine(FaceRotation rotation, Action callback)
+        private IEnumerator CubeRotationCoroutine(Rotation rotationType, CubeRotation cubeRotation, Action callback)
         {
             var currentTime = 0.0f;
 
-            var angleToRotate = rotation.RotationType switch
+            var angleToRotate = rotationType switch
             {
                 Rotation.Prime => 90f,
                 Rotation.One => -90f,
@@ -464,10 +468,11 @@ namespace RubikVisualizers
             };
 
             var o = gameObject;
-            var axisToRotateAround = rotation.CubeRotation switch
+            var axisToRotateAround = cubeRotation switch
             {
                 CubeRotation.y => o.transform.up,
                 CubeRotation.x => o.transform.forward,
+                CubeRotation.z => o.transform.right,
                 _ => throw new ArgumentOutOfRangeException()
             };
 
@@ -478,12 +483,13 @@ namespace RubikVisualizers
                 gameObject.transform.RotateAround(o.transform.position, axisToRotateAround, angleToRotate * (Time.deltaTime / timeToRotate));
                 yield return null;
             }
+            _eventBus.Invoke(new CubeRotated(rotationType, cubeRotation));
             callback.Invoke();
         }
 
-        private void CubeRotateWithoutAnimation(FaceRotation rotation)
+        private void CubeRotateWithoutAnimation(Rotation rotationType, CubeRotation cubeRotation)
         {
-            var angleToRotate = rotation.RotationType switch
+            var angleToRotate = rotationType switch
             {
                 Rotation.Prime => -90f,
                 Rotation.One => 90f,
@@ -492,14 +498,16 @@ namespace RubikVisualizers
             };
             var o = gameObject;
 
-            var axisToRotateAround = rotation.CubeRotation switch
+            var axisToRotateAround = cubeRotation switch
             {
                 CubeRotation.y => o.transform.up,
-                CubeRotation.x => o.transform.right,
+                CubeRotation.x => o.transform.forward,
+                CubeRotation.z => o.transform.right,
                 _ => throw new ArgumentOutOfRangeException()
             };
 
             gameObject.transform.RotateAround(o.transform.position, axisToRotateAround, angleToRotate);
+            _eventBus.Invoke(new CubeRotated(rotationType, cubeRotation));
         }
         public void Update()
         {

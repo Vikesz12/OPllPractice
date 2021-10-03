@@ -16,11 +16,11 @@
             "name": "Ab",
             "faces": [
                 "WWWWWWWW",
-                "RRRRLYLR",
-                "GGGGYYLG",
-                "OOOOYYLO",
-                "BBBBLYLB",
-                "LLLLLLLL"
+                "RRRRORRR",
+                "GGGGGGOG",
+                "OOOOBOBO",
+                "BBBBGBRB",
+                "YYYYYYYY"
             ],
             "solution": "x',L2,D2,L,U,L',D2,L,U',L"
         }

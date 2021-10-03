@@ -40,9 +40,17 @@ namespace RotationVisualizer
             _rotations = new List<FaceRotation>();
             _correctionTurns = new Stack<FaceRotation>();
             _eventBus.Subscribe<FaceRotated>(NotificationParserOnFaceRotated);
+            _eventBus.Subscribe<CubeRotated>(OnCubeRotated);
         }
 
-        private void OnDestroy() => _eventBus.Unsubscribe<FaceRotated>(NotificationParserOnFaceRotated);
+        private void OnCubeRotated(CubeRotated cubeRotated)
+            => _cubeRotations.Add(new FaceRotation(cubeRotated.CubeRotation, cubeRotated.RotationType));
+
+        private void OnDestroy()
+        {
+            _eventBus.Unsubscribe<FaceRotated>(NotificationParserOnFaceRotated);
+            _eventBus.Unsubscribe<CubeRotated>(OnCubeRotated);
+        }
 
         public async void AnimateCurrentMoves()
         {
@@ -50,7 +58,7 @@ namespace RotationVisualizer
             var remainingRotations = _rotations
                 .GetRange(_currentPosition, _rotations.Count)
                 .Select(r => r.ToCubeTurnedRotation(_cubeRotations))
-                .Where(r => !r.IsCubeRotation);
+                .Where(r => r.TurnType != TurnType.Cube);
             await _notificationParser.AnimateRotations(remainingRotations).ConfigureAwait(false);
         }
 
@@ -61,13 +69,14 @@ namespace RotationVisualizer
             if (_rotations.Count == 0 && _correctionTurns.Count == 0) return;
             if (_correctionTurns.Count != 0)
             {
-                if (CheckCorrectTurn( _correctionTurns.Peek(), rotation))
+                if (CheckCorrectTurn(_correctionTurns.Peek(), rotation))
                 {
                     _correctionTurns.Pop();
                     Destroy(_wrongMessageParent.GetChild(0).gameObject);
                     if (_correctionTurns.Count == 0)
                     {
-                        _messagesParent.GetChild(_currentPosition % MAXMessageCount).GetComponent<RotationStep>().ResetColor();
+                        _messagesParent.GetChild(_currentPosition % MAXMessageCount).GetComponent<RotationStep>()
+                            .ResetColor();
                     }
                 }
                 else
@@ -79,34 +88,45 @@ namespace RotationVisualizer
             {
                 var rotationStep = _rotationSteps[_currentPosition % MAXMessageCount];
 
-                if (_rotations[_currentPosition].IsCubeRotation)
+                var currentRotation = _rotations[_currentPosition];
+                var currentVisualizer = _rubikHolder.GetCurrentVisualizer();
+                if (currentRotation.TurnType == TurnType.Cube)
                 {
-                    var rotationType = _rotations[_currentPosition].RotationType;
-                    switch (_rotations[_currentPosition].CubeRotation)
+                    var rotationType = currentRotation.RotationType;
+                    switch (currentRotation.CubeRotation)
                     {
                         case CubeRotation.y:
                             if (rotationType == Rotation.One)
                             {
-                                _rubikHolder.GetCurrentVisualizer().Y();
-                                _cubeRotations.Add(new FaceRotation(CubeRotation.y, Rotation.One));
+                                currentVisualizer.Y();
                             }
                             else
                             {
-                                _rubikHolder.GetCurrentVisualizer().YPrime();
-                                _cubeRotations.Add(new FaceRotation(CubeRotation.y, Rotation.Prime));
+                                currentVisualizer.YPrime();
                             }
+
                             break;
                         case CubeRotation.x:
                             if (rotationType == Rotation.One)
                             {
-                                _rubikHolder.GetCurrentVisualizer().X();
-                                _cubeRotations.Add(new FaceRotation(CubeRotation.x, Rotation.One));
+                                currentVisualizer.X();
                             }
                             else
                             {
-                                _rubikHolder.GetCurrentVisualizer().XPrime();
-                                _cubeRotations.Add(new FaceRotation(CubeRotation.x, Rotation.Prime));
+                                currentVisualizer.XPrime();
                             }
+
+                            break;
+                        case CubeRotation.z:
+                            if (rotationType == Rotation.One)
+                            {
+                                currentVisualizer.Z();
+                            }
+                            else
+                            {
+                                currentVisualizer.ZPrime();
+                            }
+
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -116,6 +136,81 @@ namespace RotationVisualizer
 
                     rotationStep.SetColor(Color.blue);
                     rotationStep = _rotationSteps[_currentPosition % MAXMessageCount];
+                }
+
+                if (currentRotation.TurnType == TurnType.DoubleLayer)
+                {
+                    switch (currentRotation.DoubleLayerRotation)
+                    {
+                        case DoubleLayerRotation.u:
+                            if (rotation.RotationType == Rotation.One)
+                            {
+                                currentVisualizer.Y();
+                            }
+                            else if (rotation.RotationType == Rotation.Prime)
+                            {
+                                currentVisualizer.YPrime();
+                            }
+
+                            break;
+                        case DoubleLayerRotation.d:
+                            if (rotation.RotationType == Rotation.One)
+                            {
+                                currentVisualizer.YPrime();
+                            }
+                            else if (rotation.RotationType == Rotation.Prime)
+                            {
+                                currentVisualizer.Y();
+                            }
+
+                            break;
+                        case DoubleLayerRotation.r:
+                            if (rotation.RotationType == Rotation.One)
+                            {
+                                currentVisualizer.X();
+                            }
+                            else if (rotation.RotationType == Rotation.Prime)
+                            {
+                                currentVisualizer.XPrime();
+                            }
+
+                            break;
+                        case DoubleLayerRotation.l:
+                            if (rotation.RotationType == Rotation.One)
+                            {
+                                currentVisualizer.XPrime();
+                            }
+                            else if (rotation.RotationType == Rotation.Prime)
+                            {
+                                currentVisualizer.X();
+                            }
+
+                            break;
+                        case DoubleLayerRotation.f:
+                            if (rotation.RotationType == Rotation.One)
+                            {
+                                currentVisualizer.Z();
+                            }
+                            else if (rotation.RotationType == Rotation.Prime)
+                            {
+                                currentVisualizer.ZPrime();
+                            }
+
+                            break;
+                        case DoubleLayerRotation.b:
+                            if (rotation.RotationType == Rotation.One)
+                            {
+                                currentVisualizer.ZPrime();
+                            }
+                            else if (rotation.RotationType == Rotation.Prime)
+                            {
+                                currentVisualizer.Z();
+                            }
+
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
                 }
 
                 if (rotationStep.CheckCorrectTurn(rotation, _cubeRotations, ref _currentPosition))
@@ -145,6 +240,7 @@ namespace RotationVisualizer
                 {
                     ShowNextBatch();
                 }
+
             }
         }
 
