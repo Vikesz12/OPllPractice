@@ -173,8 +173,19 @@ namespace Parser
             {
                 foreach (var faceRotation in rotations)
                 {
-                    await dispatcher.InvokeAsync(() => InvokeFaceRotatedEvent(faceRotation));
-                    await Task.Delay(750);
+                    if (faceRotation.RotationType == Rotation.Two)
+                    {
+                        var oneRotation = new FaceRotation(faceRotation.BasicRotation, Rotation.One);
+                        await dispatcher.InvokeAsync(() => InvokeFaceRotatedEvent(oneRotation));
+                        await Task.Delay(750); 
+                        await dispatcher.InvokeAsync(() => InvokeFaceRotatedEvent(oneRotation));
+                        await Task.Delay(750);
+                    }
+                    else
+                    {
+                        await dispatcher.InvokeAsync(() => InvokeFaceRotatedEvent(faceRotation));
+                        await Task.Delay(750);
+                    }
                 }
             });
         }

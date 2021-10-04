@@ -23,6 +23,6 @@ namespace RotationVisualizer
 
         private void OnStateLoaded(StateParsed parsed) =>
             _rotationMessenger
-                .LoadRotations(KociembaSolver.SolveCube(parsed.Faces), false);
+                .LoadRotations(KociembaSolver.SolveCube(parsed.Faces));
     }
 }

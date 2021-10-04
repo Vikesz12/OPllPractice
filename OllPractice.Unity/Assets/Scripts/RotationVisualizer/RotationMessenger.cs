@@ -33,6 +33,7 @@ namespace RotationVisualizer
         private readonly List<RotationStep> _rotationSteps = new List<RotationStep>();
         private bool _animating;
         private bool _practiceMode;
+        private RubikCaseParser.RubikCase _currentCase;
 
         public void Awake()
         {
@@ -42,15 +43,14 @@ namespace RotationVisualizer
             _eventBus.Subscribe<FaceRotated>(NotificationParserOnFaceRotated);
             _eventBus.Subscribe<CubeRotated>(OnCubeRotated);
         }
-
-        private void OnCubeRotated(CubeRotated cubeRotated)
-            => _cubeRotations.Add(new FaceRotation(cubeRotated.CubeRotation, cubeRotated.RotationType));
-
         private void OnDestroy()
         {
             _eventBus.Unsubscribe<FaceRotated>(NotificationParserOnFaceRotated);
             _eventBus.Unsubscribe<CubeRotated>(OnCubeRotated);
         }
+
+        private void OnCubeRotated(CubeRotated cubeRotated)
+            => _cubeRotations.Add(new FaceRotation(cubeRotated.CubeRotation, cubeRotated.RotationType));
 
         public async void AnimateCurrentMoves()
         {
@@ -249,6 +249,11 @@ namespace RotationVisualizer
             yield return new WaitForSeconds(2);
             if (!_animating)
                 _eventBus.Invoke(new RotationsEmpty(_rubikTimer.TimeElapsed));
+            else if(_currentCase != null)
+            {
+                LoadCase(_currentCase, _practiceMode);
+                _rubikHolder.LoadState(_currentCase.GetStateFromFaces(),_practiceMode);
+            }
             _animating = false;
             AddPracticeModeRotations();
         }
@@ -286,14 +291,23 @@ namespace RotationVisualizer
             }
         }
 
-        public void LoadRotations(IEnumerable<FaceRotation> rotations, bool f2LMode)
+        public void LoadCase(RubikCaseParser.RubikCase rubikCase, bool f2LMode)
         {
+            _currentCase = rubikCase;
+            _rubikHolder.LoadState(_currentCase.GetStateFromFaces(), true);
             _currentPosition = 0;
             if (f2LMode)
             {
                 AddPracticeModeRotations();
                 _practiceMode = true;
             }
+            _rotations = rubikCase.GetSolution().ToList();
+            ShowNextBatch();
+        }
+
+        public void LoadRotations(IEnumerable<FaceRotation> rotations)
+        {
+            _currentPosition = 0;
             _rotations = rotations.ToList();
             ShowNextBatch();
         }

@@ -2,7 +2,6 @@ using EventBus;
 using EventBus.Events;
 using Parser;
 using RotationVisualizer;
-using RubikVisualizers;
 using System.Linq;
 using UnityEngine;
 using Zenject;
@@ -13,7 +12,6 @@ namespace Loaders
     {
         [Inject] private readonly IEventBus _eventBus;
 
-        [SerializeField] private RubikHolder _rubikHolder;
         [SerializeField] private RotationMessenger _rotationMessenger;
         [SerializeField] private bool _isPractice;
 
@@ -64,8 +62,7 @@ namespace Loaders
         private void LoadRandomCase()
         {
             _currentCase = SelectedRubikCases.GetRandomCase();
-            _rotationMessenger.LoadRotations(_currentCase.GetSolution(), true);
-            _rubikHolder.LoadState(_currentCase.GetStateFromFaces(), true);
+            _rotationMessenger.LoadCase(_currentCase, true);
         }
     }
 }
