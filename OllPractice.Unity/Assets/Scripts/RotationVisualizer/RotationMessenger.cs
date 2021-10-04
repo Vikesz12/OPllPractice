@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using Timers;
 using TMPro;
 using UnityEngine;
@@ -232,7 +233,7 @@ namespace RotationVisualizer
                     else
                     {
                         _currentPosition = 0;
-                        StartCoroutine(PracticeFinishedCoroutine());
+                        PracticeFinished().Forget();
                     }
 
                 }
@@ -244,9 +245,9 @@ namespace RotationVisualizer
             }
         }
 
-        private IEnumerator PracticeFinishedCoroutine()
+        private async UniTask PracticeFinished()
         {
-            yield return new WaitForSeconds(2);
+            await UniTask.Delay(TimeSpan.FromSeconds(2));
             if (!_animating)
                 _eventBus.Invoke(new RotationsEmpty(_rubikTimer.TimeElapsed));
             else if(_currentCase != null)

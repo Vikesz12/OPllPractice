@@ -540,8 +540,8 @@ namespace RubikVisualizers
             var transform1 = transform;
             if (transform.localEulerAngles == Vector3.zero)
             {
-                transform1.localPosition = new Vector3(0, -0.2f, 0);
-                transform1.localEulerAngles = new Vector3(0, -75f, 180f);
+                transform1.localPosition = new Vector3(0, -0.12f, 0);
+                transform1.localEulerAngles = new Vector3(0, -90f, 180f);
             }
             else
             {

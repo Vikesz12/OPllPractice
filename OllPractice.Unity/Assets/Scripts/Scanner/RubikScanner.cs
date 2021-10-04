@@ -1,10 +1,12 @@
-﻿using Ble;
+﻿using System;
+using Ble;
 using EventBus;
 using EventBus.Events;
 using Parser;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
@@ -48,7 +50,7 @@ namespace Scanner
             _eventBus.Invoke(new ScanStatusChanged { Status = true });
             Debug.Log($"Scanning {_isScanningDevices}");
 #if UNITY_ANDROID
-            StartCoroutine(ScanFinished());
+            ScanFinished().Forget();
 #endif
         }
         public void Update()
@@ -89,9 +91,9 @@ namespace Scanner
         }
 
         // ReSharper disable once UnusedMember.Local
-        private IEnumerator ScanFinished()
+        private async UniTask ScanFinished()
         {
-            yield return new WaitForSeconds(15);
+            await UniTask.Delay(TimeSpan.FromSeconds(15));
             _eventBus.Invoke(new ScanStatusChanged { Status = false });
         }
     }

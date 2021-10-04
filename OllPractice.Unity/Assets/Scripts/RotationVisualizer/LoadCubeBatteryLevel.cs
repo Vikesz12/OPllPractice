@@ -32,7 +32,7 @@ namespace RotationVisualizer
                 await UniTask.Yield();
             }
 
-            await UniTask.Delay(TimeSpan.FromSeconds(1));
+            await UniTask.Delay(TimeSpan.FromSeconds(2));
             _ble.Write("2", ConnectedDeviceData.ConnectedDeviceId);
         }
 
