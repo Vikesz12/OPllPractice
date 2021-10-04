@@ -42,16 +42,8 @@ namespace RotationVisualizer
             _rotations = new List<FaceRotation>();
             _correctionTurns = new Stack<FaceRotation>();
             _eventBus.Subscribe<FaceRotated>(NotificationParserOnFaceRotated);
-            _eventBus.Subscribe<CubeRotated>(OnCubeRotated);
         }
-        private void OnDestroy()
-        {
-            _eventBus.Unsubscribe<FaceRotated>(NotificationParserOnFaceRotated);
-            _eventBus.Unsubscribe<CubeRotated>(OnCubeRotated);
-        }
-
-        private void OnCubeRotated(CubeRotated cubeRotated)
-            => _cubeRotations.Add(new FaceRotation(cubeRotated.CubeRotation, cubeRotated.RotationType));
+        private void OnDestroy() => _eventBus.Unsubscribe<FaceRotated>(NotificationParserOnFaceRotated);
 
         public async void AnimateCurrentMoves()
         {
@@ -93,6 +85,7 @@ namespace RotationVisualizer
                 var currentVisualizer = _rubikHolder.GetCurrentVisualizer();
                 if (currentRotation.TurnType == TurnType.Cube)
                 {
+                    _cubeRotations.Add(new FaceRotation(currentRotation.CubeRotation, currentRotation.RotationType));
                     var rotationType = currentRotation.RotationType;
                     switch (currentRotation.CubeRotation)
                     {
