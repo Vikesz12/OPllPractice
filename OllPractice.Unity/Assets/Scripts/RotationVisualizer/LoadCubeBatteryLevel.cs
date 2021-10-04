@@ -2,6 +2,7 @@ using Ble;
 using Cysharp.Threading.Tasks;
 using EventBus;
 using EventBus.Events;
+using System;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -20,22 +21,23 @@ namespace RotationVisualizer
         {
             _text = GetComponent<TextMeshProUGUI>();
             _eventBus.Subscribe<BatteryLevelParsed>(BatteryParsed);
-            RequestBatteryState().Forget();
-            gameObject.SetActive(false);
+            _text.text = string.Empty; 
+            OnConnect().Forget();
         }
 
-        private async UniTask RequestBatteryState()
+        private async UniTask OnConnect()
         {
-            await UniTask.WaitWhile(() => ConnectedDeviceData.ConnectedDeviceId == null);
+            while (ConnectedDeviceData.ConnectedDeviceId == null)
+            {
+                await UniTask.Yield();
+            }
+
+            await UniTask.Delay(TimeSpan.FromSeconds(1));
             _ble.Write("2", ConnectedDeviceData.ConnectedDeviceId);
         }
 
         private void OnDestroy() => _eventBus.Unsubscribe<BatteryLevelParsed>(BatteryParsed);
 
-        private void BatteryParsed(BatteryLevelParsed batteryLevel)
-        {
-            gameObject.SetActive(true);
-            _text.text = batteryLevel.BatteryPercent * 100f + "%";
-        }
+        private void BatteryParsed(BatteryLevelParsed batteryLevel) => _text.text = batteryLevel.BatteryPercent * 100f + "%";
     }
 }
