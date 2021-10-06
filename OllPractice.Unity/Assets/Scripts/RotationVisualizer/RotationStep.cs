@@ -17,9 +17,10 @@ namespace RotationVisualizer
 
         private void Awake() => _rotationText = GetComponent<TextMeshProUGUI>();
 
-        public void LoadStep(FaceRotation rotation)
+        public void LoadStep(FaceRotation rotation, bool isHidden)
         {
-            _rotationText.text = rotation.ToRubikNotation();
+            _rotationText.text = !isHidden ? rotation.ToRubikNotation() : string.Empty;
+
             _faceRotation = rotation;
         }
 
@@ -44,7 +45,7 @@ namespace RotationVisualizer
             var basicRotationSame = Equals(cubeTurnedRotation.BasicRotation, _faceRotation.BasicRotation);
             switch (_secondTurn)
             {
-                case true when basicRotationSame 
+                case true when basicRotationSame
                                && cubeTurnedRotation.RotationType == _firstTurnType:
                     Finished = true;
                     _rotationText.color = Color.green;

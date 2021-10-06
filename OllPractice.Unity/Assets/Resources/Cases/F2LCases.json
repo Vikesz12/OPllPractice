@@ -10,7 +10,8 @@
                 "BLLLLGLB",
                 "LLWLLRLL"
             ],
-            "solution": "U2,R,U,R',U,R,U',R'"
+            "solution": "U2,R,U,R',U,R,U',R'",
+            "caseType":0
         },
         {
             "name": "1AWhiteUp2",
@@ -22,7 +23,8 @@
                 "BLLLLLLB",
                 "LLWLLLLG"
             ],
-            "solution": "y,U2,L',U',L,U',L',U,L"
+            "solution": "y,U2,L',U',L,U',L',U,L",
+            "caseType":0
         }
     ]
 }

@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RotationVisualizer;
+using Solver;
 using UnityEngine;
 
 namespace Parser
@@ -28,6 +30,7 @@ namespace Parser
             public string name;
             public List<string> faces;
             public string solution;
+            public TrainingMode caseType;
 
             public Face[] GetStateFromFaces()
             {
@@ -54,6 +57,23 @@ namespace Parser
                 var notes = solution.Split(',');
 
                 return notes.Select(n => new FaceRotation(n)).ToList();
+            }
+
+            public List<FaceRotation> GetScramble()
+            {
+                var cube  = new Cube();
+                var cubeRotations = new List<FaceRotation>
+                {
+                    new FaceRotation(CubeRotation.x, Rotation.One),
+                    new FaceRotation(CubeRotation.x, Rotation.One),
+                    new FaceRotation(CubeRotation.y, Rotation.One)
+                };
+                var alg = GetSolution();
+                alg.ReverseAlg();
+                cube.DoAlgorithm(cubeRotations.ReverseCubeRotations(), alg);
+                var caseSolution = KociembaSolver.SolveCube(cube.GetFaces).ToList();
+                caseSolution.ReverseAlg();
+                return caseSolution;
             }
         }
     }

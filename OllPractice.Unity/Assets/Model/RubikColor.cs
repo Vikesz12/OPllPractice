@@ -3,10 +3,10 @@
     public enum RubikColor
     {
         W = 0,
-        G = 2,
         R = 1,
-        B = 4,
+        G = 2,
         O = 3,
+        B = 4,
         Y = 5,
         L = 6
     }

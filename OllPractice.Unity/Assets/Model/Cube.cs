@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Model
@@ -154,6 +156,230 @@ namespace Model
 
         }
 
+        public void DoAlgorithm(List<FaceRotation> cubeRotations, IEnumerable<FaceRotation> rotations)
+        {
+            foreach (var faceRotation in rotations)
+            {
+                if (faceRotation.TurnType == TurnType.Cube)
+                {
+                    cubeRotations.Add(faceRotation);
+                    continue;
+                }
+
+                var rotation = faceRotation.ToCubeTurnedRotation(cubeRotations);
+                switch (rotation.BasicRotation)
+                {
+                    case BasicRotation.R:
+                        switch (rotation.RotationType)
+                        {
+                            case Rotation.One:
+                                R();
+                                break;
+                            case Rotation.Prime:
+                                RPrime();
+                                break;
+                            case Rotation.Two:
+                                R();
+                                R();
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+
+                        break;
+                    case BasicRotation.U:
+                        switch (rotation.RotationType)
+                        {
+                            case Rotation.One:
+                                U();
+                                break;
+                            case Rotation.Prime:
+                                UPrime();
+                                break;
+                            case Rotation.Two:
+                                U();
+                                U();
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+
+                        break;
+                    case BasicRotation.L:
+                        switch (rotation.RotationType)
+                        {
+                            case Rotation.One:
+                                L();
+                                break;
+                            case Rotation.Prime:
+                                LPrime();
+                                break;
+                            case Rotation.Two:
+                                L();
+                                L();
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+
+                        break;
+                    case BasicRotation.F:
+                        switch (rotation.RotationType)
+                        {
+                            case Rotation.One:
+                                F();
+                                break;
+                            case Rotation.Prime:
+                                FPrime();
+                                break;
+                            case Rotation.Two:
+                                F();
+                                F();
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+
+                        break;
+                    case BasicRotation.B:
+                        switch (rotation.RotationType)
+                        {
+                            case Rotation.One:
+                                B();
+                                break;
+                            case Rotation.Prime:
+                                BPrime();
+                                break;
+                            case Rotation.Two:
+                                B();
+                                B();
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+
+                        break;
+                    case BasicRotation.D:
+                        switch (rotation.RotationType)
+                        {
+                            case Rotation.One:
+                                D();
+                                break;
+                            case Rotation.Prime:
+                                DPrime();
+                                break;
+                            case Rotation.Two:
+                                D();
+                                D();
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+
+                        break;
+                    case BasicRotation.M:
+                        switch (rotation.RotationType)
+                        {
+                            case Rotation.One:
+                                R();
+                                LPrime();
+                                break;
+                            case Rotation.Prime:
+                                RPrime();
+                                L();
+                                break;
+                            case Rotation.Two:
+                                R();
+                                LPrime();
+                                R();
+                                LPrime();
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+
+                        break;
+                    case BasicRotation.M2:
+                        switch (rotation.RotationType)
+                        {
+                            case Rotation.One:
+                                FPrime();
+                                B();
+                                break;
+                            case Rotation.Prime:
+                                F();
+                                BPrime();
+                                break;
+                            case Rotation.Two:
+                                FPrime();
+                                B();
+                                FPrime();
+                                B();
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+
+                        break;
+                    case BasicRotation.M3:
+                        switch (rotation.RotationType)
+                        {
+                            case Rotation.One:
+                                DPrime();
+                                U();
+                                break;
+                            case Rotation.Prime:
+                                D();
+                                UPrime();
+                                break;
+                            case Rotation.Two:
+                                D();
+                                UPrime();
+                                D();
+                                UPrime();
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(rotation.BasicRotation), rotation.BasicRotation, null);
+                }
+
+                if (faceRotation.TurnType != TurnType.DoubleLayer) continue;
+
+                CubeRotation cubeRotation;
+                switch (faceRotation.DoubleLayerRotation)
+                {
+                    case DoubleLayerRotation.u:
+                    case DoubleLayerRotation.d:
+                        cubeRotation = CubeRotation.y;
+                        break;
+                    case DoubleLayerRotation.r:
+                    case DoubleLayerRotation.l:
+                        cubeRotation = CubeRotation.x;
+                        break;
+                    case DoubleLayerRotation.f:
+                    case DoubleLayerRotation.b:
+                        cubeRotation = CubeRotation.z;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                var rotationType = faceRotation.RotationType switch
+                {
+                    Rotation.Prime => Rotation.One,
+                    Rotation.One => Rotation.Prime,
+                    Rotation.Two => Rotation.Two,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+
+                cubeRotations.Insert(0,new FaceRotation(cubeRotation, rotationType));
+
+            }
+        }
         public void LoadState(Face[] faces) => _faces = faces;
 
         public string PrintCubeState() => _faces.Aggregate("", (current, face) => current + face.PrintSide());

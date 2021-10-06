@@ -62,7 +62,10 @@ namespace Loaders
         private void LoadRandomCase()
         {
             _currentCase = SelectedRubikCases.GetRandomCase();
-            _rotationMessenger.LoadCase(_currentCase, true);
+            if (_isPractice)
+                _rotationMessenger.LoadCase(_currentCase, true);
+            else
+                _rotationMessenger.LoadScramble(_currentCase, true);
         }
     }
 }

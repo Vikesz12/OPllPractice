@@ -271,8 +271,7 @@ namespace RubikVisualizers
 
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(rotation.BasicRotation), rotation.BasicRotation,
-                            null);
+                        throw new ArgumentOutOfRangeException(nameof(rotation.BasicRotation), rotation.BasicRotation, null);
                 }
             }
 
@@ -549,5 +548,33 @@ namespace RubikVisualizers
                 transform1.localEulerAngles = Vector3.zero;
             }
         }
+
+        public bool IsF2LFinished()
+        {
+            var faces = _cube.GetFaces;
+
+            if (faces[0].GetAllColors().Any(c => (RubikColor)c != RubikColor.W))
+            {
+                return false;
+            }
+
+            for (var i = 1; i < 5; i++)
+            {
+                for (var j = 0; j < 4; j++)
+                {
+                    if (faces[i].GetColorAt(j) != (RubikColor)i)
+                        return false;
+                }
+
+                if (faces[i].GetColorAt(7) != (RubikColor)i)
+                    return false;
+            }
+
+            return true;
+        }
+
+        public bool IsOllFinished() => IsF2LFinished() && _cube.GetFaces[5].GetAllColors().All(c => (RubikColor)c == RubikColor.Y);
+
+        public bool IsPllFinished() => !_cube.GetFaces.Where((face, i) => face.GetAllColors().Any(c => c != i)).Any();
     }
 }

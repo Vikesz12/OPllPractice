@@ -1,6 +1,7 @@
 ﻿using Parser;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Model
 {
@@ -10,11 +11,11 @@ namespace Model
 
         public TurnType TurnType { get; }
 
-        public Rotation RotationType { get; }
+        public Rotation RotationType { get; set; }
 
         public CubeRotation CubeRotation { get; }
 
-        public DoubleLayerRotation DoubleLayerRotation { get; }
+        public DoubleLayerRotation DoubleLayerRotation { get; set; }
 
         public FaceRotation(BasicRotation basicRotation, Rotation rotationType)
         {
@@ -173,7 +174,47 @@ namespace Model
                 }
             }
 
+            if (rotation.TurnType == TurnType.DoubleLayer)
+            {
+                resultRotation.DoubleLayerRotation = rotation.DoubleLayerRotation;
+            }
+
             return resultRotation;
+        }
+
+        public static List<FaceRotation> ReverseAlg(this List<FaceRotation> rotations)
+        {
+            var cubeRotations = new List<FaceRotation>();
+            for (var i = 0; i < rotations.Count; i++)
+            {
+                var rotation = rotations[i];
+                if (rotation.RotationType == Rotation.Two) continue;
+
+                rotation.RotationType = rotation.RotationType == Rotation.One ? Rotation.Prime : Rotation.One;
+
+                if (rotation.TurnType == TurnType.Cube)
+                {
+                    cubeRotations.Add(new FaceRotation(rotation.CubeRotation,rotation.RotationType));
+                }
+                else
+                {
+                    rotations[i] = rotation.ToCubeTurnedRotation(cubeRotations);
+                }
+            }
+
+            rotations.Reverse();
+            return rotations;
+        }
+
+        public static List<FaceRotation> ReverseCubeRotations(this List<FaceRotation> rotations)
+        {
+            foreach (var rotation in rotations.Where(rotation => rotation.RotationType != Rotation.Two && rotation.TurnType == TurnType.Cube))
+            {
+                rotation.RotationType = rotation.RotationType == Rotation.One ? Rotation.Prime : Rotation.One;
+            }
+
+            rotations.Reverse();
+            return rotations;
         }
     }
 }
