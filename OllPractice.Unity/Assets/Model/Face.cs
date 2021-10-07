@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Model
@@ -73,6 +74,13 @@ namespace Model
         {
             var bytes = BitConverter.GetBytes(_squares);
             return (RubikColor) bytes[index];
+        }
+
+        public void SetColorAt(int index, RubikColor color)
+        {
+            var bytes = BitConverter.GetBytes(_squares);
+            bytes[index] = (byte)color;
+            _squares = BitConverter.ToUInt64(bytes,0);
         }
 
         public IEnumerable<byte> GetAllColors()

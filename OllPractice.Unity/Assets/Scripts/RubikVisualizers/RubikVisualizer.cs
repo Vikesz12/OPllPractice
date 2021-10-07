@@ -41,6 +41,32 @@ namespace RubikVisualizers
 
         public void Start() => SetupFaces();
 
+        public void Update()
+        {
+            if (_animations.Count == 0) return;
+
+            if (_animations.Count > 3)
+            {
+                if (_isAnimating)
+                {
+                    StopCoroutine(_currentAnimation.Value);
+                    _isAnimating = false;
+                    _currentAnimation.Key.Invoke(true);
+                }
+                else
+                {
+                    _currentAnimation = _animations.Dequeue();
+                    _currentAnimation.Key.Invoke(false);
+                }
+            }
+            else if (!_isAnimating)
+            {
+                _currentAnimation = _animations.Dequeue();
+                StartCoroutine(_currentAnimation.Value);
+                _isAnimating = true;
+            }
+        }
+
         private void OnDestroy()
         {
             _eventBus.Unsubscribe<FaceRotated>(OnFaceRotated);
@@ -322,6 +348,7 @@ namespace RubikVisualizers
         }
 
 
+        public FaceView GetFaceViewForCube(GameObject cube) => _faces.FirstOrDefault(faceView => faceView.Cubes.Contains(cube));
 
         private void U()
         {
@@ -508,32 +535,7 @@ namespace RubikVisualizers
             gameObject.transform.RotateAround(o.transform.position, axisToRotateAround, angleToRotate);
             _eventBus.Invoke(new CubeRotated(rotationType, cubeRotation));
         }
-        public void Update()
-        {
-            if (_animations.Count == 0) return;
-
-            if (_animations.Count > 3)
-            {
-                if (_isAnimating)
-                {
-                    StopCoroutine(_currentAnimation.Value);
-                    _isAnimating = false;
-                    _currentAnimation.Key.Invoke(true);
-                }
-                else
-                {
-                    _currentAnimation = _animations.Dequeue();
-                    _currentAnimation.Key.Invoke(false);
-                }
-            }
-            else if (!_isAnimating)
-            {
-                _currentAnimation = _animations.Dequeue();
-                StartCoroutine(_currentAnimation.Value);
-                _isAnimating = true;
-            }
-        }
-
+       
         public void Flip()
         {
             var transform1 = transform;
