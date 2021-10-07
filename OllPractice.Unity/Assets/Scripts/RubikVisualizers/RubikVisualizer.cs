@@ -73,7 +73,7 @@ namespace RubikVisualizers
             _eventBus.Unsubscribe<StateParsed>(parsed => LoadState(parsed.Faces));
         }
 
-        public Cube GetCurrentCube => _cube;
+        public List<FaceView> GetFaces => _faces;
 
         private void SetupFaces()
         {
@@ -347,8 +347,6 @@ namespace RubikVisualizers
             }
         }
 
-
-        public FaceView GetFaceViewForCube(GameObject cube) => _faces.FirstOrDefault(faceView => faceView.Cubes.Contains(cube));
 
         private void U()
         {

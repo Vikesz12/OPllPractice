@@ -1,5 +1,7 @@
 ﻿using Extensions;
 using System;
+using Model;
+using Services;
 using UnityEngine;
 
 namespace RubikVisualizers
@@ -20,6 +22,21 @@ namespace RubikVisualizers
             {
                 _frontFaceMeshRenderer.material = materialToSet;
                 return;
+            }
+
+            throw new ArgumentOutOfRangeException($"{facing} no matching face found on gameojbect {gameObject.name}");
+        }
+
+        public RubikColor GetFaceColorForFacing(Vector3 facing)
+        {
+            if (_topFaceMeshRenderer.transform.up.FuzzyEquals(facing, 0.00001f))
+            {
+                return RubikColorMaterialService.GetMaterialColor(_topFaceMeshRenderer.material);
+            }
+
+            if (_frontFaceMeshRenderer.transform.up.FuzzyEquals(facing, 0.00001f))
+            {
+                return RubikColorMaterialService.GetMaterialColor(_frontFaceMeshRenderer.material);
             }
 
             throw new ArgumentOutOfRangeException($"{facing} no matching face found on gameojbect {gameObject.name}");

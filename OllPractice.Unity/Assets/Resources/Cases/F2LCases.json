@@ -11,7 +11,7 @@
                 "LLWLLRLL"
             ],
             "solution": "U2,R,U,R',U,R,U',R'",
-            "caseType":0
+            "caseType": 0
         },
         {
             "name": "1AWhiteUp2",
@@ -24,7 +24,20 @@
                 "LLWLLLLG"
             ],
             "solution": "y,U2,L',U',L,U',L',U,L",
-            "caseType":0
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteUp3",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLGL",
+                "GGLLRLLG",
+                "OOOOLGLO",
+                "BBBBLLLB",
+                "LLWLLLLR"
+            ],
+            "solution": "U,R,U2,R',U,R,U',R'",
+            "caseType": 0
         }
     ]
 }

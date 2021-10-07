@@ -9,35 +9,32 @@ namespace Services
         public static Material GetRubikColorMaterial(RubikColor color)
         {
             var materialName = "Materials/";
-            switch (color)
+            materialName += color switch
             {
-                case RubikColor.W:
-                    materialName += "White";
-                    break;
-                case RubikColor.G:
-                    materialName += "Green";
-                    break;
-                case RubikColor.R:
-                    materialName += "Red";
-                    break;
-                case RubikColor.B:
-                    materialName += "Blue";
-                    break;
-                case RubikColor.O:
-                    materialName += "Orange";
-                    break;
-                case RubikColor.Y:
-                    materialName += "Yellow";
-                    break;
-                case RubikColor.L:
-                    materialName += "Black";
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(color), color, null);
-            }
+                RubikColor.W => "White",
+                RubikColor.G => "Green",
+                RubikColor.R => "Red",
+                RubikColor.B => "Blue",
+                RubikColor.O => "Orange",
+                RubikColor.Y => "Yellow",
+                RubikColor.L => "Black",
+                _ => throw new ArgumentOutOfRangeException(nameof(color), color, null)
+            };
 
             return Resources.Load<Material>(materialName);
         }
 
+        public static RubikColor GetMaterialColor(Material material) =>
+            material.name.Split(' ')[0] switch
+            {
+                "White" => RubikColor.W,
+                "Green" => RubikColor.G,
+                "Red" => RubikColor.R,
+                "Orange" => RubikColor.O,
+                "Blue" => RubikColor.B,
+                "Yellow" => RubikColor.Y,
+                "Black" => RubikColor.L,
+                _ => throw new ArgumentOutOfRangeException(nameof(material), material.name, null)
+            };
     }
 }
