@@ -1,7 +1,6 @@
 ﻿using Parser;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Model
 {
@@ -184,7 +183,6 @@ namespace Model
 
         public static List<FaceRotation> ReverseAlg(this List<FaceRotation> rotations)
         {
-            var cubeRotations = new List<FaceRotation>();
             for (var i = 0; i < rotations.Count; i++)
             {
                 var rotation = rotations[i];
@@ -192,14 +190,7 @@ namespace Model
 
                 rotation.RotationType = rotation.RotationType == Rotation.One ? Rotation.Prime : Rotation.One;
 
-                if (rotation.TurnType == TurnType.Cube)
-                {
-                    cubeRotations.Add(new FaceRotation(rotation.CubeRotation,rotation.RotationType));
-                }
-                else
-                {
-                    rotations[i] = rotation.ToCubeTurnedRotation(cubeRotations);
-                }
+                rotations[i] = rotation;
             }
 
             rotations.Reverse();
@@ -208,8 +199,10 @@ namespace Model
 
         public static List<FaceRotation> ReverseCubeRotations(this List<FaceRotation> rotations)
         {
-            foreach (var rotation in rotations.Where(rotation => rotation.RotationType != Rotation.Two && rotation.TurnType == TurnType.Cube))
+            foreach (var rotation in rotations)
             {
+                if (rotation.RotationType == Rotation.Two || rotation.TurnType != TurnType.Cube) continue;
+
                 rotation.RotationType = rotation.RotationType == Rotation.One ? Rotation.Prime : Rotation.One;
             }
 

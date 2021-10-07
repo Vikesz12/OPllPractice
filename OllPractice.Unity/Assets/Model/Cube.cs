@@ -156,13 +156,16 @@ namespace Model
 
         }
 
-        public void DoAlgorithm(List<FaceRotation> cubeRotations, IEnumerable<FaceRotation> rotations)
+        public void DoAlgorithm(List<FaceRotation> cubeRotations, List<FaceRotation> rotations)
         {
-            foreach (var faceRotation in rotations)
+            SearchNextCubeRotation(cubeRotations, rotations, 0);
+            for (var i = 0; i < rotations.Count; i++)
             {
+                var faceRotation = rotations[i];
                 if (faceRotation.TurnType == TurnType.Cube)
                 {
-                    cubeRotations.Add(faceRotation);
+                    if (i < rotations.Count - 2)
+                        SearchNextCubeRotation(cubeRotations, rotations, i + 1);
                     continue;
                 }
 
@@ -376,10 +379,27 @@ namespace Model
                     _ => throw new ArgumentOutOfRangeException()
                 };
 
-                cubeRotations.Insert(0,new FaceRotation(cubeRotation, rotationType));
+                cubeRotations.Insert(0, new FaceRotation(cubeRotation, rotationType));
 
             }
         }
+
+        private void SearchNextCubeRotation(
+            IList<FaceRotation> cubeRotations,
+            IReadOnlyList<FaceRotation> faceRotations,
+            int i)
+        {
+            while (faceRotations[i].TurnType != TurnType.Cube)
+            {
+                i++;
+                if (i > faceRotations.Count - 1) return;
+            }
+
+            var faceRotation = faceRotations[i];
+            
+            cubeRotations.Insert(0, new FaceRotation(faceRotation.CubeRotation, faceRotation.RotationType));
+        }
+
         public void LoadState(Face[] faces) => _faces = faces;
 
         public string PrintCubeState() => _faces.Aggregate("", (current, face) => current + face.PrintSide());

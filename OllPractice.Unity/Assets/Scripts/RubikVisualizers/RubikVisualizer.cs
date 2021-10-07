@@ -490,8 +490,8 @@ namespace RubikVisualizers
         {
             var angleToRotate = rotationType switch
             {
-                Rotation.Prime => -90f,
-                Rotation.One => 90f,
+                Rotation.Prime => 90f,
+                Rotation.One => -90f,
                 Rotation.Two => 180f,
                 _ => throw new ArgumentOutOfRangeException()
             };
