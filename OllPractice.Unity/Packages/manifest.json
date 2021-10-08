@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "com.cysharp.unitask": "2.2.5",
     "com.mainthreaddispatcher.unity": "1.1.1",
+    "com.unity.2d.sprite": "1.0.0",
     "com.unity.collab-proxy": "1.7.1",
     "com.unity.ide.rider": "2.0.7",
     "com.unity.ide.visualstudio": "2.0.11",
@@ -39,8 +41,7 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0",
-    "com.cysharp.unitask": "2.2.5"
+    "com.unity.modules.xr": "1.0.0"
   },
   "scopedRegistries": [
     {

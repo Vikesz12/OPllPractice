@@ -3,11 +3,11 @@
         {
             "name": "1AWhiteUp1",
             "faces": [
-                "LLWWLWWL",
+                "WWWWLWWW",
                 "LRRRLLGL",
                 "GGLLRLLG",
-                "LLOOLLLL",
-                "BLLLLGLB",
+                "OOOOLLLO",
+                "BBBBLGLB",
                 "LLWLLRLL"
             ],
             "solution": "U2,R,U,R',U,R,U',R'",

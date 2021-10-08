@@ -147,6 +147,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.DefaultCompany.OllPracticeUnity
+    Standalone: com.DefaultCompany.OllPracticeUnity
   buildNumber:
     Standalone: 0
     iPhone: 0
@@ -716,7 +717,6 @@ PlayerSettings:
   metroSplashScreenUseBackgroundColor: 0
   platformCapabilities:
     WindowsStoreApps:
-      EnterpriseAuthentication: False
       VideosLibrary: False
       Location: False
       HumanInterfaceDevice: False
@@ -728,6 +728,7 @@ PlayerSettings:
       LowLevelDevices: False
       InternetClientServer: False
       OfflineMapsManagement: False
+      BackgroundMediaPlayback: False
       Objects3D: False
       RemoteSystem: False
       BlockedChatMessages: False
@@ -750,10 +751,10 @@ PlayerSettings:
       PointOfService: False
       RecordedCallsFolder: False
       Contacts: False
-      Proximity: False
       InternetClient: False
+      Proximity: False
       CodeGeneration: False
-      BackgroundMediaPlayback: False
+      EnterpriseAuthentication: False
   metroTargetDeviceFamilies:
     Desktop: False
     Holographic: False
