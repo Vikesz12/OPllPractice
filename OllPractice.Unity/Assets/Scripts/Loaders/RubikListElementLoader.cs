@@ -11,6 +11,7 @@ namespace Loaders
         [SerializeField] private TextMeshProUGUI _caseName;
         [SerializeField] private TextMeshProUGUI _averageTime;
         [SerializeField] private TextMeshProUGUI _bestTime;
+        [SerializeField] private Image _image;
         [SerializeField] private Toggle _toggle;
 
         private RubikCaseParser.RubikCase _currentCase;
@@ -19,6 +20,7 @@ namespace Loaders
         {
             _currentCase = rubikCase;
             _caseName.text = rubikCase.name;
+            _image.sprite = Resources.Load<Sprite>($"Images/{_currentCase.caseType.ToString().ToUpperInvariant()}/{_currentCase.name}");
 
             var stats = isPractice ? RubikStats.PracticeStats : RubikStats.TrainingStats;
             var currentStat = stats.cases.Find(c => c.name == rubikCase.name);
