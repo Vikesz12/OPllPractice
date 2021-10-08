@@ -179,7 +179,7 @@
                 "BBBBLLLB",
                 "LRGLLLLL"
             ],
-            "solution": "U',R,U',R',U,R,U,R',",
+            "solution": "U',R,U',R',U,R,U,R'",
             "caseType": 0
         },
         {
@@ -218,7 +218,7 @@
                 "BBBBLLLB",
                 "LLGGLLLL"
             ],
-            "solution": "y,U',L',U,L,",
+            "solution": "y,U',L',U,L",
             "caseType": 0
         },
         {
@@ -335,7 +335,7 @@
                 "BBBBLLLB",
                 "LLRLLLLL"
             ],
-            "solution": "U',R,U',R',U2,R,U',R',",
+            "solution": "U',R,U',R',U2,R,U',R'",
             "caseType": 0
         },
         {
