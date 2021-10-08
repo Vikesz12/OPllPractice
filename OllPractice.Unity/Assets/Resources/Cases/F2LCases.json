@@ -311,6 +311,214 @@
             ],
             "solution": "R,U',R',U2,y,L',U',L",
             "caseType": 0
+        },
+        {
+            "name": "1BEdge1",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLRR",
+                "GGLGWLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLGLLLLL"
+            ],
+            "solution": "U,R,U,R',U2,R,U,R'",
+            "caseType": 0
+        },
+        {
+            "name": "1BEdge2",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLWR",
+                "GGLGGLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLRLLLLL"
+            ],
+            "solution": "U',R,U',R',U2,R,U',R',",
+            "caseType": 0
+        },
+        {
+            "name": "1BEdge3",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLGR",
+                "GGLGRLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLWLLLLL"
+            ],
+            "solution": "U,R,U',R'U,R,U',R'U,R,U',R'",
+            "caseType": 0
+        },
+        {
+            "name": "1BEdge4",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLRG",
+                "GGLRWLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLGLLLLL"
+            ],
+            "solution": "U',R',F,R,F',R,U',R'",
+            "caseType": 0
+        },
+        {
+            "name": "1BEdge5",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLWG",
+                "GGLRGLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLRLLLLL"
+            ],
+            "solution": "U',R,U,R',U,y,L',U',L",
+            "caseType": 0
+        },
+        {
+            "name": "1BEdge6",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLGG",
+                "GGLRRLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLWLLLLL"
+            ],
+            "solution": "U',R',F,R,F',R,U',R'",
+            "caseType": 0
+        },
+        {
+            "name": "1BCorner2",
+            "faces": [
+                "WWWWGWWW",
+                "WRRRLLLL",
+                "GGRLLGLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LRLLLLLL"
+            ],
+            "solution": "R,U',R',U,R,U',R'",
+            "caseType": 0
+        },
+        {
+            "name": "1BCorner3",
+            "faces": [
+                "WWWWWWWW",
+                "RRRRLLLL",
+                "GGGLLGLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LRLLLLLL"
+            ],
+            "solution": "U',R',F,R,F',R,U,R'",
+            "caseType": 0
+        },
+        {
+            "name": "1BCorner4",
+            "faces": [
+                "WWWWGWWW",
+                "WRRRLRLL",
+                "GGRLLLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLLGLLLL"
+            ],
+            "solution": "y,L',U',L,U,L',U',L",
+            "caseType": 0
+        },
+        {
+            "name": "1BCorner5",
+            "faces": [
+                "WWWWRWWW",
+                "GRRRLRLL",
+                "GGWLLLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLLGLLLL"
+            ],
+            "solution": "y,L',U,L,U',L',U,L",
+            "caseType": 0
+        },
+        {
+            "name": "1BCorner6",
+            "faces": [
+                "WWWWWWWW",
+                "RRRRLRLL",
+                "GGGLLLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLLGLLLL"
+            ],
+            "solution": "U,R,U',R',U',y,L',U,L",
+            "caseType": 0
+        },
+        {
+            "name": "1CBoth1",
+            "faces": [
+                "WWWWRWWW",
+                "GRRRLLLR",
+                "GGWGLLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLLLLLLL"
+            ],
+            "solution": "R,U',R',U,R,U2,R',U,R,U',R'",
+            "caseType": 0
+        },
+        {
+            "name": "1CBoth2",
+            "faces": [
+                "WWWWRWWW",
+                "GRRRLLLG",
+                "GGWRLLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLLLLLLL"
+            ],
+            "solution": "R,U',R',r,U',r',U2,r,U,r'",
+            "caseType": 0
+        },
+        {
+            "name": "1CBoth3",
+            "faces": [
+                "WWWWGWWW",
+                "WRRRLLLR",
+                "GGRGLLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLLLLLLL"
+            ],
+            "solution": "R,U',R',r,U',r',U2,r,U,r'",
+            "caseType": 0
+        },
+        {
+            "name": "1CBoth4",
+            "faces": [
+                "WWWWGWWW",
+                "WRRRLLLG",
+                "GGRRLLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLLLLLLL"
+            ],
+            "solution": "r,U',r',U2,r,U,r',R,U,R'",
+            "caseType": 0
+        },
+        {
+            "name": "1CBoth5",
+            "faces": [
+                "WWWWWWWW",
+                "RRRRLLLG",
+                "GGGRLLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLLLLLLL"
+            ],
+            "solution": "R,U2,R',U,R,U2,R',U,F',U',F",
+            "caseType": 0
         }
     ]
 }
