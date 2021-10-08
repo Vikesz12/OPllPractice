@@ -51,6 +51,266 @@
             ],
             "solution": "y,U',L',U2,L,U',L',U,L",
             "caseType": 0
+        },
+        {
+            "name": "1AWhiteUp5",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLGGL",
+                "GGLLRLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLWRLLLL"
+            ],
+            "solution": "U,R,U',R',U',R,U',R',U,R,U',R'",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteUp6",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLGL",
+                "GGLLRRLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LGWLLLLL"
+            ],
+            "solution": "U,R,U',R',U',R,U',R',U,R,U',R'",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteUp7",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLGL",
+                "GGLLRGLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LRWLLLLL"
+            ],
+            "solution": "U,R,U',R',U',R,U',R',U,R,U',R'",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteUp8",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLRGL",
+                "GGLLRLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLWGLLLL"
+            ],
+            "solution": "y,L',U2,L,U,L',U',L",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteFront1",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLRL",
+                "GGLLWLLG",
+                "OOOOLGLO",
+                "BBBBLLLB",
+                "LLGLLLLR"
+            ],
+            "solution": "R,U,R'",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteFront2",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLWL",
+                "GGLLGLLG",
+                "OOOOLLLO",
+                "BBBBLRLB",
+                "LLRLLGLL"
+            ],
+            "solution": "y,L',U',L",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteFront3",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLRL",
+                "GGLLWLLG",
+                "OOOOLLLO",
+                "BBBBLGLB",
+                "LLGLLRLL"
+            ],
+            "solution": "U',R,U,R',U,R,U,R'",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteFront4",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLWL",
+                "GGLLGLLG",
+                "OOOOLRLO",
+                "BBBBLLLB",
+                "LLRLLLLG"
+            ],
+            "solution": "y,U,L',U',L,U',L',U',L",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteFront5",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLGRL",
+                "GGLLWLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLGRLLLL"
+            ],
+            "solution": "R',U2,R2,U,R2',U,R",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteFront6",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLRL",
+                "GGLLWGLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LRGLLLLL"
+            ],
+            "solution": "U',R,U',R',U,R,U,R',",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteFront7",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLWL",
+                "GGLLGRLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LGRLLLLL"
+            ],
+            "solution": "y,L,U2,L2',U',L2,U',L'",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteFront8",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLRWL",
+                "GGLLGLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLRGLLLL"
+            ],
+            "solution": "y,U,L',U,L,U',L',U',L",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteFront9",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLRRL",
+                "GGLLWLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLGGLLLL"
+            ],
+            "solution": "y,U',L',U,L,",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteFront10",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLRL",
+                "GGLLWLLG",
+                "OOOOLRLO",
+                "BBBBLLLB",
+                "LLGLLLLG"
+            ],
+            "solution": "y,U,L',U2,L,U2,L',U,L",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteFront11",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLWL",
+                "GGLLGLLG",
+                "OOOOLGLO",
+                "BBBBLLLB",
+                "LLRLLLLR"
+            ],
+            "solution": "U',R,U,R',U2,R,U',R'",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteFront12",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLGWL",
+                "GGLLGLLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LLRRLLLL"
+            ],
+            "solution": "U,R',F,R,F',U,R,U,R'",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteFront13",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLWL",
+                "GGLLGGLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LRRLLLLL"
+            ],
+            "solution": "U,R,U',R'",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteFront14",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLWL",
+                "GGLLGLLG",
+                "OOOOLLLO",
+                "BBBBLGLB",
+                "LLRLLRLL"
+            ],
+            "solution": "U',R,U2,R',U2,R,U',R'",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteFront15",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLRL",
+                "GGLLWLLG",
+                "OOOOLLLO",
+                "BBBBLRLB",
+                "LLGLLGLL"
+            ],
+            "solution": "y,U,L',U',L,U2,L',U,L",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteFront16",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLRL",
+                "GGLLWRLG",
+                "OOOOLLLO",
+                "BBBBLLLB",
+                "LGGLLLLL"
+            ],
+            "solution": "R,U',R',U2,y,L',U',L",
+            "caseType": 0
         }
     ]
 }
