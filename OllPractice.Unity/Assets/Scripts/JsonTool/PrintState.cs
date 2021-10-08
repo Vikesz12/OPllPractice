@@ -16,6 +16,7 @@ namespace JsonTool
     {
         [SerializeField] private RubikVisualizer _visualizer;
         [SerializeField] private TMP_InputField _inputField;
+        [SerializeField] private TMP_InputField _solutionField;
         [SerializeField] private TMP_Dropdown _dropdown;
         [SerializeField] private Camera _camera;
 
@@ -34,11 +35,35 @@ namespace JsonTool
                     var i = face.GetCubeIndex(faceCube.transform.position);
                     line[i] = faceCube.GetComponent<ISetFaceColor>().GetFaceColorForFacing(face.Facing);
                 }
-                lines.Add(line.Aggregate(string.Empty,(current, color) => current + color));
+                lines.Add(line.Aggregate(string.Empty, (current, color) => current + color));
             }
 
-            Debug.Log($"\"name\": \"{_inputField.text}\",{Environment.NewLine} \"faces\": [{Environment.NewLine}" 
-                      + lines.Skip(1).Aggregate($"\"{lines[0]}\"",(a,b) => $"{a},{Environment.NewLine}\"{b}\""));
+            var solutionText = ParseSolutionText();
+            var typeInt = ParseTypeInt();
+            Debug.Log($"{{{Environment.NewLine}"
+                      + $"\"name\": \"{_inputField.text}\","
+                      + $"{Environment.NewLine} \"faces\": [{Environment.NewLine}"
+                      + lines.Skip(1).Aggregate($"\"{lines[0]}\"", (a, b) => $"{a},{Environment.NewLine}\"{b}\"")
+                      + $"{Environment.NewLine}],{Environment.NewLine}\"solution\": \"{solutionText}\","
+                      + $"{Environment.NewLine}\"caseType\": {typeInt}"
+                      + $"{Environment.NewLine}}},");
+        }
+
+        private int ParseTypeInt() =>
+            _dropdown.options[_dropdown.value].text switch
+            {
+                "F2L" => 0,
+                "OLL" => 1,
+                "PLL" => 2,
+                _ => 0
+            };
+
+        private string ParseSolutionText()
+        {
+            var result = _solutionField.text;
+            result = result.Replace("(", string.Empty).Replace(")", string.Empty);
+            result = result.Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
+            return result.Replace(' ', ',');
         }
 
         private void SaveImage()

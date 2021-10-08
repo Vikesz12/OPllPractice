@@ -16,11 +16,11 @@
         {
             "name": "1AWhiteUp2",
             "faces": [
-                "LLWWLWWL",
+                "WWWWLWWW",
                 "LRRRLLGL",
                 "GGLLRLLG",
-                "LLOOLRLL",
-                "BLLLLLLB",
+                "OOOOLRLO",
+                "BBBBLLLB",
                 "LLWLLLLG"
             ],
             "solution": "y,U2,L',U',L,U',L',U,L",
@@ -37,6 +37,19 @@
                 "LLWLLLLR"
             ],
             "solution": "U,R,U2,R',U,R,U',R'",
+            "caseType": 0
+        },
+        {
+            "name": "1AWhiteUp4",
+            "faces": [
+                "WWWWLWWW",
+                "LRRRLLGL",
+                "GGLLRLLG",
+                "OOOOLLLO",
+                "BBBBLRLB",
+                "LLWLLGLL"
+            ],
+            "solution": "y,U',L',U2,L,U',L',U,L",
             "caseType": 0
         }
     ]
