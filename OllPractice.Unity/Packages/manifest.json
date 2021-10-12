@@ -1,6 +1,9 @@
 {
   "dependencies": {
     "com.cysharp.unitask": "2.2.5",
+    "com.htc.upm.vive-input-utility": "1.13.4",
+    "com.htc.upm.wave.native": "4.1.1-r.3.2",
+    "com.htc.upm.wave.xrsdk": "4.1.1-r.3.2",
     "com.mainthreaddispatcher.unity": "1.1.1",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.collab-proxy": "1.7.1",
@@ -52,6 +55,13 @@
         "com.injecter.unity",
         "com.mainthreaddispatcher.unity",
         "com.openupm"
+      ]
+    },
+    {
+      "name": "VIVE",
+      "url": "https://npm-registry.vive.com",
+      "scopes": [
+        "com.htc.upm"
       ]
     }
   ]
