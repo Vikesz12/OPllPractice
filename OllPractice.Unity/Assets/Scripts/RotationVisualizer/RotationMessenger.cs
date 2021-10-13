@@ -38,6 +38,7 @@ namespace RotationVisualizer
         private RubikCaseParser.RubikCase _currentCase;
         private bool _trainingMode;
         private bool _isHidden;
+        private int _hintNumber;
 
         public void Awake()
         {
@@ -46,6 +47,18 @@ namespace RotationVisualizer
             _correctionTurns = new Stack<FaceRotation>();
             _eventBus.Subscribe<FaceRotated>(NotificationParserOnFaceRotated);
         }
+
+        private void Update()
+        {
+            if(!_isHidden || _hintNumber > _rotationSteps.Count-1) return;
+
+            if (Input.GetKeyDown(KeyCode.Space) || Input.touchCount > 0)
+            {
+                _rotationSteps[_hintNumber].ShowHint();
+                _hintNumber++;
+            }
+        }
+
         private void OnDestroy() => _eventBus.Unsubscribe<FaceRotated>(NotificationParserOnFaceRotated);
 
         public async void AnimateCurrentMoves()
@@ -311,7 +324,8 @@ namespace RotationVisualizer
                 _rubikHolder.LoadState(_currentCase.GetStateFromFaces(), _practiceMode);
             }
             _animating = false;
-            AddPracticeModeRotations();
+            _hintNumber = 0;
+            AddFlippedCubeRotations();
         }
 
         private bool CheckCorrectTurn(FaceRotation rotationToCheck, FaceRotation correctFaceRotation)
@@ -358,7 +372,7 @@ namespace RotationVisualizer
             _currentPosition = 0;
             if (f2LMode)
             {
-                AddPracticeModeRotations();
+                AddFlippedCubeRotations();
                 _practiceMode = true;
             }
             _rotations = rubikCase.GetSolution().ToList();
@@ -372,7 +386,7 @@ namespace RotationVisualizer
             ShowNextBatch();
         }
 
-        private void AddPracticeModeRotations()
+        private void AddFlippedCubeRotations()
         {
             _cubeRotations.Clear();
             _cubeRotations.Add(new FaceRotation(CubeRotation.x, Rotation.One));
@@ -401,7 +415,7 @@ namespace RotationVisualizer
             if (flipMode)
             {
                 _rubikHolder.Flip();
-                AddPracticeModeRotations();
+                AddFlippedCubeRotations();
                 _trainingMode = true;
             }
             _rotations = currentCase.GetScramble().Select(fr => fr.ToCubeTurnedRotation(_cubeRotations)).ToList();

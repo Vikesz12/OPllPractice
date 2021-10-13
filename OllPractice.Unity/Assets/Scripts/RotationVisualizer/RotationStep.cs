@@ -24,6 +24,8 @@ namespace RotationVisualizer
             _faceRotation = rotation;
         }
 
+        public void ShowHint() => _rotationText.text = _faceRotation.ToRubikNotation();
+
         public void SetColor(Color color) => _rotationText.color = color;
 
         public bool CheckCorrectTurn(FaceRotation rotation, List<FaceRotation> cubeRotations, ref int currentPosition)
