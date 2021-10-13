@@ -28,5 +28,12 @@ namespace Loaders
                 Instantiate(listPrefab, _listParent).GetComponent<RubikListElementLoader>().LoadCase(f2LCase, isPractice);
             }
         }
+
+        public void UpdateCase(RubikCaseParser.RubikCase rubikCase)
+        {
+            var index = _cases.FindIndex(rc => rc.name == rubikCase.name);
+            _cases[index] = rubikCase;
+            RubikCaseParser.SaveJson(_jsonName,new RubikCaseParser.RubikCaseList(_cases));
+        }
     }
 }

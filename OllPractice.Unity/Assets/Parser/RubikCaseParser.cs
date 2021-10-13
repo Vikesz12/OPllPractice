@@ -1,9 +1,10 @@
 ﻿using Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using RotationVisualizer;
 using Solver;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace Parser
@@ -18,10 +19,18 @@ namespace Parser
 
         }
 
+        public static void SaveJson(string jsonName, RubikCaseList cases)
+        {
+            var fileText = JsonUtility.ToJson(cases);
+            File.WriteAllText(Application.dataPath + "/Resources/Cases/" + jsonName +".json", fileText);
+        }
+
         [Serializable]
-        private sealed class RubikCaseList
+        public sealed class RubikCaseList
         {
             public List<RubikCase> rubikCases;
+
+            public RubikCaseList(List<RubikCase> rubikCases) => this.rubikCases = rubikCases;
         }
 
         [Serializable]
@@ -61,7 +70,7 @@ namespace Parser
 
             public List<FaceRotation> GetScramble()
             {
-                var cube  = new Cube();
+                var cube = new Cube();
                 var cubeRotations = new List<FaceRotation>
                 {
                     new FaceRotation(CubeRotation.x, Rotation.One),

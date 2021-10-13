@@ -11,7 +11,7 @@
                 "LLLLLLLL"
             ],
             "solution": "R,U2,R2,F,R,F',U2,R',F,R,F'",
-            "caseType":1
+            "caseType": 1
         },
         {
             "name": "Oll2",
@@ -24,7 +24,7 @@
                 "LLLLLLLL"
             ],
             "solution": "r,U,r',U2,r,U2,R',U2,R,U',r'",
-            "caseType":1
+            "caseType": 1
         }
     ]
 }
