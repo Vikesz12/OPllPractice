@@ -11,7 +11,11 @@ namespace RubikVisualizers
         private RubikVisualizer _currentVisualizer;
         private bool _flipped;
 
-        private void Awake() => CreateVisualizer();
+        private void Start()
+        {
+            if(_currentVisualizer != null) return;
+            CreateVisualizer();
+        }
 
         private void OnDestroy()
         {

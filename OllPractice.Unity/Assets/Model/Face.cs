@@ -9,6 +9,8 @@ namespace Model
     {
         private ulong _squares;
 
+        public Face(ulong squares) => _squares = squares;
+
         public Face(RubikColor color)
         {
             _squares = 0;
@@ -17,6 +19,8 @@ namespace Model
                 _squares = _squares << 8 | (byte)color;
             }
         }
+
+        public ulong Squares => _squares;
 
         public Face(IEnumerable<RubikColor> colors)
         {

@@ -1,5 +1,19 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3814258258913896762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3776538666240615952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05a4c99fe6d923345a55c433d08dd557, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
 --- !u!114 &503038827833095805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30,18 +44,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _containerSource: 0
---- !u!114 &-3814258258913896762
+--- !u!114 &9160416721617238119
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3776538666240615952}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05a4c99fe6d923345a55c433d08dd557, type: 3}
+  m_Script: {fileID: 11500000, guid: 23b6d3c6155f44e4b91c14e0a2334523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
 --- !u!1001 &8083699574186492053
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -97,7 +113,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4920151834620880536, guid: cd6b5101281943f488d0c72c5d61387e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: cd6b5101281943f488d0c72c5d61387e, type: 3}
 --- !u!1 &3776538666240615952 stripped
 GameObject:

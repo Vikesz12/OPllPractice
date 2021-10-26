@@ -15,6 +15,7 @@ namespace RubikVisualizers
     public class RubikVisualizer : MonoBehaviour
     {
         [Inject] private IEventBus _eventBus;
+        [SerializeField] private bool IsOnline;
 
         private Cube _cube;
         private List<FaceView> _faces;
@@ -35,6 +36,7 @@ namespace RubikVisualizers
                     .SetFaceColorForFacing(center.transform.up, RubikColorMaterialService.GetRubikColorMaterial((RubikColor)i));
             }
 
+            if(IsOnline) return;
             _eventBus.Subscribe<FaceRotated>(OnFaceRotated);
             _eventBus.Subscribe<StateParsed>(parsed => LoadState(parsed.Faces));
         }
@@ -183,7 +185,7 @@ namespace RubikVisualizers
         }
 
 
-        private void OnFaceRotated(FaceRotated faceRotated)
+        public void OnFaceRotated(FaceRotated faceRotated)
         {
             var rotation = faceRotated.Rotation;
 
