@@ -51,7 +51,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3776538666240615952}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 23b6d3c6155f44e4b91c14e0a2334523, type: 3}
   m_Name: 
@@ -68,6 +68,10 @@ PrefabInstance:
     - target: {fileID: 4920151834620880517, guid: cd6b5101281943f488d0c72c5d61387e, type: 3}
       propertyPath: m_Name
       value: RubikHolderOnline
+      objectReference: {fileID: 0}
+    - target: {fileID: 4920151834620880536, guid: cd6b5101281943f488d0c72c5d61387e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4920151834620880537, guid: cd6b5101281943f488d0c72c5d61387e, type: 3}
       propertyPath: m_RootOrder
@@ -113,8 +117,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4920151834620880536, guid: cd6b5101281943f488d0c72c5d61387e, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd6b5101281943f488d0c72c5d61387e, type: 3}
 --- !u!1 &3776538666240615952 stripped
 GameObject:

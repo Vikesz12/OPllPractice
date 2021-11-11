@@ -8,21 +8,21 @@ namespace Online
     public class LoadState : NetworkBehaviour
     {
         [Inject] private readonly IBle _ble;
-        [Inject] private DiContainer _container;
 
-        private void Start()
+        private void  Start()
         {
+            var rubikHolder = GetComponent<RubikHolder>();
+
             if (isLocalPlayer)
             {
-                _container.InstantiateComponent<RubikHolder>(gameObject);
-                gameObject.GetComponent<RubikOnlineMessageSender>().enabled = true;
+                _ble.Write("3", ConnectedDeviceData.ConnectedDeviceId);
             }
             else
             {
-                _container.InstantiateComponent<RubikHolderOnline>(gameObject);
+                rubikHolder.SetOnline(true);
             }
 
-            _ble.Write("3", ConnectedDeviceData.ConnectedDeviceId);
+            rubikHolder.enabled = true;
         }
     }
 }

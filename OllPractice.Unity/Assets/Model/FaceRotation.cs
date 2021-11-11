@@ -38,6 +38,15 @@ namespace Model
             SetBasicRotationForDoubleLayer(doubleLayerRotation);
         }
 
+        public FaceRotation(int[] enumInts)
+        {
+            BasicRotation = (BasicRotation)enumInts[0];
+            TurnType = (TurnType)enumInts[1];
+            RotationType = (Rotation)enumInts[2];
+            CubeRotation = (CubeRotation)enumInts[3];
+            DoubleLayerRotation = (DoubleLayerRotation)enumInts[4];
+        }
+
         public FaceRotation(string notation)
         {
             if (notation[0] == 'x' || notation[0] == 'y')

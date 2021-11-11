@@ -4,6 +4,7 @@ namespace EventBus.Events
 {
     public class FaceRotated : IEvent
     {
-        public FaceRotation Rotation { get; set; }
+        public FaceRotated(FaceRotation faceRotation) => Rotation = faceRotation;
+        public FaceRotation Rotation { get;}
     }
 }

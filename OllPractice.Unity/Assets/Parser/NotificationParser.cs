@@ -114,7 +114,7 @@ namespace Parser
         }
 
         private void InvokeFaceRotatedEvent(FaceRotation rotation)
-            => _eventBus.Invoke(new FaceRotated { Rotation = rotation });
+            => _eventBus.Invoke(new FaceRotated(rotation));
 
         private static RubikColor ParseNotificationColor(byte col) =>
             col switch

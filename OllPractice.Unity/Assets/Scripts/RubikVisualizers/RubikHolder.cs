@@ -10,6 +10,7 @@ namespace RubikVisualizers
 
         private RubikVisualizer _currentVisualizer;
         private bool _flipped;
+        private bool _online;
 
         private void Start()
         {
@@ -23,10 +24,13 @@ namespace RubikVisualizers
             _currentVisualizer = null;
         }
 
-        private void CreateVisualizer() =>
+        private void CreateVisualizer()
+        {
+            var prefabName = _online ? "RubiksConnectedOnline" : "RubiksConnected";
             _currentVisualizer =
-                _container.InstantiatePrefab(Resources.Load<GameObject>("Prefabs/RubiksConnected"), transform)
+                _container.InstantiatePrefab(Resources.Load<GameObject>($"Prefabs/{prefabName}"), transform)
                     .GetComponent<RubikVisualizer>();
+        }
 
 
         public void LoadState(Face[] state, bool flip = false)
@@ -44,6 +48,8 @@ namespace RubikVisualizers
             if(_currentVisualizer != null)
                 _currentVisualizer.Flip();
         }
+
+        public void SetOnline(bool online) => _online = online;
 
         private void ResetVisualizer()
         {

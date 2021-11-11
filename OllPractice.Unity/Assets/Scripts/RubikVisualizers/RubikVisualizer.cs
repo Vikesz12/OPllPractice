@@ -76,6 +76,7 @@ namespace RubikVisualizers
         }
 
         public List<FaceView> GetFaces => _faces;
+        public Cube GetCube => _cube;
 
         private void SetupFaces()
         {
