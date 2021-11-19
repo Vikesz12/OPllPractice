@@ -22,7 +22,7 @@ namespace Online
             {
                 CmdGetState();
             }
-            if(!isLocalPlayer) return;
+            if(!isLocalPlayer || isServer) return;
             _eventBus.Subscribe<StateParsed>(parsed => CmdStateParsed(parsed.Faces.Select(f => f.Squares).ToArray()));
             _eventBus.Subscribe<FaceRotated>(rotated =>
             {
@@ -71,6 +71,7 @@ namespace Online
         [ClientRpc(includeOwner = false)]
         private void RpcFaceRotated(int[] enumInts)
         {
+            if(isServer) return;
             var obj = new FaceRotation(enumInts);
             _holder.GetCurrentVisualizer().OnFaceRotated(new FaceRotated(obj));
         }
@@ -86,6 +87,7 @@ namespace Online
         [ClientRpc(includeOwner = false)]
         private void RpcStateParsed(ulong[] faces)
         {
+            if(isServer) return;
             var faceArray = faces.Select(f => new Face(f)).ToArray();
             _holder.LoadState(faceArray);
         }
