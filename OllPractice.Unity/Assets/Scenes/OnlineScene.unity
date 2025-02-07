@@ -287,7 +287,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5179283725885002931, guid: 72d53eb6cf8489148a8f6bc0004fb4a9, type: 3}
       propertyPath: m_NormalizedViewPortRect.width
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5179283725885002932, guid: 72d53eb6cf8489148a8f6bc0004fb4a9, type: 3}
       propertyPath: m_RootOrder
@@ -522,6 +522,10 @@ PrefabInstance:
     - target: {fileID: 5179283725885002929, guid: 72d53eb6cf8489148a8f6bc0004fb4a9, type: 3}
       propertyPath: m_Name
       value: Main Camera (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179283725885002929, guid: 72d53eb6cf8489148a8f6bc0004fb4a9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5179283725885002929, guid: 72d53eb6cf8489148a8f6bc0004fb4a9, type: 3}
       propertyPath: m_TagString

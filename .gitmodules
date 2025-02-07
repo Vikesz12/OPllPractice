@@ -1,0 +1,3 @@
+[submodule "TwoPhaseSolver"]
+	path = TwoPhaseSolver
+	url = https://github.com/Vikesz12/TwoPhaseSolver

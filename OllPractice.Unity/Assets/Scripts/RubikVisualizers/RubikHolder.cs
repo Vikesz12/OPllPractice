@@ -30,6 +30,8 @@ namespace RubikVisualizers
             _currentVisualizer =
                 _container.InstantiatePrefab(Resources.Load<GameObject>($"Prefabs/{prefabName}"), transform)
                     .GetComponent<RubikVisualizer>();
+            if(_flipped)
+                _currentVisualizer.Flip();
         }
 
 
