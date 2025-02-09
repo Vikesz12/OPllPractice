@@ -1,12 +1,18 @@
-﻿using System;
-using Ble;
+﻿using Ble;
+
+using Cysharp.Threading.Tasks;
+
 using EventBus;
 using EventBus.Events;
+
 using Parser;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cysharp.Threading.Tasks;
+
 using UnityEngine;
+
 using Zenject;
 
 namespace Scanner
@@ -89,8 +95,9 @@ namespace Scanner
             foundCubeButton.GetButton.onClick.AddListener(() => ConnectToCube(deviceId));
         }
 
-        // ReSharper disable once UnusedMember.Local
+#pragma warning disable IDE0051 // Remove unused private members
         private async UniTask ScanFinished()
+#pragma warning restore IDE0051 // Remove unused private members
         {
             await UniTask.Delay(TimeSpan.FromSeconds(15));
             _eventBus.Invoke(new ScanStatusChanged { Status = false });
