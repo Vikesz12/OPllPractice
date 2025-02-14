@@ -674,6 +674,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3034581243329652965, guid: c3d35f9ea99706744ad49c5a4710d7dc, type: 3}
+      propertyPath: m_Name
+      value: JsonText
+      objectReference: {fileID: 0}
     - target: {fileID: 3284977987779574957, guid: c3d35f9ea99706744ad49c5a4710d7dc, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -697,6 +701,10 @@ PrefabInstance:
     - target: {fileID: 4531030187120504772, guid: c3d35f9ea99706744ad49c5a4710d7dc, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4879199176165261371, guid: c3d35f9ea99706744ad49c5a4710d7dc, type: 3}
+      propertyPath: m_text
+      value: JsonTool
       objectReference: {fileID: 0}
     - target: {fileID: 4973283783054446552, guid: c3d35f9ea99706744ad49c5a4710d7dc, type: 3}
       propertyPath: m_AnchorMax.x
