@@ -396,12 +396,19 @@ namespace Model
             }
 
             var faceRotation = faceRotations[i];
-            
+
             cubeRotations.Insert(0, new FaceRotation(faceRotation.CubeRotation, faceRotation.RotationType));
         }
 
-        public void LoadState(Face[] faces) => _faces = faces;
+        public void LoadState(Face[] faces)
+        {
+            for (int i = 0; i < faces.Length; i++)
+            {
+                Face face = faces[i];
+                _faces[i] = new Face(face.GetAllColors().Select(x => (RubikColor)x));
+            }
+        }
 
-        public string PrintCubeState() => _faces.Aggregate("", (current, face) => current + face.PrintSide());
+        public string PrintCubeState() => _faces.Aggregate("", (current, face) => current + Environment.NewLine + face.PrintSide());
     }
 }

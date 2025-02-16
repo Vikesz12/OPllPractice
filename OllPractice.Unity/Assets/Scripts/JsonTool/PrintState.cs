@@ -1,11 +1,17 @@
-using System;
+using Model;
+
+using Parser;
+
+using RotationVisualizer;
+
+using RubikVisualizers;
+
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Cysharp.Threading.Tasks;
-using Model;
-using RubikVisualizers;
+
 using TMPro;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,42 +25,35 @@ namespace JsonTool
         [SerializeField] private TMP_InputField _solutionField;
         [SerializeField] private TMP_Dropdown _dropdown;
         [SerializeField] private Camera _camera;
+        [SerializeField] private Camera _cameraOllPll;
+        [SerializeField] private RubikColorHelper _rubikColorHelper;
 
         private void Awake() => GetComponent<Button>().onClick.AddListener(PrintCurrentState);
 
         private void PrintCurrentState()
         {
-            SaveImage();
-            var lines = new List<string>();
-
-            foreach (var face in _visualizer.GetFaces)
+            if (string.IsNullOrEmpty(_inputField.text) || string.IsNullOrEmpty(_solutionField.text))
             {
-                var line = new List<RubikColor>(new RubikColor[8]);
-                foreach (var faceCube in face.Cubes)
-                {
-                    var i = face.GetCubeIndex(faceCube.transform.position);
-                    line[i] = faceCube.GetComponent<ISetFaceColor>().GetFaceColorForFacing(face.Facing);
-                }
-                lines.Add(line.Aggregate(string.Empty, (current, color) => current + color));
+                Debug.LogWarning("Empty solution or name cannot save");
+                return;
             }
-
-            var solutionText = ParseSolutionText();
-            var typeInt = ParseTypeInt();
-            Debug.Log($"{{{Environment.NewLine}"
-                      + $"\"name\": \"{_inputField.text}\","
-                      + $"{Environment.NewLine} \"faces\": [{Environment.NewLine}"
-                      + lines.Skip(1).Aggregate($"\"{lines[0]}\"", (a, b) => $"{a},{Environment.NewLine}\"{b}\"")
-                      + $"{Environment.NewLine}],{Environment.NewLine}\"solution\": \"{solutionText}\","
-                      + $"{Environment.NewLine}\"caseType\": {typeInt}"
-                      + $"{Environment.NewLine}}},");
+            var dropDownText = _dropdown.options[_dropdown.value].text;
+            if (dropDownText == "OLL" || dropDownText == "PLL")
+            {
+                SaveImageAndCase(_cameraOllPll);
+            }
+            else
+            {
+                SaveImageAndCase(_camera);
+            }
         }
 
-        private int ParseTypeInt() =>
+        private TrainingMode ParseTypeInt() =>
             _dropdown.options[_dropdown.value].text switch
             {
-                "F2L" => 0,
-                "OLL" => 1,
-                "PLL" => 2,
+                "F2L" => TrainingMode.F2L,
+                "OLL" => TrainingMode.Oll,
+                "PLL" => TrainingMode.Pll,
                 _ => 0
             };
 
@@ -66,14 +65,46 @@ namespace JsonTool
             return result.Replace(' ', ',');
         }
 
-        private void SaveImage()
+        private void SaveImageAndCase(Camera camera)
         {
+            var jsonName = $"{_dropdown.options[_dropdown.value].text}Cases";
+            var name = _inputField.text;
+            var solutionText = ParseSolutionText();
+            var caseType = ParseTypeInt();
+            var cases = RubikCaseParser.LoadJson(jsonName);
+            var faces = new List<string>();
+            foreach (var face in _visualizer.GetFaces)
+            {
+                var line = new List<RubikColor>(new RubikColor[8]);
+                foreach (var faceCube in face.Cubes)
+                {
+                    var i = face.GetCubeIndex(faceCube.transform.position);
+                    line[i] = faceCube.GetComponent<ISetFaceColor>().GetFaceColorForFacing(face.Facing);
+                }
+                faces.Add(line.Aggregate(string.Empty, (current, color) => current + color));
+            }
+
+            var currentCase = cases.FirstOrDefault(x => x.name == name);
+            if (currentCase != null)
+            {
+                cases.Remove(currentCase);
+            }
+            cases.Add(new RubikCaseParser.RubikCase()
+            {
+                caseType = caseType,
+                faces = faces,
+                name = name,
+                solution = solutionText,
+            });
+
+            RubikCaseParser.SaveJson(jsonName, new(cases));
+
             var activeRenderTexture = RenderTexture.active;
-            RenderTexture.active = _camera.targetTexture;
+            RenderTexture.active = camera.targetTexture;
 
-            _camera.Render();
+            camera.Render();
 
-            var targetTexture = _camera.targetTexture;
+            var targetTexture = camera.targetTexture;
             var image = new Texture2D(targetTexture.width, targetTexture.height);
             image.ReadPixels(new Rect(0, 0, targetTexture.width, targetTexture.height), 0, 0);
             image.Apply();

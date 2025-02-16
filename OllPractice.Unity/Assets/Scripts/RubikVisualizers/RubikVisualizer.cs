@@ -1,13 +1,19 @@
 ﻿using EventBus;
 using EventBus.Events;
+
 using Model;
+
 using Services;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
 using UnityEngine;
+
 using View;
+
 using Zenject;
 
 namespace RubikVisualizers
@@ -36,7 +42,7 @@ namespace RubikVisualizers
                     .SetFaceColorForFacing(center.transform.up, RubikColorMaterialService.GetRubikColorMaterial((RubikColor)i));
             }
 
-            if(IsOnline) return;
+            if (IsOnline) return;
             _eventBus.Subscribe<FaceRotated>(OnFaceRotated);
             _eventBus.Subscribe<StateParsed>(parsed => LoadState(parsed.Faces));
         }
@@ -72,10 +78,32 @@ namespace RubikVisualizers
         private void OnDestroy()
         {
             _eventBus.Unsubscribe<FaceRotated>(OnFaceRotated);
-            _eventBus.Unsubscribe<StateParsed>(parsed => LoadState(parsed.Faces));
+            _eventBus.Unsubscribe<StateParsed>(LoadStateFromEvent);
         }
 
         public List<FaceView> GetFaces => _faces;
+        public List<RubikColor> GetTopColors
+        {
+            get
+            {
+                var result = new List<RubikColor>();
+                var cubeFaces = _cube.GetFaces;
+                result.Add(cubeFaces[3].GetColorAt(6));
+                result.Add(cubeFaces[3].GetColorAt(5));
+                result.Add(cubeFaces[3].GetColorAt(4));
+                result.Add(cubeFaces[2].GetColorAt(6));
+                result.Add(cubeFaces[2].GetColorAt(5));
+                result.Add(cubeFaces[2].GetColorAt(4));
+                result.Add(cubeFaces[1].GetColorAt(6));
+                result.Add(cubeFaces[1].GetColorAt(5));
+                result.Add(cubeFaces[1].GetColorAt(4));
+                result.Add(cubeFaces[4].GetColorAt(6));
+                result.Add(cubeFaces[4].GetColorAt(5));
+                result.Add(cubeFaces[4].GetColorAt(4));
+                return result;
+            }
+        }
+
         public Cube GetCube => _cube;
 
         private void SetupFaces()
@@ -303,7 +331,6 @@ namespace RubikVisualizers
                         throw new ArgumentOutOfRangeException(nameof(rotation.BasicRotation), rotation.BasicRotation, null);
                 }
             }
-
             else
             {
                 switch (rotation.CubeRotation)
@@ -332,8 +359,10 @@ namespace RubikVisualizers
                         throw new ArgumentOutOfRangeException();
                 }
             }
+            _eventBus.Invoke<FaceRotateFinished>(new());
         }
 
+        private void LoadStateFromEvent(StateParsed stateParsed) => LoadState(stateParsed.Faces);
         public void LoadState(Face[] faces)
         {
             SetupFaces();
@@ -536,7 +565,7 @@ namespace RubikVisualizers
             gameObject.transform.RotateAround(o.transform.position, axisToRotateAround, angleToRotate);
             _eventBus.Invoke(new CubeRotated(rotationType, cubeRotation));
         }
-       
+
         public void Flip()
         {
             var transform1 = transform;

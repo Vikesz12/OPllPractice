@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 
 namespace Model
@@ -27,7 +26,7 @@ namespace Model
             _squares = 0;
             foreach (var rubikColor in colors)
             {
-                _squares = _squares << 8 | (byte) rubikColor;
+                _squares = _squares << 8 | (byte)rubikColor;
             }
         }
 
@@ -67,9 +66,9 @@ namespace Model
             if (newSquares != default && oldSquares != newSquares)
             {
                 bytes[startIndex] = newSquares[0];
-                bytes[startIndex+1] = newSquares[1];
-                bytes[startIndex == 6 ? 0: startIndex+2] = newSquares[2];
-                _squares = BitConverter.ToUInt64(bytes,0);
+                bytes[startIndex + 1] = newSquares[1];
+                bytes[startIndex == 6 ? 0 : startIndex + 2] = newSquares[2];
+                _squares = BitConverter.ToUInt64(bytes, 0);
             }
             return oldSquares;
         }
@@ -77,14 +76,14 @@ namespace Model
         public RubikColor GetColorAt(int index)
         {
             var bytes = BitConverter.GetBytes(_squares);
-            return (RubikColor) bytes[index];
+            return (RubikColor)bytes[index];
         }
 
         public void SetColorAt(int index, RubikColor color)
         {
             var bytes = BitConverter.GetBytes(_squares);
             bytes[index] = (byte)color;
-            _squares = BitConverter.ToUInt64(bytes,0);
+            _squares = BitConverter.ToUInt64(bytes, 0);
         }
 
         public IEnumerable<byte> GetAllColors()
