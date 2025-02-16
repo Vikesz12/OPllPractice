@@ -1,11 +1,17 @@
 ﻿using BleWinrt;
+
 using Config;
-using Parser;
-using Scanner;
-using System.Collections.Generic;
-using System.Text;
+
 using EventBus;
 using EventBus.Events;
+
+using Parser;
+
+using Scanner;
+
+using System.Collections.Generic;
+using System.Text;
+
 using Zenject;
 
 namespace Ble
@@ -56,6 +62,7 @@ namespace Ble
             {
                 parser.ParseNotification(res.buf, res.size);
             }
+
         }
 
         public void Subscribe(string deviceId)

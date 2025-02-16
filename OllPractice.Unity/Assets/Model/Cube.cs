@@ -405,7 +405,7 @@ namespace Model
             for (int i = 0; i < faces.Length; i++)
             {
                 Face face = faces[i];
-                _faces[i] = new Face(face.GetAllColors().Select(x => (RubikColor)x));
+                _faces[i] = new Face(face.GetAllColors());
             }
         }
 

@@ -44,7 +44,7 @@ namespace RubikVisualizers
 
             if (IsOnline) return;
             _eventBus.Subscribe<FaceRotated>(OnFaceRotated);
-            _eventBus.Subscribe<StateParsed>(parsed => LoadState(parsed.Faces));
+            _eventBus.Subscribe<StateParsed>(LoadStateFromEvent);
         }
 
         public void Start() => SetupFaces();

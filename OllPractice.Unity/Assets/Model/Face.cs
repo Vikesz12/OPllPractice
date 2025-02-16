@@ -30,6 +30,11 @@ namespace Model
             }
         }
 
+        public Face(IEnumerable<byte> colors)
+        {
+            _squares = BitConverter.ToUInt64(colors.ToArray(), 0);
+        }
+
         public void Rotate(Rotation rotation)
         {
             var shift = 16;
@@ -92,6 +97,7 @@ namespace Model
 
             return bytes;
         }
+
         public string PrintSide()
         {
             var bytes = BitConverter.GetBytes(_squares);
