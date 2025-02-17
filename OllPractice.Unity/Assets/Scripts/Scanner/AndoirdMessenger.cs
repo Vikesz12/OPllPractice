@@ -1,7 +1,11 @@
-using System;
 using EventBus;
+
 using Parser;
+
+using System;
+
 using UnityEngine;
+
 using Zenject;
 
 namespace Scanner
@@ -13,7 +17,11 @@ namespace Scanner
 
         [SerializeField] private RubikScanner _rubikScanner;
 
-        private void Awake() => _eventBus.CleanUp();
+        private void Awake()
+        {
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
+            _eventBus.CleanUp();
+        }
 
         public void AndroidMessage(string message)
         {
@@ -25,7 +33,7 @@ namespace Scanner
             }
             else
             {
-                if(_rubikScanner == null) return;
+                if (_rubikScanner == null) return;
 
                 _rubikScanner.CreateNewCubeButton(messageParts[1], messageParts[2]);
             }
